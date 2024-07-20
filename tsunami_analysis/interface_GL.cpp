@@ -26,7 +26,7 @@
 #define WINDOW_HEIGHT 600
 using namespace std;
 using namespace nana;
-const double pi = acos(-1.0);
+//const double pi = acos(-1.0);
 int sch = -1;
 GLFWwindow* windowgl;
 void bar_chart_gl(){
@@ -121,7 +121,7 @@ void handle_keypress(GLFWwindow* window, int key, int scancodes, int action, int
 			//cout << "w" << endl;
 			break;
 		case 51://3
-			if (s_param.zoom < 20) s_param.zoom+=0.2;
+			if (s_param.zoom < 400) s_param.zoom+=0.5;
 			break;
 		case 52://4
 			if (s_param.zoom > 1) s_param.zoom-=0.2;
@@ -221,6 +221,18 @@ void handle_keypress(GLFWwindow* window, int key, int scancodes, int action, int
 			rot.phi -= GLfloat(0.01);
 			cout << rot.r << " " << rot.phi << " " << rot.teta << " "  << s_rot[0].z << " " << s_rot[1].z << endl;
 			break;
+
+		case GLFW_KEY_B:
+		{
+			dScaleColorBar += 0.1;
+			break;
+		}
+		case GLFW_KEY_N:
+		{
+			if (dScaleColorBar > 0.1)
+				dScaleColorBar -= 0.1;
+			break;
+		}
 		}
 	
 }

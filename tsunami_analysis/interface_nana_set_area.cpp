@@ -47,6 +47,7 @@ void output_gist_data(){
 	cout << "SIZE_X: " << gist_d.size_x << "\tSIZE_Y: " << gist_d.size_y << endl;
 	//cout << "|_" << gist_d.l_l.x << "\t_|" << gist_d.l_r << endl;
 }
+
 void fm_select_area(){
 	coord_double c1 = { start_x + delta_x / 2., end_y - delta_y / 2. }, c2{ start_x + delta_x / 2., end_y - delta_y / 2. };
 	crd1 = { start_x, end_y }; crd2 = { start_x, end_y };
@@ -111,20 +112,32 @@ void fm_select_area(){
 		double s_x = min(c1.x, c2.x);
 		double s_y = min(c1.y, c2.y);
 		coord l_l = get_coord(s_x, s_y), t_r = get_coord(e_x, e_y);
-		for (int y = t_r.y; y <= l_l.y; y++){
-			if (bottom[y][l_l.x] >= 0.0) gr.set_pixel(l_l.x, y, {0, 255, 0});
-			else gr.set_pixel(l_l.x, y, { 0, 0, 255 });
-			if (bottom[y][t_r.x] >= 0.0) gr.set_pixel(t_r.x, y, {0, 255, 0});
-			else gr.set_pixel(t_r.x, y, { 0, 0, 255 });
+
+		std::wcout << l_l.x << L" _ " << l_l.y << L" | " << t_r.x << L" _ " << t_r.y << std::endl;
+
+		for (int y = l_l.y; y <= t_r.y; y++)
+		{
+			if (bottom[y][l_l.x] >= 0.0) 
+				gr.set_pixel(l_l.x, y, {0, 255, 0});
+			else 
+				gr.set_pixel(l_l.x, y, { 0, 0, 255 });
+			if (bottom[y][t_r.x] >= 0.0) 
+				gr.set_pixel(t_r.x, y, {0, 255, 0});
+			else
+				gr.set_pixel(t_r.x, y, { 0, 0, 255 });
 		}
-		for (int x = l_l.x; x <= t_r.x; x++){
-			if (bottom[l_l.y][x] >= 0.0) gr.set_pixel(x, l_l.y, {0, 255, 0});
-			else gr.set_pixel(x, l_l.y, { 0, 0, 255 });
-			if (bottom[t_r.y][x] >= 0.0) gr.set_pixel(x, t_r.y, { 0, 255, 0});
-			else gr.set_pixel(x, t_r.y, { 0, 0, 255 });
+		for (int x = l_l.x; x <= t_r.x; x++)
+		{
+			if (bottom[l_l.y][x] >= 0.0) 
+				gr.set_pixel(x, l_l.y, {0, 255, 0});
+			else 
+				gr.set_pixel(x, l_l.y, { 0, 0, 255 });
+			if (bottom[t_r.y][x] >= 0.0) 
+				gr.set_pixel(x, t_r.y, { 0, 255, 0});
+			else 
+				gr.set_pixel(x, t_r.y, { 0, 0, 255 });
 		}
-		const auto& pic_size = pic.size();
-		gr.stretch(graph, rectangle(0, 0, pic_size.width, pic_size.height));
+		gr.stretch(graph, rectangle(0, 0, pic.size().width, pic.size().height));
 
 		c1.x = tb_x1.to_double(); c1.y = tb_y1.to_double();
 		c2.x = tb_x2.to_double(); c2.y = tb_y2.to_double();

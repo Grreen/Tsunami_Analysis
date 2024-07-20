@@ -20,8 +20,8 @@ using namespace nana;
 
 #define WIDTH_CHAR 12
 
-#define EVENT_PLOT PACIFIC_CUT
-#define LEFT_MARGIN EVENT_PLOT == MEXICO_BIG ? 100 : 0
+#define EVENT_PLOT DEFAULT
+#define LEFT_MARGIN EVENT_PLOT == MEXICO_BIG ? 80 : 0
 //#define WIDTH_MARGIN EVENT == MEXICO_BIG ? 100 : 0
 
 
@@ -29,16 +29,16 @@ typedef function <color(double, double)> color_func2d;
 
 namespace nana {
 	
-	color operator * (const color &x, double y);
+	color operator * (color x, double y);
 
-	color operator + (const color& x, const color& y);
+	color operator + (color x, color y);
 
 	template <typename T> using func_colormap = function <color(T val)>;
 
 	class colormap {
 	private:
 		map <double, color> map_color;
-		//bool interpolation;
+		bool interpolation;
 		func_colormap<double> func_color{ ([this](double val) -> color { // linear interpolation
 			auto it = map_color.lower_bound(val);
 			if (it == map_color.end()) {
@@ -53,17 +53,47 @@ namespace nana {
 			}
 		}) };
 	public:
-		colormap(map <double, color> map_, bool interpolation_ = true) : map_color(map_)//, interpolation(interpolation_)
+		colormap(map <double, color> map_, bool interpolation_ = true) : map_color(map_), interpolation(interpolation_)
 		{
-			assert(map_.size());
 		};
-		colormap(func_colormap<double> func_color_) : func_color(std::move(func_color_)) {};
-		color get_color(double val) const
-		{ return func_color(val); }
-		double min() const
-		{ return map_color.begin()->first; }
-		double max() const
-		{ return map_color.rbegin()->first; }
+		colormap(func_colormap<double> func_color_) : func_color(func_color_) {};
+		void set_colormap(const map <double, color>& colormap)
+		{
+			map_color = colormap;
+		}
+		size_t get_size() const
+		{
+			return map_color.size();
+		}
+		std::vector<color> get_colors() const
+		{
+			std::vector<color> arColors;
+
+			for (const std::pair<double, color> oValue : map_color)
+				arColors.push_back(oValue.second);
+
+			return arColors;
+		}
+		std::vector<double> get_ticks(double dStep = -1) const
+		{
+			std::vector<double> ticks;
+
+			if (dStep <= 0)
+			{
+				for (const std::pair<double, color>& value : map_color)
+					ticks.push_back(value.first);
+			}
+			else
+			{
+				for (double value = min(); value <= max(); value += dStep)
+					ticks.push_back(value);
+			}
+
+			return ticks;
+		}
+		color get_color(double val) const { return func_color(val); }
+		double min() const { return map_color.begin()->first; }
+		double max() const { return map_color.rbegin()->first; }
 	};
 	/*
 	template <class T1, class T2>
@@ -97,16 +127,17 @@ namespace nana {
 		bool axis_x_ { true }, axis_y_ {true};
 		bool axis_x_log_ { false }, axis_y_log_ { false };
 		double axis_x_base_ = 10.0, axis_y_base_ = 10.0, axis_x_log_base_ = log (axis_x_base_), axis_y_log_base_ = log (axis_y_base_);
-		nana::string axis_x_label_, axis_y_label_, label_;
+		nana::string axix_x_label_start, axix_x_label_end;
+		nana::string axix_y_label_start, axix_y_label_end;
 		bool colorbar_{ false };
 		paint::pixel_buffer pbuffer;
 		bool flag_pbuffer = false;
 		// for recursive_plot max depth without check on the same point
-		int h_check = 0;
+		int h_check;
 	public:
-		plot2d() = default;
+		plot2d() {}
 		plot2d (paint::graphics * gr) : gr_plot (gr) {}
-		void size (const nana::size& pt) const
+		void size (const nana::size& pt)
 		{
 			gr_plot->make (pt);
 		}
@@ -118,33 +149,42 @@ namespace nana {
 		
 		}
 
-		void window (const rectangle& window) {
+		void window (const rectangle& window) 
+		{
 			window_ = window;
-			if (gr_plot->empty ()) {
+			if (gr_plot->empty()) 
+			{
 				gr_plot->make({ window_.width + window_.x, window_.height + window_.y });
-				gr_plot->rectangle ({ 0,0, window_.width + window_.x, window_.height + window_.y }, true, { 255, 255, 255 });
+				gr_plot->rectangle({ 0,0, window_.width + window_.x, window_.height + window_.y }, true, { 255, 255, 255 });
 			} //else gr_plot->rectangle (window, true, { 255, 255, 255 });
 			window_a = window;
-			if (colorbar_) window_ = { window.x + 120 + (EVENT_PLOT == MEXICO_BIG ? 20 : PACIFIC_CUT ? -60 : 0), window.y, window.width - 220, window.height - 65 };
-			else window_ = {window.x + 85, window.y, window.width - 150, window.height - 40};
-		}
-		rectangle window () const
-		{ return window_; }
 
-		void region (const real_rectangle& region) { 
+			window_.x += gr_plot->typeface().size() * (axix_x_label_start.length() + 3);
+			window_.y += gr_plot->typeface().size();
+			window_.height -= gr_plot->typeface().size() * 2.5;
+
+			if (colorbar_)
+				window_.width -= gr_plot->typeface().size() * (7.5 + axix_x_label_start.length());
+			else
+				window_.width -= gr_plot->typeface().size() * 5;
+
+			return;
+			if (colorbar_) window_ = { window.x + 120 + (EVENT_PLOT == MEXICO_BIG ? 20 : PACIFIC_CUT ? -60 : 0), window.y, window.width - 220, window.height - 65 };
+			else window_ = { window.x + 85, window.y, window.width - 150, window.height - 40 };
+		}
+		rectangle window () { return window_; }
+
+		void region (real_rectangle region) { 
 			region_ = region; 
 			axis_x_log (axis_x_log_, axis_x_base_);
 			axis_y_log (axis_y_log_, axis_y_base_);
 		}
-		real_rectangle region () const
-		{ return region_; }
+		real_rectangle region () { return region_; }
 
-		bool axis_x () const
-		{ return axis_x_; }
+		bool axis_x () { return axis_x_; }
 		void axis_x (bool draw) { axis_x_ = draw; }
 
-		bool axis_y () const
-		{ return axis_y_; }
+		bool axis_y () { return axis_y_; }
 		void axis_y (bool draw) { axis_y_ = draw; }
 		void colorbar(bool draw) { colorbar_ = draw; }
 		//real_point get_step(real_rectangle region) {}
@@ -169,29 +209,30 @@ namespace nana {
 			axis_y_log_ = logarithmic;
 		}
 
-		void draw_axis(bool axis = true, bool arrow = true) const;
-		void draw_grid(bool grid = true, bool ticks = true, unsigned int font_size = 20,
-			double step_x = 0, double step_y = 0, double step_font_x = 0, double step_font_y = 0);
+		void draw_direction_wave(float dScale);
 
-		
-		void smooth_line(point a, point b, color color);
+		void draw_axis(bool axis = true, bool arrow = true);
+		void draw_grid(bool grid = true, bool ticks = true, double step_x = 0, double step_y = 0, double step_font_x = 0, double step_font_y = 0, double height = -1);
+		void draw_time(const nana::string& time);
+		void draw_mareograms(const std::vector<real_point>& arCoords, bool drawIndex = false);
 
-		void axis_x_label (nana::string label) { axis_x_label_ = std::move( label); }
-		void axis_y_label (nana::string label) { axis_y_label_ = std::move(label);}
-		void label (nana::string label) { label_ = std::move(label);}
+		void smooth_line(const point& a, const point& b, const color& color);
 
-		void line (const std::vector<real_point>&, const nana::color& color = {0, 0, 0}, int point_radius = 0) const;
-		void integral_line(std::vector <real_point>, nana::color color = { 0, 0, 0 }, nana::color color_area = { 255, 255, 255 }, int point_radius = 0);
+		void axis_x_label(const nana::string& start_label, const nana::string& end_label);
+		void axis_y_label(const nana::string& start_label, const nana::string& end_label);
 
-		void plot_function(func1d & func, double a, double b, const nana::color& color = {0, 0, 255}, bool good_plot = true);
-		void plot_recursive(func1d & f, func1d & g, double lt, double rt, const color& color, int h);
-		void plot_parametric(func1d & f, func1d & g, double lt, double rt, const color& color);
-		void plot_2d_function(func2d & f, colormap & c, const real_rectangle& region) const;
+		void fill (const std::vector <real_point>&, const nana::color& color = {0, 0, 0});
+		void integral_line(const std::vector <real_point>&, const nana::color& color = { 0, 0, 0 }, const nana::color& color_area = { 255, 255, 255 }, int point_radius = 0);
+
+		void plot_function(func1d & func, double a, double b, nana::color color = { 0,0,255 }, bool good_plot = true);
+		void plot_recursive(func1d & f, func1d & g, double lt, double rt, color color, int h);
+		void plot_parametric(func1d & f, func1d & g, double lt, double rt, color color);
+		void plot_2d_function(func2d & f, colormap & c, real_rectangle region);
 		void plot_2d_function(func2d & f, colormap & c);
-		void plot_2d_color_function(color_func2d & f, const real_rectangle& region) const;
-		void plot_2d_color_function(color_func2d & f) const;
+		void plot_2d_color_function(color_func2d & f, real_rectangle region);
+		void plot_2d_color_function(color_func2d & f);
 
-		void draw_angle_field(const func2d & f, const func2d & g, const colormap & c, const real_rectangle& region) const;
+		void draw_angle_field(func2d & f, func2d & g, colormap & c, real_rectangle region);
 
 		void draw_field(func2d & f, func2d & g, colormap & c, real_rectangle region);
 
@@ -200,14 +241,14 @@ namespace nana {
 		//void draw_integrate_field(func2d & f, func2d & g, colormap & c, real_rectangle region = {}, bool flag_was = false);
 		void plot2d::draw_integrate_field(func2d & f, func2d & g, colormap & c, real_rectangle region = {}, bool flag_was = true);
 
-		nana::point get_point (const real_point& pt) const;
-		real_point get_real_point (const nana::point& pt) const;
+		nana::point get_point (const real_point& pt);
+		real_point get_real_point (const nana::point& pt);
 
 		void clear ();
 		void draw (nana::paint::graphics & gr);
-		void fill_color(const point& a, const color& fill_color, const color& border_color) const;
-		void draw_arrowhead(const point& a, const point& b, const color& color, double h = 15, double w = 5, double corner = 12) const;
-		void colorbar(const colormap& cm, const vector<double>& x) const;
+		void fill_color(const point& a, const color& fill_color, const color& border_color);
+		void draw_arrowhead(const point& a, const point& b, const color& color, double h = 15, double w = 5, double corner = 12);
+		void colorbar(const colormap& cm, const nana::string& wsUnitMeasure, double dTick = 0);
 		real_point get_step();
 		//void draw_arrowhead(point a, point b, color color);
 

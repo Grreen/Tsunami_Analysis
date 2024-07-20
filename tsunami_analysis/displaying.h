@@ -40,8 +40,9 @@ struct Data_gl_axis{
 extern Data_gl_axis gl_data;
 extern scale_coord s_rot[2];
 extern strips_parameters s_param;
-extern point_gl from, at, ort;
+extern double dScaleColorBar;
 extern scale_move m_c_s;
+extern point_gl from, at, ort;
 extern rotation rot;//, rot_ort;
 extern crop_area crop_a;
 extern GLFT_Font font;

@@ -1,24 +1,27 @@
+#include "plot.h"
 #include "displaying.h"
-
-#include <corecrt_math_defines.h>
-
 #include "calculation.h"
 #include "interface_GL.h"
 #include "CImg.h"
+
+
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
+
+double max_h(int s);
 
 GLFT_Font font;
 std::vector<GLuint> text_sphere;
 GLuint text_ground, map_texture, gist_texture;
-const double pi = acos(-1.0);
-point_gl from = { static_cast<GLdouble>(10), static_cast<GLdouble>(10), static_cast<GLdouble>(0) },
-		at = { static_cast<GLdouble>(gist_d.size_x / 2), static_cast<GLdouble>(0), static_cast<GLdouble>(gist_d.size_y / 2) },
-		ort = { static_cast<GLdouble>(-10), static_cast<GLdouble>(10), static_cast<GLdouble>(0) };
-rotation rot{ static_cast<GLfloat>(130), static_cast<GLfloat>(0), (static_cast<float>(M_PI) / 6.0f) };//, rot_ort{0, 0.25, 0.25};
-scale_move m_c_s {35, -35, 0, 0, 20, 28};
+//const double pi = acos(-1.0);
+point_gl from = { GLfloat(10), GLfloat(10), GLfloat(0) }, 
+		at = { GLfloat(gist_d.size_x / 2), GLfloat(0), GLfloat(gist_d.size_y / 2) }, 
+		ort = { GLfloat(-10), GLfloat(10), GLfloat(0) };
+rotation rot{ GLfloat(130), GLfloat(0), GLfloat(pi / 6.) };//, rot_ort{0, 0.25, 0.25};
+scale_move m_c_s {-100, 100, 0, 0, 20, 40};
+double dScaleColorBar = 1;
 strips_parameters s_param{1 , 0};
-crop_area crop_a{ 1.0, 10000.0 };
+crop_area crop_a{ 1.0f, 10000.0f };
 Data_gl_axis gl_data = { 0.05, L"NORTH", { 0.5, 0.5, 5 }, {0.1, 0.1}, 1. };
 //int NumberC = 0;
 int result = 0; 
@@ -34,7 +37,7 @@ struct RGBAColor{
 	unsigned char R, G, B, A;
 };
 struct segment{
-	RGBAColor color[5];
+	nana::color clr[5];
 	double seg[5];
 };
 segment tex_col;
@@ -43,8 +46,9 @@ scale_coord front_seg[5];
 void front_seg_scale(){
 	front_seg[0].x = s_rot[1].x;// , -35, -s_rot[1].z
 	front_seg[0].z =-s_rot[1].z;
+	double r;
 	for (int i = 1; i <= 3; i++){//(abs(m_c_s.dx1) + abs(m_c_s.dx2)) *
-		double r = (tex_col.seg[i] / tex_col.seg[4]);
+		r =(tex_col.seg[i] / tex_col.seg[4]);
 		r = r / (1-r);
 		front_seg[i].x = (s_rot[1].x + s_rot[0].x*r)/(1+r);
 		front_seg[i].z = -1*(s_rot[1].z + s_rot[0].z*r)/(1+r);
@@ -59,11 +63,11 @@ void front_seg_scale(){
 
 void set_color()
 {
-	tex_col.color[0] = { 248, 255, 148, 0 };
-	tex_col.color[1] = { 250, 142, 10, 0 };
-	tex_col.color[2] = { 209, 0, 17, 0 };
-	tex_col.color[3] = { 114, 0, 145, 0 };
-	tex_col.color[4] = { 70, 0, 3, 0 };
+	tex_col.clr[0] = { 248, 255, 148, 0 };
+	tex_col.clr[1] = { 250, 142, 10, 0 };
+	tex_col.clr[2] = { 209, 0, 17, 0 };
+	tex_col.clr[3] = { 114, 0, 145, 0 };
+	tex_col.clr[4] = { 70, 0, 3, 0 };
 
 	//tex_col.color[4] = { 255, 255, 248, 0 };
 	/*tex_col.color[4] = { 255, 189, 247, 0 };
@@ -98,36 +102,51 @@ void set_color()
 	tex_col.seg[2] = 6;
 	tex_col.seg[3] = 16;*/
 	int* col = new int[4];
+	int st = int((max_h(s_param.NC) + 1 )/ 4);
 	for (int i = 1; i < 6; i++){		
-		col[i - 1] = static_cast<int>(double(int(max_h(s_param.NC) + 1)) / 4 * i);
+		col[i - 1] = int(double(int(max_h(s_param.NC) + 1))/4 * i);
 		//st = 2 * st  - i;
 	}
+	cout << "MAX:" << max_h(s_param.NC) << endl;
+/*	tex_col.seg[0] = 0;//0;
+	tex_col.seg[1] = 0.4;//col[0];//3;
+	tex_col.seg[2] = 0.8;//col[1];//6;
+	tex_col.seg[3] = 1.2;//col[2];//1  0;
+	tex_col.seg[4] = 1.6;//int(max_h(s_param.NC)) + 1;*/
+
 	tex_col.seg[0] = 0;//0;
+	tex_col.seg[1] = 0.25;//col[0];//3;
+	tex_col.seg[2] = 0.5;//col[1];//6;
+	tex_col.seg[3] = 0.75;//col[2];//1  0;
+	tex_col.seg[4] = 1;
+
+	/*tex_col.seg[0] = 0; 
+	//0;
 	tex_col.seg[1] = col[0];//3;
 	tex_col.seg[2] = col[1];//6;
 	tex_col.seg[3] = col[2];//0.8;//1  0;
 	max_h(s_param.NC);
-	tex_col.seg[4] = col [3];//1;//int(max_h(s_param.NC)) + 1;//15; ----------------
+	tex_col.seg[4] = col [3];*///1;//int(max_h(s_param.NC)) + 1;//15; ----------------
 }
 RGBAColor get_color(double from_x, double from_start, double from_end, RGBAColor in_start, RGBAColor in_end){
 	//return int(((of_x - of_start) / (of_end - of_start))*(in_end - in_start) + in_start);
 	RGBAColor a;
-	const double fraction = (from_x - from_start) / (from_end - from_start);
-	a.R = static_cast<int>(fraction * (in_end.R - in_start.R) + in_start.R);
-	a.G = static_cast<int>(fraction * (in_end.G - in_start.G) + in_start.G);
-	a.B = static_cast<int>(fraction * (in_end.B - in_start.B) + in_start.B);
+	double fraction = (from_x - from_start) / (from_end - from_start);
+	a.R = int(fraction * (in_end.R - in_start.R) + in_start.R);
+	a.G = int(fraction * (in_end.G - in_start.G) + in_start.G);
+	a.B = int(fraction * (in_end.B - in_start.B) + in_start.B);
 	a.A = 255;
 	return a;
 }
 void init_rendering()
 {
 
-	font.open(R"(C:\Windows\Fonts\arial.ttf)", 72);
+	font.open("C:\\Windows\\Fonts\\arial.ttf", 72);
 	//font.open("C:\\tmp\\PTSans\\PTC1.ttf", 72);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 	//glEnable( GL_TEXTURE_2D );
-	constexpr GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glEnable(GL_LIGHTING);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
 	glEnable(GL_LIGHT0);
@@ -154,32 +173,44 @@ GLuint create_texture_gist(){
 	GLuint Texture;  //variable for texture
 	glGenTextures(1, &Texture); //allocate the memory for texture
 	glBindTexture(GL_TEXTURE_2D, Texture); //Binding the texture
-	const int height = static_cast<int>(tex_col.seg[4] * 10);
+	//struct RGBAColor { unsigned char R, G, B, A; };
+	//color
+	int  height;
+	height = int(tex_col.seg[4] * 100);
 	RGBAColor * data = new RGBAColor[height];
-	const double step = tex_col.seg[4] / height;
+	//nana::color * data = new nana::color[height];
+	nana::colormap cmap({ { tex_col.seg[0], tex_col.clr[0] }, { tex_col.seg[1], tex_col.clr[1] },
+	{ tex_col.seg[2], tex_col.clr[2] }, { tex_col.seg[3], tex_col.clr[3] }, { tex_col.seg[4], tex_col.clr[4] } });
+	double step = tex_col.seg[4] / height;
 	double x = 0;
 	int i = 0;
+	for (double i = 0; i < tex_col.seg[4]; i += step) {
+		data[int(i / step + 0.5)] = { (unsigned char)cmap.get_color(i).r(), (unsigned char)cmap.get_color(i).g(), (unsigned char)cmap.get_color(i).b() };
+		//std::cout << i << " COLOR " << int(i / step) 
+			//<< " R: " << cmap.get_color(i).r() << " G: " << cmap.get_color(i).g() << " B: " << cmap.get_color(i).b() 
+			//<< " R: " << int(data[int(i / step)].R) << " G: " << int(data[int(i / step)].G) << " B: " << int(data[int(i / step)].B)  << std::endl;
+	}
 	//data[0] = get_color(0, 0, tex_col.seg[1], tex_col.color[0], tex_col.color[1]);
-	for (i; i < static_cast<int>(tex_col.seg[1] * 10); i++){		
+/*	for (i; i < int(tex_col.seg[1]*10); i++){		
 		data[i] = get_color(x, 0, tex_col.seg[1], tex_col.color[0], tex_col.color[1]);
 		x += step;
 	}
-	for (i; i < static_cast<int>(tex_col.seg[2] * 10); i++){
+	for (i; i < int(tex_col.seg[2] * 10); i++){
 		data[i] = get_color(x, tex_col.seg[1], tex_col.seg[2], tex_col.color[1], tex_col.color[2]);
 		x += step;
 	}
-	for (i; i < static_cast<int>(tex_col.seg[3] * 10); i++){
+	for (i; i < int(tex_col.seg[3] * 10); i++){
 		 data[i] = get_color(x, tex_col.seg[2], tex_col.seg[3], tex_col.color[2], tex_col.color[3]);
 		x += step;
 	}
-	for (i; i < static_cast<int>(tex_col.seg[4] * 10); i++){
+	for (i; i < int(tex_col.seg[4] * 10); i++){
 		data[i] = get_color(x, tex_col.seg[3], tex_col.seg[4], tex_col.color[3], tex_col.color[4]);
 		x += step;
 	}
 	printf("Colors:\n");
 	for (i = 0; i < height; i++){
 		printf("%d %d %d\n", data[i].R, data[i].G, data[i].B);
-	}
+	}*/
 	//data[0] = {0, 0, 0};
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, height, 1,0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -193,10 +224,12 @@ GLuint create_texture()
 	GLuint Texture;  //variable for texture
 	glGenTextures(1, &Texture); //allocate the memory for texture
 	glBindTexture(GL_TEXTURE_2D, Texture); //Binding the texture
+	//struct RGBAColor { unsigned char R, G, B, A; };
+	int width, height;
 	//width = src.width();
 	//height = src.height();//
-	const int width = gist_d.size_x;
-	const int height = gist_d.size_y;
+	width = gist_d.size_x;
+	height = gist_d.size_y;
 	RGBAColor * data = new RGBAColor[width * height];
 	
 	/*int left_line, top_line, right_line, bottom_line;
@@ -269,9 +302,9 @@ void setup_scene()
 {
 	//shader = CShaderManager::GetInstance ()->GetShader (VERTEX_SHADER_FILE_NAME, FRAGMENT_SHADER_FILE_NAME, NULL);
 
-	//vertex * sphere_vertex;
-	//int * sphere_index;
-	//int num;
+	vertex * sphere_vertex;
+	int * sphere_index;
+	int num;
 	set_color();
 	gist_texture = create_texture_gist();
 	map_texture = create_texture();
@@ -300,7 +333,7 @@ void setup_scene()
 
 void draw_rectagle(double length, double width)
 {
-	constexpr GLfloat gray[] = { 0.75f, 0.75f, 0.75f, 1.0f };
+	GLfloat gray[] = { 0.75f, 0.75f, 0.75f, 1.0f };
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, gray);
 	
 	glBegin(GL_POLYGON);
@@ -327,17 +360,21 @@ void draw_rectagle(double length, double width)
 
 void DrawTriangleStrip()
 {
-	//GLfloat spec[] = { 0.6f, 0.6f, 0.6f, 1.0f };
-	//GLfloat ambient[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	//GLfloat dif[] = { 0.588235f, 0.670588f, 0.729412f, 1.0f };
-	//GLfloat emis[] = { 0.0, 0.0, 0.0, 1.0 };
+	
+	
+	GLfloat spec[] = { 0.6f, 0.6f, 0.6f, 1.0f };
+	GLfloat ambient[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	GLfloat dif[] = { 0.588235f, 0.670588f, 0.729412f, 1.0f };
+	GLfloat emis[] = { 0.0, 0.0, 0.0, 1.0 };
 	glLineWidth(10);
 	glBegin(GL_TRIANGLE_STRIP);
-
-	int x = f_c_c[s_param.NC][0].x;
-	int z = f_c_c[s_param.NC][0].y;
+	
+	int x, z;
+	GLdouble y;
+	x = f_c_c[s_param.NC][0].x;
+	z = f_c_c[s_param.NC][0].y;
 	//glColor4d(1.0, 1.0, 0.0, 1.0);
-	GLdouble y = 0;
+	y = 0;
 	glTexCoord2f(0.0f, 0.0f);
 	glVertex3d(x - 1, y, z - 1);
 	x = f_c_c[s_param.NC][0].x;
@@ -345,7 +382,7 @@ void DrawTriangleStrip()
 	//glColor4d(0.0, 0.0, 0.0, 1.0);
 	y = s_param.zoom*CComp[z][x];
 	//glTexCoord1d()
-	glTexCoord2f(static_cast<float>(y / (s_param.zoom * tex_col.seg[3])), 0.0f);
+	glTexCoord2f(float(y / (s_param.zoom*tex_col.seg[3])), 0.0f);
 	glVertex3d(x - 1, y, z - 1);
 	x = f_c_c[s_param.NC][1].x;
 	z = f_c_c[s_param.NC][1].y;
@@ -354,20 +391,22 @@ void DrawTriangleStrip()
 	glTexCoord2f(0.0f, 0.0f);
 	glVertex3d(x - 1, y, z - 1);
 	int kkk = 0;
-	for (int i = 1, j = 1; i < static_cast<int>(f_c_c[s_param.NC].size()); i++)//v_c_c[0].size(); i++)
+	for (int i = 1, j = 1; i < int(f_c_c[s_param.NC].size()); i++)//v_c_c[0].size(); i++)
 	{
 
 		x = f_c_c[s_param.NC][i].x;
 		z = f_c_c[s_param.NC][i].y;
+		//glColor4d(0.0, 0.0, 0.0, 1.0);
+		double size_y = 0 ;
 		//if (i % 2 == 0) size_y = s_param.zoom*CComp[z][x];
-		const double size_y = s_param.zoom * CComp[z][x];
+		size_y = s_param.zoom*CComp[z][x];
 	/*	if (j / 2 == 1){
 			j-=2;
 			size_y = 0;
 		}*/
 		j++;
 		y = size_y;//s_param.zoom*CComp[z][x];
-		glTexCoord2f(static_cast<float>(y / (s_param.zoom * tex_col.seg[4])), 0.0f);
+		glTexCoord2f(float(y / (s_param.zoom * tex_col.seg[4])), 0.0f);
 		//if (float(y / tex_col.seg[3]) > 0.5) kkk++;
 		glVertex3d(x - 1, y, z - 1);
 		//glColor4d(1.0, 1.0, 0.0, 1.0);
@@ -403,11 +442,14 @@ void DrawLineStrip()
 	
 	glBegin(GL_LINES);
 	glColor3d(0.8, 1., 1.);
-	for (int i = 0; i < static_cast<int>(f_c_c[s_param.NC].size()); i++){
+	//int NC = NumberC;
+	int x, z;
+	GLdouble y;
+	for (int i = 0; i < int(f_c_c[s_param.NC].size()); i++){
 		if (i % 2  == 0){
-			const int x = f_c_c[s_param.NC][i].x;
-			const int z = f_c_c[s_param.NC][i].y;
-			const GLdouble y = s_param.zoom * CComp[z][x];
+		x = f_c_c[s_param.NC][i].x;
+		z = f_c_c[s_param.NC][i].y;
+		y = s_param.zoom*CComp[z][x];
 		glVertex3d(x - 1, y, z - 1);
 		glVertex3d(x - 1, 0, z - 1);
 		
@@ -422,8 +464,8 @@ void DrawLineStrip()
 }
 
 coord_gl get_coord_gl(GLdouble x, GLdouble y){
-	return{ ((static_cast<GLdouble>(x - gist_d.start_x) / static_cast<GLdouble>(gist_d.end_x - gist_d.start_x))*static_cast<GLdouble>(gist_d.size_x)), 
-		static_cast<GLdouble>(gist_d.size_y) - ((static_cast<GLdouble>(y - gist_d.start_y) / static_cast<GLdouble>(gist_d.end_y - gist_d.start_y))*static_cast<GLdouble>(gist_d.size_y)) };
+	return{ ((GLdouble(x - gist_d.start_x) / GLdouble(gist_d.end_x - gist_d.start_x))*GLdouble(gist_d.size_x)), 
+		GLdouble(gist_d.size_y) - ((GLdouble(y - gist_d.start_y) / GLdouble(gist_d.end_y - gist_d.start_y))*GLdouble(gist_d.size_y)) };
 }
 
 //	glDisable(GL_COLOR_MATERIAL);
@@ -449,28 +491,31 @@ void scale_rotation(){
 
 
 void Draw_scale_color(){
+
+	double dKoefXY = std::abs((m_c_s.dx1 - m_c_s.dx2) / (m_c_s.dy2 - m_c_s.dx1));
+
 	s_rot[0].x = at.x + m_c_s.dx1;
 	s_rot[0].z = at.z - m_c_s.dz;
-	s_rot[1].x = at.x + m_c_s.dx2;
+	s_rot[1].x = at.x + m_c_s.dx2 * dScaleColorBar * dKoefXY;
 	s_rot[1].z = at.z - m_c_s.dz;
 	scale_rotation();
 	glBegin(GL_POLYGON);
 
-	glNormal3d(0.0, 1.0, 0.0);
+	glNormal3d(0.0f, 1.0f, 0.0f);
 	glTexCoord2f(1.0f, 1.0f);
 	glVertex3d(s_rot[0].x, m_c_s.dy1 , s_rot[0].z);
 
-	glNormal3d(0.0, 1.0, 0.0);
+	glNormal3d(0.0f, 1.0f, 0.0f);
 	glTexCoord2f(0.0f, 1.0f);
 	glVertex3d(s_rot[1].x, m_c_s.dy1, s_rot[1].z);
 
-	glNormal3d(0.0, 1.0, 0.0);
+	glNormal3d(0.0f, 1.0f, 0.0f);
 	glTexCoord2f(0.0f, 0.0f);
-	glVertex3d(s_rot[1].x, m_c_s.dy2, s_rot[1].z);
+	glVertex3d(s_rot[1].x, m_c_s.dy2 * dScaleColorBar, s_rot[1].z);
 
-	glNormal3d(0.0, 1.0, 0.0);
+	glNormal3d(0.0f, 1.0f, 0.0f);
 	glTexCoord2f(1.0f, 0.0f);
-	glVertex3d(s_rot[0].x, m_c_s.dy2, s_rot[0].z);
+	glVertex3d(s_rot[0].x, m_c_s.dy2 * dScaleColorBar, s_rot[0].z);
 
 	glEnd();
 }
@@ -517,7 +562,7 @@ void displaygl()
 	
 
 	{
-		const double ground_length = gist_d.size_y, ground_width = gist_d.size_x;
+		double ground_length = gist_d.size_y, ground_width = gist_d.size_x;
 		glPushMatrix();
 		
 		//glDisable(GL_LIGHTING);
@@ -534,14 +579,17 @@ void displaygl()
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, gist_texture);
 		DrawTriangleStrip();
-		
 		glDisable(GL_TEXTURE_2D);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, gist_texture);
 		Draw_scale_color();
 		glDisable(GL_TEXTURE_2D);
 		//DrawTriangleStrip();
-			
+		
+
+		double rx[4] = { 1, -1, 0, 0 };
+		double rz[4] = { 0, 0, 1, -1 };
+
 		glPopMatrix();
 	}
 
@@ -571,28 +619,49 @@ void displaygl()
 		front_seg_scale();
 		//glRotatef(10, at.x, 32, at.z);
 		//cout << "9999\n";
-		for(int i = 0; i < 5; i++){
-			glTranslated(front_seg[i].x, -m_c_s.dy2-6, front_seg[i].z);
-			glScaled(0.1, 0.1, 0.1);
-			glRotatef(static_cast<float>(-m_c_s.alfa) * 180.f / static_cast<float>(M_PI), 0, 1, 0);
-			font.drawText(0, 0, std::to_string(static_cast<int>(tex_col.seg[i])));
-			//font.drawText(0, 0, "!=(^_^)=!");
-			glRotatef(static_cast<float>(-m_c_s.alfa) * 180.f / static_cast<float>(M_PI), 0, 1, 0);
-			glScaled(1.0 / 0.1, 1.0 / 0.1, 1.0 / 0.1);
-			glTranslated(-front_seg[i].x, m_c_s.dy2 + 6, -front_seg[i].z);
+		double dFontHeight = (m_c_s.dy2 - m_c_s.dy1) * dScaleColorBar / 3.;
+
+		for(int i = 0; i < 5; i++)
+		{
+			glTranslated(front_seg[i].x, -m_c_s.dy2 * dScaleColorBar - dFontHeight * 1.25, front_seg[i].z);
+			glScaled(0.1 * dScaleColorBar, 0.1 * dScaleColorBar, 0.1 * dScaleColorBar);
+			glRotatef(-m_c_s.alfa*180/pi, 0, 1, 0);
+
+			if ((int)tex_col.seg[i] == tex_col.seg[i])
+			{
+				font.drawText(0, 0, std::to_string((int)tex_col.seg[i]));
+			}
+			else
+			{
+				std::ostringstream ss;
+				ss << std::fixed << std::setprecision(2) << tex_col.seg[i];
+
+				//font.drawText(0, 0, std::to_string(int(tex_col.seg[i])));
+				font.drawText(0, 0, ss.str());
+			}
+
+			//font.drawText(0, 0, "8=(^_^)=8");
+			glRotatef(m_c_s.alfa * 180 / pi, 0, 1, 0);
+			glScaled(1.0 / 0.1 / dScaleColorBar, 1.0 / 0.1 / dScaleColorBar, 1.0 / 0.1 / dScaleColorBar);
+			glTranslated(-front_seg[i].x, m_c_s.dy2 * dScaleColorBar + dFontHeight + 1, -front_seg[i].z);
 			//glRotatef(-30, 0, 1, 0);
 		}
+
 		glRotatef(-180, 1, 0, 0);
 		glTranslated(0, -1, 0);
 
 		draw_axis();
 		glPopMatrix();
-
+		
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 		glEnable(GL_LIGHTING);
 		}
+	
 	{	
+		
+
+
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
 		glDisable(GL_LIGHTING);
@@ -602,11 +671,10 @@ void displaygl()
 		//glRotatef(180, 1, 0, 0);
 		//glRotatef(90, 1, 0, 0);
 		//glTranslated(size_x, -20, size_y);
-
-		//double x_s = static_cast<int>(gist_d.start_x) - 1;
-		//double y_s = static_cast<int>(gist_d.start_y) - 1;
-		//double x_e = static_cast<int>(gist_d.end_x) + 1;
-		//double y_e = static_cast<int>(gist_d.end_y) + 1;
+		double x_s = int(gist_d.start_x) - 1;
+		double y_s = int(gist_d.start_y) - 1;
+		double x_e = int(gist_d.end_x) + 1;
+		double y_e = int(gist_d.end_y) + 1;
 		//------------------------------------------------------------------------// 
 		//-------------------------------DRAW_X_AXIS------------------------------//
 		//------------------------------------------------------------------------// 

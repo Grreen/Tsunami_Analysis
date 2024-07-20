@@ -1,12 +1,21 @@
-//#define _CRT_SECURE_NO_WARNINGS
+ï»¿//#define _CRT_SECURE_NO_WARNINGS
 #include <ctime>
+#include "declaration.h"
 #include "interface_nana.h"
+#include "interface_GL.h"
 #include "calculation.h"
+#include "displaying.h"
 //#include "physics.h"
+#include <iostream>
 #include <fstream>
 #include <locale>
 #include <codecvt>
 #include <nana/gui/wvl.hpp>
+#include <cstdlib>
+
+#include <vector>
+#include <cmath>
+
 using namespace std;
 
 
@@ -36,14 +45,15 @@ void init_files(){
 	//load << izobata;
 	//load << output_time;
 	//setlocale(LC_ALL, "Russian");
-	//std::wcout << L"ûôûsss" << a << L"\n" << b << endl << c << endl;
+	//std::wcout << L"Ã»Ã´Ã»sss" << a << L"\n" << b << endl << c << endl;
 	//cout << izobata << endl << time_moments << endl << output_time << endl;
 }
-int __cdecl main()
+
+int main()
 {
 	//fm_param_gl();
 	//setlocale(LC_ALL, "Russian");
-	init_files();
+	//init_files();
 //	fm_param_nana();
 	//fm_set_area();
 	fm_main();
@@ -58,7 +68,7 @@ int __cdecl main()
 	std::locale utf8_locale(std::locale(), new std::codecvt_utf8 <wchar_t>());
 	load.imbue(utf8_locale);
 	load.open(L"data.INI", std::wfstream::in);
-	load << L"C:\\Users\\Òþíòÿåâ\\Documents\\Work\\my_program\\tsunami_analysis\\tsunami_analysis\\work.dat\n";
-	load << L"C:\\Users\\Òþíòÿåâ\\Documents\\Work\\my_program\\tsunami_analysis\\tsunami_analysis\\brick2.txt\n";
+	load << L"C:\\Users\\Ã’Ã¾Ã­Ã²Ã¿Ã¥Ã¢\\Documents\\Work\\my_program\\tsunami_analysis\\tsunami_analysis\\work.dat\n";
+	load << L"C:\\Users\\Ã’Ã¾Ã­Ã²Ã¿Ã¥Ã¢\\Documents\\Work\\my_program\\tsunami_analysis\\tsunami_analysis\\brick2.txt\n";
 	load << L"C:\\tmp\\MVis_main.mtx\n-5\n25000\n100";
 	*/

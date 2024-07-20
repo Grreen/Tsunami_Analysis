@@ -122,9 +122,9 @@
 #pragma warning(disable:4804)
 #pragma warning(disable:4820)
 #pragma warning(disable:4996)
-//#define _CRT_SECURE_NO_DEPRECATE 1
-//#define _CRT_SECURE_NO_WARNINGS 1
-//#define _CRT_NONSTDC_NO_DEPRECATE 1
+#define _CRT_SECURE_NO_DEPRECATE 1
+#define _CRT_SECURE_NO_WARNINGS 1
+#define _CRT_NONSTDC_NO_DEPRECATE 1
 #endif
 
 // Define correct string functions for each compiler and OS.
@@ -55257,7 +55257,7 @@ namespace cimg {
   }
 
   // [internal] Sorting function, used by cimg::files().
-  inline int __cdecl _sort_files(const void* a, const void* b) {
+  inline int _sort_files(const void* a, const void* b) {
     const CImg<char> &sa = *(CImg<char>*)a, &sb = *(CImg<char>*)b;
     return std::strcmp(sa._data,sb._data);
   }

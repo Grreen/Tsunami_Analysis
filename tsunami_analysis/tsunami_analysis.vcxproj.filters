@@ -113,5 +113,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="..\..\..\..\..\Documents\playground\result.dat" />
   </ItemGroup>
 </Project>

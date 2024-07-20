@@ -10,23 +10,32 @@
 #include <codecvt>
 #include <string>
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
+#include <cmath>
 #include <fstream>
 #include <nana/gui/widgets/combox.hpp>
+#include <nana/threads/pool.hpp>
 #include <nana/system/platform.hpp>
+#include <nana/fwd.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/textbox.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/widgets/picture.hpp>
 #include <nana/gui/widgets/button.hpp>
+#include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/filebox.hpp>
 #include <nana/gui/widgets/listbox.hpp>
 using namespace std;
 
 unsigned char* WindowDump()
 {
-	const int width = size_window_w, height = size_window_h;
-	
+	int width = size_window_w, height = size_window_h;
+///	int i, j;
+	FILE *fptr;
+	static int counter = 0; // This supports animation sequences 
+	char fname[32];
 	unsigned char *image;
 	//image = new unsigned char[]
 	// Allocate our buffer for the image 
@@ -43,7 +52,7 @@ unsigned char* WindowDump()
 
 
 
-void save_position(const nana::string& name){
+void save_position(nana::string name){
 	cout << "111111\n";
 	wfstream file;
 	cout << "222222\n";
@@ -102,14 +111,14 @@ std::string wchar2char(const std::wstring & p_in, const std::locale & p_loc)
 	}
 	catch (...)
 	{
-		return {};
+		return std::string();
 	}
 };
 
 
 char const *russian_locale_designator = "rus";
 
-void load_position(const nana::string& name, bool full){
+void load_position(nana::string name, bool full){
 	wfstream file;
 	file.open(name.c_str(), std::wfstream::in);
 
@@ -160,11 +169,7 @@ void fm_param_gl(){
 		pic.size(nana::size{ (unsigned int)size_window_h, (unsigned int)size_window_w });
 		nana::color col = { 0, 0, 0 };
 		unsigned char *image = WindowDump();
-		if (!image)
-			abort();
-
-		const int width = size_window_w;
-		const int height = size_window_h;
+		int width = size_window_w, height = size_window_h;
 		for (int j = 0; j < height; j++) {
 			for (int i = 0; i < width; i++) {
 				color a;
@@ -176,7 +181,7 @@ void fm_param_gl(){
 		std::string name = "gistograms\\3D\\" + to_string(schet) + ".bmp";
 		//setlocale(LC_ALL, "Russian");
 		gr.save_as_file(name.c_str());
-		//path_pic = "c:\\tmp\\рус\\1.bmp";
+		//path_pic = "c:\\tmp\\пїЅпїЅпїЅ\\1.bmp";
 		//gr.save_as_file(path_pic.c_str());
 		
 
@@ -260,7 +265,7 @@ void fm_param_gl(){
 	//-----------------------------------------------------------------------//
 
 	textbox step_x(fm), step_y(fm), step_z(fm), step_axis_x(fm), step_axis_y(fm), ratio_axis(fm);
-	step_x.append(L"0.5", true); step_y.append(L"0.5", true); step_z.append(L"5", true); 
+	step_x.append(L"0.5", true); step_y.append(L"0.5", true); step_z.append(L"0.05", true); 
 	step_axis_x.append(L"0.1", true); step_axis_y.append(L"0.1", true);
 	ratio_axis.append(L"1.0", true);
 

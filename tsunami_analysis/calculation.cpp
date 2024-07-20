@@ -1,76 +1,67 @@
-#define _USE_MATH_DEFINES 
+﻿#define _USE_MATH_DEFINES 
 
 #include "calculation.h"
 
 #include "Mareograph.h"
 #include "interface_nana.h"
-#include <cstdio>
+#include <iostream>
+#include <stdio.h>
 #include <vector>
+#include <set>
 #include <cmath>
 #include <fstream>
 #include <iomanip>  
 #include <algorithm>
+#include <queue>
 #include <locale>
 #include <codecvt>
 #include <string>
-
 //#include <nana/gui/wvl.hpp>
 #define M_G 9.81
-#define PATH "export_files_diplom\\Mareograms\\"//"WORK DECEMBER\\2017MINI2\\Mareograms2\\"//"WORK SEPTEMBER\\2017MINI\\Mareograms\\"
-typedef  double scalar;
+#define PATH "../../result/mareograms/mareogram_"
+#define MAREOGRAPHS "mareographs.mrg"
+
 void find_aqua();
 void bamboo();
 void swap_v_c_c();
 void find_begin();
-//void checking_mareographs();
-void read_data_mareographs(const std::string& file_path);
+void checking_mareographs();
+void read_data_mareographs(std::string file_path);
 long inking_count = 0;
 //double *dat_x;
-constexpr double length_of_equator = 40076;
-constexpr double time_of_turn_earth = 365 * 24 * 60 * 60 + 6 * 60 * 60 + 9 * 60 + 9;
-constexpr double speed_of_earth = length_of_equator / time_of_turn_earth;
-double koef_Koriolisa = 0;
+double length_of_equator = 40076;
+double time_of_turn_earth = 365 * 24 * 60 * 60 + 6 * 60 * 60 + 9 * 60 + 9;
+double speed_of_earth = length_of_equator / time_of_turn_earth;
 double Koef_Koriolisa = 0;
-int variant_delta_t = 1;
+int variant_delta_t = 9;
 int terr_cnt = 0;     // Count of bricks
 int point_cnt = 0;    // Count of points
 //int t = 0; int time_moments = 1000;
 double** CComp; bool **bool_CComp;
 double h_max; // Deeper place (metres)
 double delta_x_m, *delta_y_m;
-double** eta;     // array of heigth of wave
-double** eta_old; // previous value of eta
-double** u;       // array of u-speed of wave
-double** u_old;   // previous value of u
-double** v;       // array of v-speed of wave
-double** v_old;   // previous value of v
-double** bottom;  // earth relief
-double** h;       // Bottom relief for calculating
-double** maxVis;  //
-double** minVis;  //
-int **terr_up;    // Brick1 = 1, Brick2 = 2, ...
-int *terr_number_interval_time;    // Brick1 = 1, Brick2 = 2, ...
-double **t_h_v_up;
-double **terr_points;    // Brick's corners coordinates
-double **point_points;   // Point's corners coordinates
-double **point_Sputnik;   // Point's corners coordinates
-double **sputnik_positions; // Current position of sputniks;
-double **a; // for fill_pBitmap
-double **area; // area for calculation
-double *inking; // inking
-double *delta_t;
-double start_x, end_x;      // Range X (parallels) (degrees)
-double start_y, end_y;
+vector< vector<float>> eta;     // array of heigth of wave
+vector<float> eta1, eta2, eta3,eta4;// ãðàíèöû
+vector<vector<float>> u;       // array of u-speed of wave
+vector<vector<float>> v;       // array of v-speed of wave
+float** h;       // Bottom relief for calculating
+float** maxVis;  //
+float** minVis;  //
+vector<vector<int>> terr_up;    // Brick1 = 1, Brick2 = 2, ...
+float**area; // area for calculation
+vector<float> delta_t;
+float start_x, end_x;      // Range X (parallels) (degrees)
+float start_y, end_y;
 int size_y, size_x;
-double delta_x, delta_y;
+float delta_x, delta_y;
 
-int t = 0;
-int time_moments = 1000;
-double izobata = -5;
-int output_time = 1;
+vector<vector<float>> bottom;  // earth relief
+int t = 0; 
+int time_moments = 170000;
+double izobata = -10;
+int output_time = 1000;
 
 int hour_line_prev = 0;
-double** point_array;
 
 set_area_data gist_d;
 
@@ -78,57 +69,42 @@ int use_koef_Sh = 0;
 //const double inf = std::numeric_limits<double>().infinity();
 const double inf = 23456;
 
-vector <Mareograph> mareographs;
 using namespace std;
 
-struct brick_point
-{
-	scalar x;
-	scalar y;
-	brick_point(scalar X, scalar Y) : x(X), y(Y) {};
-};
-struct brick_up
-{
-	int brick_up_t;
-	scalar height_up;
-	brick_up(int a, scalar b) : brick_up_t(a), height_up(b) {};
-};
-struct brick_data
-{
-	scalar begin_t;
-	vector <brick_point> points;
-	vector <brick_up> number_up;
-};
+#define NEED_ALIGN(start, end) { end > 180}
 
-brick_data *brick_calc;
+Settings settings;
+bricks oBricks;
+std::vector<Mareograph> arMareographs;
 
-template <typename T> void output_array(string name, T **a) {
+template <typename T> void output_array(const string& name, T **a){
 	fstream file;
-	file.open(name, std::fstream::out);
+	const char * path = name.c_str();;
+	file.open(path, std::fstream::out);
 
-	for (int i = size_y - 1; i > -1; i--) {
-		for (int j = 0; j < size_x; j++)  file << a[i][j] << " ";
-			//fixed << setprecision(10) <<
+	for (int i = size_y - 1; i > -1; i--){
+		for (int j = 0; j < size_x; j++)  file << fixed << setprecision(10) << a[i][j] << " ";
 		file << "\n";
 	}
 }
-void output_comp(const std::string& name, int s) {
+void output_comp(const string& name, int s){
 	fstream file;
 	//coord a;
-	file.open(name, std::fstream::out);
-	for (const auto& i : f_c_c[s])
+	const char * path = name.c_str();
+	file.open(path, std::fstream::out);
+	for (int i = 0; i < int(f_c_c[s].size()); i++)
 	{
-		file << i.x << " " << i.y << "\n";
+		file << f_c_c[s][i].x << " " << f_c_c[s][i].y << "\n";
 	}
 }
-template <typename T> void output_array_2(string name, T *a)
+template <typename T> void output_array_2(const string& name, T *a)
 {
 	fstream file;
 	const char * path = name.c_str();;
 	file.open(path, std::fstream::out);
 	for (int i = 0; i < size_y; i++)
 	{
-		file << a[i] << "\n";
+		file << fixed << setprecision(10) << a[i] << "\n";
 	}
 
 
@@ -137,7 +113,7 @@ template <typename T> void output_array_2(string name, T *a)
 
 double** create_array(int y, int x)
 {
-	const auto m = new double *[y + 1];
+	double **m = new double *[y + 1];
 	for (int j = 0; j < y; ++j)
 	{
 		m[j] = new double[x];
@@ -146,6 +122,16 @@ double** create_array(int y, int x)
 	return m;
 }
 
+float** create_arrayF(int y, int x)
+{
+	float** m = new float* [y + 1];
+	for (int j = 0; j < y; ++j)
+	{
+		m[j] = new float[x];
+		for (int i = 0; i < x; ++i) m[j][i] = 0.0;
+	}
+	return m;
+}
 //---------------------------------------------------------------------------
 // FUNCTION delete_array
 //---------------------------------------------------------------------------
@@ -163,6 +149,19 @@ void delete_array(double **_m)
 	_m = nullptr;
 }
 
+void delete_arrayF(float** _m)
+{
+	if (_m == nullptr)
+		return;
+	for (int j = 0; _m[j] != nullptr; ++j) {
+		delete[] _m[j];
+		_m[j] = nullptr;
+	}
+	delete[] _m;
+	_m = nullptr;
+}
+
+
 //---------------------------------------------------------------------------
 // FUNCTION copy_d
 //---------------------------------------------------------------------------
@@ -175,8 +174,8 @@ int copy_array(double **_dest, double **_src, int _y, int _x)
 	if (_src == nullptr)
 		return 1;
 	for (int j = 0; j < _y; j++)
-		if (!memcpy(_dest[j], _src[j], _x*sizeof(double)))
-			return 1;
+	if (!memcpy(_dest[j], _src[j], _x*sizeof(double)))
+		return 1;
 	return 0;
 }
 
@@ -191,76 +190,30 @@ void swap_array(double ***_m1, double ***_m2) {
 	//   *_m2 = tmp;
 }
 void deleteMainArrays() {
-	if (eta != nullptr) {
-		delete_array(eta);
-		eta = nullptr;
-	};
-	if (eta_old != nullptr) {
-		delete_array(eta_old);
-		eta_old = nullptr;
-	};
-	if (u != nullptr) {
-		delete_array(u);
-		u = nullptr;
-	};
-	if (u_old != nullptr) {
-		delete_array(u_old);
-		u_old = nullptr;
-	};
-	if (v != nullptr) {
-		delete_array(v);
-		v = nullptr;
-	};
-	if (v_old != nullptr) {
-		delete_array(v_old);
-		v_old = nullptr;
-	};
 	if (h != nullptr) {
-		delete_array(h);
+		delete_arrayF(h);
 		h = nullptr;
 	};
 	if (maxVis != nullptr) {
-		delete_array(maxVis);
+		delete_arrayF(maxVis);
 		maxVis = nullptr;
 	};
 	if (minVis != nullptr) {
-		delete_array(minVis);
+		delete_arrayF(minVis);
 		minVis = nullptr;
 	};
+	
 	/*
 	if (point_array != nullptr) {
 	delete_array(point_array);
 	point_array = nullptr;
 	};
 	*/
-	if (a != nullptr) {
-		delete_array(a);
-		a = nullptr;
-	};
 	if (delta_y_m != nullptr) {
 		delete delta_y_m;
 		delta_y_m = nullptr;
 	}
-	if (delta_t != nullptr) {
-		delete delta_t;
-		delta_t = nullptr;
-	}
-	if (terr_points != nullptr) {
-		delete terr_points;
-		terr_points = nullptr;
-	}
-	if (sputnik_positions != nullptr) {
-		delete sputnik_positions;
-		sputnik_positions = nullptr;
-	}
-	if (t_h_v_up != nullptr) {
-		delete t_h_v_up;
-		t_h_v_up = nullptr;
-	}
-	if (inking != nullptr) {
-		delete inking;
-		inking = nullptr;
-	}
+
 	/*
 	if (terr_up != nullptr) {
 	for (int j=0; terr_up[j] != nullptr ; j++) {
@@ -271,69 +224,31 @@ void deleteMainArrays() {
 	terr_up = nullptr;
 	}
 	*/
-	if (terr_number_interval_time != nullptr) {
-		delete terr_number_interval_time;
-		terr_number_interval_time = nullptr;
-	}
 }
-int initMainArrays(int size_y, int size_x) {
+int initMainArrays(int size_y, int size_x)
+{
 	deleteMainArrays();
-	a = create_array(size_y, size_x);
-	maxVis = create_array(size_y, size_x);
-	minVis = create_array(size_y, size_x);
-	//CComp = create_array((size_y ), (size_x ));
-	//bool_CComp = create_array_bool((size_y ), (size_x ));
-	//traces("minVis is initialized...");
-	//Application->ProcessMessages();
-	eta = create_array(size_y, size_x);
-	//traces("eta is initialized...");
-	//Application->ProcessMessages();
-	eta_old = create_array(size_y, size_x);
-	//traces("eta_old is initialized...");
-	//Application->ProcessMessages();
-	u = create_array(size_y, size_x);
+	maxVis = create_arrayF(size_y, size_x);
+	minVis = create_arrayF(size_y, size_x);
 
-	u_old = create_array(size_y, size_x);
+	h = create_arrayF(size_y, size_x);
 
-	v = create_array(size_y, size_x);
-
-	v_old = create_array(size_y, size_x);
-
-	h = create_array(size_y, size_x);
-
-	point_array = create_array(size_y, size_x);
-
-	area = create_array(size_y, size_x);
+	area = create_arrayF(size_y, size_x);
 
 	delta_y_m = new double[size_y];
-	delta_t = new double[size_y];
-	terr_points = create_array(8, terr_cnt);
-	inking = new double[size_y * 100];
-	t_h_v_up = create_array(70, terr_cnt);
-	sputnik_positions = create_array(2, 30); // 30 - maximum number of sputniks
-	terr_number_interval_time = new int[30];
-	terr_up = new int*[size_y + 1];
-	for (int j = 0; j < size_y; j++) {
-		terr_up[j] = new int[size_x];
-	}
-	terr_up[size_y] = nullptr;
+	delta_t = vector<float>(size_y) ;
 
-	if (bottom == nullptr ||
+	if (bottom.empty() ||
 		h == nullptr ||
-		eta == nullptr ||
-		eta_old == nullptr ||
-		u == nullptr ||
-		v == nullptr ||
-		u_old == nullptr ||
-		v_old == nullptr ||
+		eta.empty() ||
+		u.empty() ||
+		v.empty() ||
 		minVis == nullptr ||
 		maxVis == nullptr ||
-		a == nullptr ||
 		area == nullptr ||
-		point_array == nullptr ||
-		terr_points == nullptr ||
-		t_h_v_up == nullptr ||
-		sputnik_positions == nullptr)
+		delta_y_m == nullptr ||
+		delta_t.empty() ||
+		terr_up.empty())
 	{
 		return 1;
 	};
@@ -349,220 +264,209 @@ void init_old_arrays() {
 				area[y][x] = 0;
 			}
 			else
-				if (bottom[y][x] >= 0) {
-					h[y][x] = -5;
-					area[y][x] = 0;
-				}
-				else {
-					h[y][x] = bottom[y][x];
-					area[y][x] = 1;
-					if (bottom[y][x] < -1000)
-						area[y][x] = 2;
-				}
+			if (bottom[y][x] >= 0) {
+				h[y][x] = -10;
+				area[y][x] = 0;
+			}
+			else {
+				h[y][x] = bottom[y][x];
+				area[y][x] = 1;
+				if (bottom[y][x] < -1000)
+					area[y][x] = 2;
+			}
 
-				eta_old[y][x] = 0;
-				u_old[y][x] = 0;
-				v_old[y][x] = 0;
-				terr_up[y][x] = 0;
-				maxVis[y][x] = -5000;
-				minVis[y][x] = 5000;
+			eta[y][x] = 0;
+			u[y][x] = 0;
+			v[y][x] = 0;
+			terr_up[y][x] = 0;
+			maxVis[y][x] = -5000;
+			minVis[y][x] = 5000;
 
-				if (h_max > bottom[y][x])
-					h_max = bottom[y][x];
+			if (h_max > bottom[y][x])
+				h_max = bottom[y][x];
 		}
-		
 	}
-	//output_array("area", area);
+	//çàïîìèíàåì ãðàíèöû
+	eta1 = eta[1];
+	eta2 = eta[size_y - 3];
+	for (int i = 0; i < size_y; i++)
+		eta3.push_back(eta[i][1]);
+	for (int i = 0; i < size_y; i++)
+		eta4.push_back(eta[i][size_x - 3]);
+
 }
 
 void set_delta(int v) {
 	delta_x_m = delta_x * M_PI * 6365500 / 180;
-	for (int j = 0; j < size_y; ++j) {
+	for (int j = 0; j < size_y; ++j) 
+	{
 		delta_y_m[j] = delta_x_m * cos((start_y + j * delta_y) / 180.0 * M_PI);
-		delta_t[j] = 1;
-		//if (v == 0)	delta_t[j] = 1;
-		//if (v == 1) {
-			if (delta_t[j] > sqrt(delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m) / sqrt(2 * M_G * 3000))
-				delta_t[j] = sqrt(delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m) / sqrt(2 * M_G * 3000);
-		//}
-		//delta_t[j] = //(abs(delta_y_m[j] * delta_x_m) / 8. / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
-		// TODO - delta_t
-
-		//if (v == 2)
-		//	delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 16. / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
+		if (v == 0)	delta_t[j] = 1;
+		if (v == 1)
+			delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 8. / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
+		if (v == 2)
+			delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 16. / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
+		if (v == 3)
+			delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 1. / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
+		if (v == 4)
+			delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 2. / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
+		if (v == 5)
+			delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 4. / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
+		if (v == 6)
+			delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 0.9 / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
+		if (v == 7)
+			delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 1.5 / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
+		if (v == 8)
+			delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 2.225 / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
+		if (v == 9)
+			delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 1.357 / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
+		if (v == 10)
+			delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 1.377 / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
+		if (v == 11)
+			delta_t[j] = (abs(delta_y_m[j] * delta_x_m) / 1.337 / sqrt((M_G * abs(h_max) * (delta_y_m[j] * delta_y_m[j] + delta_x_m * delta_x_m))));
 	}
 }
 
 
 
-coord get_coord(double x, double y)
+coord get_coord(float x, float y)
 {
-	return{ (int)((x - start_x) / delta_x), size_y - 1 - (int)(((y - start_y) / delta_y)) };
+	int i, j;
+	i = (int)((x - start_x) / delta_x);
+	j = size_y - 1 - (int)(((y - start_y) / delta_y));
+
+	return { min(max(0, i), size_x - 1), min(max(0, j), size_y - 1) };
 }
 
 void read_dat(const nana::string& file_path)
 {
-	vector <double> longitude;//y
-	vector <double> latitude;//x
-	vector <double> depth;
-	//std::locale utf8_locale(std::locale(), new std::codecvt_utf8 <wchar_t>());
+	vector <float> depth;
+	FILE* infile;
 	const wchar_t * path = file_path.c_str();
-	FILE* infile = _wfopen(path, L"rt");
-	if (!infile)
-		abort();
+	infile = _wfopen(path, L"rt");
 
-	scalar dat_x;// latitude
+	if (NULL == infile)
+		return;
+
+	scalar minx;
+	scalar maxx;
+	scalar miny;
+	scalar maxy;
+	scalar dat_x; //latitude
 	scalar dat_y; //longitude
-	scalar dat_z; // depth
+	scalar dat_z; //depth
 
-	while (fscanf(infile, "%lf%lf%lf", &dat_x, &dat_y, &dat_z) == 3)
+	set<float> sLat, sLon;
+	while (fscanf(infile, "%f %f %f", &dat_x, &dat_y, &dat_z) == 3)
 	{
-		latitude.push_back(dat_x);
-		longitude.push_back(dat_y);
+		sLat.insert(dat_x);
+		sLon.insert(dat_y);
 		depth.push_back(dat_z);
 	}
 
 	fclose(infile);
 
-	vector <double> lat_uniq(latitude), long_uniq(longitude);
-	std::sort(lat_uniq.begin(), lat_uniq.end());
-	std::sort(long_uniq.begin(), long_uniq.end());
-	size_x = (std::unique(lat_uniq.begin(), lat_uniq.end()) - lat_uniq.begin());
-	size_y = (std::unique(long_uniq.begin(), long_uniq.end()) - long_uniq.begin());
-	const scalar maxx = *std::max_element(latitude.begin(), latitude.end());
-	const scalar maxy = *std::max_element(longitude.begin(), longitude.end());
-	const scalar minx = *std::min_element(latitude.begin(), latitude.end());
-	const scalar miny = *std::min_element(longitude.begin(), longitude.end());
-	delta_x = (maxx - minx) / (size_x - 1);
-	delta_y = (maxy - miny) / (size_y - 1);
+	size_x = sLat.size();
+	size_y = sLon.size();
+	maxx = *(--sLat.end());
+	maxy = *(--sLon.end());
+	minx = *(sLat.begin());
+	miny = *(sLon.begin());
+	delta_x = (maxx - minx) / (size_x -1);
+	delta_y = (maxy - miny) / (size_y -1);
 	start_x = minx - delta_x / 2.;
 	start_y = miny - delta_y / 2.;
 	end_x = maxx + delta_x / 2.;
 	end_y = maxy + delta_y / 2.;
+	sLat.clear();
+	sLon.clear();
 
-	bottom = create_array(size_y, size_x);
-	delta_t = new double[size_y];
-	for (int i = 0; i < size_y; i++) delta_t[i] = 0.0;
-	/*		printf ("size_x: %d\n", size_x);
-	printf ("size_y: %d\n", size_y);
-	printf ("delta_x: %lf\n", delta_x);
-	printf ("delta_y: %lf\n", delta_y);
-	printf ("start_x: %lf\n", start_x);
-	printf ("start_y: %lf\n", start_y);*/
-	double prev = bottom[0][0] = 0;
-
-	for (int k = 0; k < (int)depth.size(); k++)
+	for (int i = 0; i < size_y; i++)
 	{
-		const coord crd = get_coord(latitude[k], longitude[k]);
-		const int i = crd.x, j = crd.y;
-		/*if (bottom[0][0] != prev) {
-			prev = bottom[0][0];
-			}*/
-		bottom[j][i] = depth[k];
+		bottom.push_back(vector<float>(size_x));
+		for (int j = 0; j < size_x; j++)
+			bottom[i][j] = depth[(size_y - i) * size_x + j];
+		
 	}
+	u = bottom;
+	v = bottom;
+	eta = bottom;
+	for (int i = 0; i < size_y+1; i++)
+		terr_up.push_back(vector<int>(size_x));
+
 	initMainArrays(size_y, size_x);
 	init_old_arrays();
-	read_data_mareographs("mareographs.mrg");
-	/*for (int i = 0; i < 10; i++){
-		checking_mareographs();
-		}
-		for (int i = 0; i < maregraphs.size(); i++){
-		maregraphs[i].writeToFileMareograph(maregraphs[i].getLocationNameASCII());
-		}*/
-
 }
 
-int calculation_value_on_boundaries() {
+void calculation_value_on_boundaries() {
 	try {
-		for (int i = 1; i < size_x; i++) {
-			const int temp = (int)(i*size_y / size_x);
-			v[0][i] = sqrt(abs(-M_G*h[0][i]))*eta[0][i] / (eta[1][i] - h[0][i]);
-			v[size_y - 2][i] = sqrt(abs((-M_G*h[size_y - 2][i])))*eta[size_y - 3][i] / (eta[size_y - 3][i] - h[size_y - 2][i]);;
+		
+		for (int i = 1; i < size_x; i++) 
+		{
+			int temp = (int)(i * size_y / size_x);
+			v[0][i] = sqrt(abs(-M_G * h[0][i])) * eta[0][i] / (eta[1][i] - h[0][i]);
+			v[size_y - 2][i] = sqrt(abs((-M_G * h[size_y - 2][i]))) * eta[size_y - 3][i] / (eta[size_y - 3][i] - h[size_y - 2][i]);
 			v[size_y - 1][i] = v[size_y - 2][i];
-			eta[0][i] = eta_old[0][i] - sqrt(abs(-h[0][i] * M_G))*(delta_t[temp] / delta_y_m[temp])*(eta_old[0][i] - eta_old[1][i]);
-			eta[size_y - 2][i] = eta_old[size_y - 2][i] - sqrt(abs((-h[size_y - 2][i] * M_G)))*(delta_t[temp] / delta_y_m[temp])*(eta_old[size_y - 2][i] - eta_old[size_y - 3][i]);
+			eta[0][i] = eta[0][i] - sqrt(abs(-h[0][i] * M_G)) * (delta_t[temp] / delta_y_m[temp]) * (eta[0][i] - eta1[i]);
+			eta[size_y - 2][i] = eta[size_y - 2][i] - sqrt(abs((-h[size_y - 2][i] * M_G))) * (delta_t[temp] / delta_y_m[temp]) * (eta[size_y - 2][i] - eta2[i]);
 			eta[size_y - 1][i] = eta[size_y - 2][i];
 		}
 		for (int j = 1; j < size_y; j++) {
-			u[j][0] = sqrt((-M_G*h[j][0]))*eta[j][1] / (eta[j][1] - h[j][0]);
+			u[j][0] = sqrt((-M_G * h[j][0])) * eta[j][1] / (eta[j][1] - h[j][0]);
 			u[j][size_x - 2] = u[j][size_x - 3];
 			u[j][size_x - 1] = u[j][size_x - 2];
-			eta[j][0] = eta_old[j][0] - sqrt(abs((-h[j][0] * M_G)))*(delta_t[j] / delta_x_m)*(eta_old[j][0] - eta_old[j][1]);
-			eta[j][size_x - 2] = eta_old[j][size_x - 2] - sqrt(abs((-h[j][size_x - 2] * M_G)))*(delta_t[j] / delta_x_m)*(eta_old[j][size_x - 2] - eta_old[j][size_x - 3]);
+			eta[j][0] = eta[j][0] - sqrt(abs((-h[j][0] * M_G))) * (delta_t[j] / delta_x_m) * (eta[j][0] - eta3[j]);
+			eta[j][size_x - 2] = eta[j][size_x - 2] - sqrt(abs((-h[j][size_x - 2] * M_G))) * (delta_t[j] / delta_x_m) * (eta[j][size_x - 2] - eta4[j]);
 			eta[j][size_x - 1] = eta[j][size_x - 2];
 		}
 	}
 	catch (...) {
-
+		
 	}
-	return 0;
 }
 
-void converting_motion_blocks(const int j, const int i) {
-	double temp_speed; // speed of terr on every interval of time
-	for (int b = 0; b < terr_cnt; b++) {
-		if (terr_up[j][i] == b + 1) {
-			if (terr_number_interval_time[b] == 1) {
-				if (t * delta_t[j] <= brick_calc[b].number_up[0].brick_up_t && //if (t*delta_t[j] <= t_h_v_up[10][b] &&
-					t * delta_t[j] >= brick_calc[b].begin_t)
+
+void converting_motion_blocks(const int j, const int i) 
+{
+	for (int b = 0; b < terr_cnt; b++) 
+	{
+		if (terr_up[j][i] == b + 1 && t > oBricks.brick_calc[b].begin_t)
+		{
+			for (int d = 0; d < oBricks.brick_calc[b].number_up.size(); d++)
+			{
+				if (t > oBricks.brick_calc[b].number_up[d].brick_up_start_t && t <= oBricks.brick_calc[b].number_up[d].brick_up_end_t && 0. != oBricks.brick_calc[b].number_up[d].height_up)
 				{
-					temp_speed = brick_calc[b].number_up[0].height_up / (brick_calc[b].number_up[0].brick_up_t - brick_calc[b].begin_t);
-					eta[j][i] = eta[j][i] + temp_speed * delta_t[j];
-				}
-			}
-			else { // if there is any interval of time
-				if (t * delta_t[j] <= brick_calc[b].number_up[0].brick_up_t &&
-					t * delta_t[j] >= brick_calc[b].begin_t)
-				{
-					temp_speed = brick_calc[b].number_up[0].height_up / (brick_calc[b].number_up[0].brick_up_t - brick_calc[b].begin_t);
-					eta[j][i] = eta[j][i] + temp_speed * delta_t[j];
-				}
-				else
-				{
-					if (t * delta_t[j] >= brick_calc[b].number_up[0].brick_up_t)
-						for (int d = 0; d < terr_number_interval_time[b]; d++) {
-							if (t * delta_t[j] <= brick_calc[b].number_up[d + 1].brick_up_t) { //  t_h_v_up[12 + d * 2][b]) {
-								temp_speed = (brick_calc[b].number_up[d + 1].height_up - brick_calc[b].number_up[d].height_up) / (brick_calc[b].number_up[d + 1].brick_up_t - brick_calc[b].number_up[d].brick_up_t);
-								eta[j][i] = eta[j][i] + temp_speed * delta_t[j];
-								break;
-							}
-						}
+					eta[j][i] += oBricks.brick_calc[b].number_up[d].height_up / (oBricks.brick_calc[b].number_up[d].brick_up_end_t - oBricks.brick_calc[b].number_up[d].brick_up_start_t);
+					break;
 				}
 			}
 		}
 	}
-	//output_array("c:\\tmp\\eta2.txt", eta);
 }
 
 
-void calculation_main_value() {
-	for (int j = 1; j < size_y - 1; ++j) {
+void calculation_main_value() 
+{
+	vector<float> v1mo(v[0]);
+	for (int j = 1; j < size_y - 1; ++j) 
+	{
 		Koef_Koriolisa = 2 * speed_of_earth * cos((start_y + j * delta_y) / 180.0 * M_PI);
-		for (int i = 1; i < size_x - 1; ++i) {
-			if (area[j][i] != 0.0) {
-				//try {
-					//double temp;
-					//if (area[j][i] == 1) {
-					//	temp = delta_t[j];
-					//	delta_t[j] = delta_t[j] * 4;
-					//	//               delta_t[j] = (delta_y_m[j]/sqrt(-2*M_G*h[j]						//               delta_t[j] = (abs(delta_y_m[j]*delta_x_m)/(double)8
-					//	//                       /sqrt(((double)M_G*(double)abs(h[j][i])*
-					//	//                       ((double)delta_y_m[j]*(double)delta_y_m[j]+(double)delta_x_m*(double)delta_x_m))));
-					//}
+		float uo1m = u[j][0];
+		for (int i = 1; i < size_x - 1; ++i) 
+		{
+			float uoo = u[j][i], voo = v[j][i];
+			float u1po = u[j + 1][i], vo1p = v[j][i + 1];
+			float u01p = u[j][i + 1], v1po = v[j + 1][i];
+			if (area[j][i]) 
+			{
+				try {
+					double temp;
 					if (i < size_x - 2 && j < size_y - 2) {
-						eta[j][i] = eta_old[j][i] - delta_t[j] * ((1 / (2 * delta_x_m)) *
-							(u_old[j + 1][i] * (-h[j + 1][i] + -h[j][i]) -
-							u_old[j][i] * (-h[j][i] + -h[j - 1][i])) + (1 / (2 * delta_y_m[j]) *
-							(v_old[j][i + 1] * (-h[j][i + 1] + -h[j][i]) -
-							v_old[j][i] * (-h[j][i - 1] + -h[j][i]))));
-
-						/*
-						eta[j][i] = eta_old[j][i]
-						+ delta_t[j] * (0.5 / delta_x_m * (u_old[j + 1][i] * (h[j + 2][i] + h[j + 1][i])
-						- u_old[j][i] * (h[j + 1][i] + h[j][i]))
-						+ 0.5 / delta_y_m[j] * (v_old[j][i + 1] * (h[j][i + 2] + h[j][i + 1])
-						- v_old[j][i] * (h[j][i + 1] + h[j][i])));
-						*/
+						eta[j][i] = eta[j][i]
+							+ delta_t[j] * (0.5 / delta_x_m * (u1po * (h[j + 2][i] + h[j + 1][i])
+							- uoo * (h[j + 1][i] + h[j][i]))
+							+ 0.5 / delta_y_m[j] * (vo1p * (h[j][i + 2] + h[j][i + 1])
+							- voo * (h[j][i + 1] + h[j][i])));
 						if (maxVis[j][i] < eta[j][i]) {
 							maxVis[j][i] = eta[j][i];
 						}
@@ -571,199 +475,221 @@ void calculation_main_value() {
 						}
 
 					}
-					//if (area[j][i] == 1) { delta_t[j] = delta_t[j] / 4; }
-					//if (i > 0 && j > 0) {
-
-					//	double k01 = use_koef_Sh * 2 * 0.026 * 9.81 * sqrt(abs(u_old[j][i] * u_old[j][i] + v_old[j][i] * v_old[j][i])) / ((eta[j][i] + h[j][i]));
-					//	u[j][i] = u_old[j][i] - (M_G / (2 * delta_x_m)*(eta[j][i] - eta[j - 1][i])
-					//		- (Koef_Koriolisa)* v_old[j][i] - k01* u_old[j][i]) * delta_t[j];
-					//	v[j][i] = v_old[j][i] - (M_G / (2 * delta_y_m[j])*(eta[j][i] - eta[j][i - 1])
-					//		+ (Koef_Koriolisa)* u_old[j][i] - k01* v_old[j][i]) * delta_t[j];
-
-					//	/*
-					//	double k01 = 0.026 * use_koef_Sh * M_G * sqrt(u_old[j][i]*u_old[j][i] + v_old[j][i]*v_old[j][i]) / ((eta[j][i] + h[j][i]));
-					//	u[j][i] = u_old[j][i] - M_G * delta_t[j] / (2 * delta_x_m) * (eta[j][i] - eta[j-1][i])
-					//	- Koef_Koriolisa * v_old[j][i] - k01 * u_old[j][i] * u_old[j][i];
-					//	v[j][i] = v_old[j][i] - M_G * delta_t[j] / (2 * delta_y_m[j]) * (eta[j][i] - eta[j][i-1])
-					//	+ Koef_Koriolisa * u_old[j][i] - k01 * v_old[j][i] * v_old[j][i];
-					//	*/
-					//}
-
-					//if (area[j][i] == 1) {
-					//	delta_t[j] = temp;
-					//}
+					if (i > 0 && j > 0) {
+						double k01 = use_koef_Sh * 2 * 0.026 * 9.81 * sqrt(abs(uoo * uoo + voo * voo)) / ((eta[j][i] + h[j][i]));
+						u[j][i] = uoo - (M_G / (2 * delta_x_m)*(eta[j][i] - eta[j - 1][i])
+							- (Koef_Koriolisa)*voo - k01* uoo) * delta_t[j];
+						v[j][i] = voo - (M_G / (2 * delta_y_m[j])*(eta[j][i] - eta[j][i - 1])
+							+ (Koef_Koriolisa)*uoo - k01* voo) * delta_t[j];
+					}
 
 					converting_motion_blocks(j, i);
 
-					//if (eta[j][i] > 12) {
-					//	int rand_ = rand() % 200;
-					//	eta[j][i] = 12 - double(rand_) / 100;
-
-					//	//               u[j][i] = 0.25 * (u_old[j-1][i] + u_old[j+1][i] + u_old[j][i-1] + u_old[j][i+1]);
-					//	//               v[j][i] = 0.25 * (v_old[j-1][i] + v_old[j+1][i] + v_old[j][i-1] + v_old[j][i+1]);
-					//	u[j][i] = 0.25 * (u_old[j][i - 1] + u_old[j][i + 1]);
-					//	v[j][i] = 0.25 * (v_old[j - 1][i] + v_old[j + 1][i]);
-					//	//               u[j][i] = 0;
-					//	//               v[j][i] = 0;
-					//}
-					//if (eta[j][i] < -12) {
-					//	int rand_ = rand() % 200;
-					//	eta[j][i] = 12 + double(rand_) / 100;
-					//	//               u[j][i] = 0.25 * (u_old[j-1][i] + u_old[j+1][i] + u_old[j][i-1] + u_old[j][i+1]);
-					//	//               v[j][i] = 0.25 * (v_old[j-1][i] + v_old[j+1][i] + v_old[j][i-1] + v_old[j][i+1]);
-					//	u[j][i] = 0.25 * (u_old[j][i - 1] + u_old[j][i + 1]);
-					//	v[j][i] = 0.25 * (v_old[j - 1][i] + v_old[j + 1][i]);
-					//	//               u[j][i] = 0;
-					//	//               v[j][i] = 0;
-					//}
-
-					if (eta[j][i] > 16) {
-						const int rand_ = rand() % 100;
+					if (eta[j][i] > 15) { 
+						int rand_ = rand() % 50;
 						eta[j][i] = 4 - double(rand_) / 100;
-
-						//               u[j][i] = 0.25 * (u_old[j-1][i] + u_old[j+1][i] + u_old[j][i-1] + u_old[j][i+1]);
-						//               v[j][i] = 0.25 * (v_old[j-1][i] + v_old[j+1][i] + v_old[j][i-1] + v_old[j][i+1]);
-						u[j][i] = 0.25 * (u_old[j][i - 1] + u_old[j][i + 1]);
-						v[j][i] = 0.25 * (v_old[j - 1][i] + v_old[j + 1][i]);
-						//               u[j][i] = 0;
-						//               v[j][i] = 0;
+						
+						u[j][i] = 0.25 * (uo1m + u01p);
+						v[j][i] = 0.25 * (v1mo[i] + v1po);
 					}
-					if (eta[j][i] < -16) {
-						const int rand_ = rand() % 100;
-						eta[j][i] = -4 + double(rand_) / 100;
-						//               u[j][i] = 0.25 * (u_old[j-1][i] + u_old[j+1][i] + u_old[j][i-1] + u_old[j][i+1]);
-						//               v[j][i] = 0.25 * (v_old[j-1][i] + v_old[j+1][i] + v_old[j][i-1] + v_old[j][i+1]);
-						u[j][i] = 0.25 * (u_old[j][i - 1] + u_old[j][i + 1]);
-						v[j][i] = 0.25 * (v_old[j - 1][i] + v_old[j + 1][i]);
-						//               u[j][i] = 0;
-						//               v[j][i] = 0;
+					if (eta[j][i] < -15) {
+						int rand_ = rand() % 200;
+						eta[j][i] = 12 + double(rand_) / 100;
+						u[j][i] = 0.25 * (uo1m + u01p);
+						v[j][i] = 0.25 * (v1mo[i] + v1po);
 					}
-				//}
-				//catch (...)
-				//{
-				//	//	traces("Exception!");
-				//}
-			} // end if (area)
-
-		}
-	}
-	for (int j = 1; j < size_y - 1; ++j) {
-		//Koef_Koriolisa = 2 * speed_of_earth * cos((start_y + j * delta_y) / 180.0 * M_PI);
-		double Ch = 0.0025;
-		for (int i = 1; i < size_x - 1; ++i) {
-			if (i < size_x && j < size_y && area[j][i] )
-			{
-
-				// ������� �� ���������� �����
-				const double Ch = 0.0025;
-				u[j][i] = u_old[j][i] - M_G *delta_t[j] / delta_x_m * (eta[j][i] - eta[j - 1][i]) - delta_t[j] * Ch / (eta[j][i] + -h[j][i]) * fabs(u_old[j][i]) * u_old[j][i];
-
-				v[j][i] = v_old[j][i] - M_G * delta_t[j] / delta_y_m[j] * (eta[j][i] - eta[j][i - 1]) - delta_t[j] * Ch / (eta[j][i] + -h[j][i]) * fabs(v_old[j][i]) * v_old[j][i];
-
-
-				/* uu[i][j] = uold[i][j] * (1.0 - (DELTAT/(2*DELTAX)) * (uold[i+1][j] - uold[i-1][j]))
-				+ vold[i][j] * ( - (DELTAT/(2*DELTAY)) * (uold[i][j+1] - uold[i][j-1]))
-				- G * (DELTAT/(2*DELTAX)) * (eta[i+1][j] - eta[i-1][j]);
-
-				vv[i][j] = vold[i][j] * (1.0 - (DELTAT/(2*DELTAY)) * (vold[i][j+1] - vold[i][j-1]))
-				+ uu[i][j] * (  - (DELTAT/(2*DELTAX))* (vold[i+1][j] - vold[i-1][j]))
-				- G * (DELTAT/(2*DELTAY)) * (eta[i][j+1] - eta[i][j-1]);
-				*/
-			}
-		}
-	}
-
-	for (int j = 1; j < size_y - 1; ++j) {
-		for (int i = 1; i < size_x - 1; ++i) {
-			{
-				//if (area[j][i] == 0) {
-				//	u[j][i] = 0;
-				//	v[j][i] = 0;
-				//}
-				if (((area[j + 1][i - 1] == 0) || (area[j][i - 1] == 0) || (area[j - 1][i - 1] == 0) 
-					|| (area[j + 1][i] == 0) || (area[j - 1][i] == 0) ||
-					(area[j + 1][i + 1] == 0) || (area[j][i + 1] == 0) || (area[j - 1][i + 1] == 0)) && (area[j][i] >= 1))
+				}
+				catch (...)
 				{
-					u[j][i] = 0;
-					v[j][i] = 0;
+
 				}
 			}
-		}
-	}
 
-	
-	for (int j = 0; j < size_y; j++) {
-		for (int i = 0; i < size_x; i++) {
-			eta_old[j][i] = eta[j][i];
-			u_old[j][i] = u[j][i];
-			v_old[j][i] = v[j][i];
+			uo1m = u[j][i];
 		}
+		 v1mo=v[j];
+		
 	}
-
+	v1mo.clear();
 	calculation_value_on_boundaries();
+	eta1 = eta[1];
+	eta2 = eta[size_y - 3];
+	for (int i = 0; i < size_y; i++)
+		eta3[i]=(eta[i][1]);
+	for (int i = 0; i < size_y; i++)
+		eta4[i] = (eta[i][size_x - 3]);
 }
 
-
-void fill_tetragon(int** terr, int v, coord g[4])
+bool isInside(const vector<coord>& polygon, int x, int y) 
 {
-	//printf("%d %d | %d %d | %d %d | %d %d\n", i1, j1, i2, j2, i3, j3, i4, j4);
-	const int moving = abs(g[0].x - g[1].x) + abs(g[1].x - g[2].x) + abs(g[2].x - g[3].x) + abs(g[3].x - g[0].x) +
-		abs(g[0].y - g[1].y) + abs(g[1].y - g[2].y) + abs(g[2].y - g[3].y) + abs(g[3].y - g[0].y);
-	if (moving == 0) return;
-	double x, y;
-	int prom_i, prom_j;
+	int intersections = 0;
 
-	for (x = 0; x <= 1; x = x + 1.0 / (double)(moving)) {
-		for (y = 0; y <= 1; y = y + 1.0 / (double)(moving)) {
-			prom_i = int(x * (g[0].x * y + g[1].x * (1 - y)) + (1 - x) * (g[2].x * y + g[3].x * (1 - y)));
-			prom_j = int(x * (g[0].y * y + g[1].y * (1 - y)) + (1 - x) * (g[2].y * y + g[3].y * (1 - y)));
-			if (prom_i < size_x && prom_j < size_y && prom_i >= 0 && prom_j >= 0) terr[prom_j][prom_i] = v;
+	for (int i = 0; i < polygon.size(); i++) 
+	{
+
+		int j = (i + 1) % polygon.size();
+
+		// проверка пересечения отрезка с лучом 
+		if (((polygon[i].y > y) != (polygon[j].y > y)) &&
+			(x < (polygon[j].x - polygon[i].x) * (y - polygon[i].y) /
+				(polygon[j].y - polygon[i].y) + polygon[i].x))
+		{
+			intersections++;
+		}
+	}
+
+	return intersections % 2 == 1;
+}
+
+void fill_polygon(vector<vector<int>>& terr, int v, const vector<coord>& g)
+{
+	if (g.size() < 3 || terr.empty())
+		return;
+
+	unsigned int minX = size_x - 1;
+	unsigned int maxX = 0;
+	unsigned int minY = size_y - 1;
+	unsigned int maxY = 0;
+
+	for (const coord& oCoord : g)
+	{
+		minX = min(oCoord.x, minX);
+		maxX = max(oCoord.x, maxX);
+		minY = min(oCoord.y, minY);
+		maxY = max(oCoord.y, maxY);
+	}
+
+	for (unsigned int x = minX; x <= maxX; ++x)
+	{
+		for (unsigned int y = minY; y <= maxY; ++y)
+		{
+			if (isInside(g, x, y))
+				terr[y][x] = v;
 		}
 	}
 }
 
+void get_closest()
+{
 
+}
+
+bool cmp(brick_point& p1, brick_point& p2) 
+{
+	return p1.y < p2.y || (p1.y == p2.y && p1.x < p2.x);
+}
+
+
+double cross_product(const brick_point& O, const brick_point& A, const brick_point& B) {
+	return (A.x - O.x) * (B.y - O.y) - (A.y - O.y) * (B.x - O.x);
+}
+
+std::vector<brick_point> convexHull(std::vector<brick_point>& points) {
+	if (points.size() <= 3) return points;
+
+	std::sort(points.begin(), points.end(), cmp);
+
+	std::vector<brick_point> upperHull;
+	for (const auto& p : points) {
+		while (upperHull.size() >= 2 && cross_product(upperHull[upperHull.size() - 2], upperHull.back(), p) <= 0) 
+			upperHull.pop_back();
+		upperHull.push_back(p);
+	}
+
+	std::vector<brick_point> lowerHull;
+	for (auto it = points.rbegin(); it != points.rend(); ++it) {
+		const auto& p = *it;
+		while (lowerHull.size() >= 2 && cross_product(lowerHull[lowerHull.size() - 2], lowerHull.back(), p) <= 0)
+			lowerHull.pop_back();
+
+		lowerHull.push_back(p);
+	}
+
+	upperHull.pop_back();
+	lowerHull.pop_back();
+	upperHull.insert(upperHull.end(), lowerHull.begin(), lowerHull.end());
+
+	return upperHull;
+}
 void read_brick_file(const nana::string& file_path)
 {
-	FILE* infile = _wfopen(file_path.c_str(), L"rt");
+	FILE* infile;
+	infile = _wfopen(file_path.c_str(), L"rt");
+
 	if (!infile)
-		abort();
-	int count_angles;
+		return;
+
+	int count_angles = 0;
+	int count_brick_up = 0;
+	scalar x = 0., y = 0.;
+	scalar tmp_height_up = 0.;
+	scalar tmp_brick_up_t = 0.;
+
 	fscanf(infile, "%d", &terr_cnt);
-	fscanf(infile, "%d", &count_angles);
-	brick_calc = new brick_data[terr_cnt];
+
+	oBricks.Clear();
+
 	for (int i = 0; i < terr_cnt; i++)
 	{
-		int count_brick_up;
+		brick_data oBrick;
+		fscanf(infile, "%d", &count_angles);
 		for (int j = 0; j < count_angles; j++)
 		{
-			scalar x, y;
-			fscanf(infile, "%lf%lf", &x, &y);
-			brick_calc[i].points.emplace_back(x, y);
+			fscanf(infile, "%f %f", &x, &y);
+			oBrick.points.push_back({ x, y });
 		}
 
-		fscanf(infile, "%lf", &brick_calc[i].begin_t);
+		oBrick.points = convexHull(oBrick.points);
+
+		fscanf(infile, "%f", &oBrick.begin_t);
 		fscanf(infile, "%d", &count_brick_up);
 
 		for (int j = 0; j < count_brick_up; j++)
 		{
-			scalar tmp_height_up;
-			int tmp_brick_up_t;
-			fscanf(infile, "%d%lf", &tmp_brick_up_t, &tmp_height_up);
-			brick_calc[i].number_up.emplace_back(tmp_brick_up_t, tmp_height_up);
+			fscanf(infile, "%f %f", &tmp_brick_up_t, &tmp_height_up);
+			scalar dStartTime = (oBrick.number_up.empty()) ? oBrick.begin_t : oBrick.number_up.back().brick_up_end_t;
+			oBrick.number_up.push_back({ dStartTime, dStartTime + tmp_brick_up_t, tmp_height_up });
 		}
 
-		terr_number_interval_time[i] = count_brick_up;
-		coord g[4];
-		for (int j = 0; j < (int)brick_calc[i].points.size(); j++) {
-			g[j] = get_coord(brick_calc[i].points[j].x, brick_calc[i].points[j].y);
-		}
-		fill_tetragon(terr_up, i + 1, g);
+		oBricks.AddBrick(oBrick);
+
+		vector<coord> g(count_angles);
+
+		for (int j = 0; j < count_angles; j++)
+			g[j] = get_coord(oBrick.points[j].x, oBrick.points[j].y);
+
+		fill_polygon(terr_up, i + 1, g);
 	}
 
 	fclose(infile);
 	//freopen("CON", "w", stdout);
 }
+void read_data_mareographs(const nana::string& file_path)
+{
+	fstream file;
+	const wchar_t* path = file_path.c_str();;
+	file.open(path, std::fstream::in);
+
+	arMareographs.clear();
+
+	int count;
+	file >> count;
+	for (int i = 0; i < count; i++) 
+	{
+		string location;
+		double x, y;
+		file >> location >> x >> y;
+		Mareograph m(y, x, 25, location);
+		coord point = get_coord(x, y);
+
+		std::cout << location << " H: " << bottom[point.y][point.x] << std::endl;
+
+		m.setIndexX(point.x);
+		m.setIndexY(point.y);
+		arMareographs.push_back(m);
+	}
+}
+
 void gettime(const int tt, int& h, int& m, int& s) {
 	int i;
 	for (i = 1; i < 60; i++) {
@@ -780,49 +706,6 @@ void gettime(const int tt, int& h, int& m, int& s) {
 	s = tt - h * 3600 - m * 60;
 }
 
-void find_inking() {
-	bool v1 = false;
-	bool v2 = false;
-	bool v3 = false;
-	bool v4 = false;
-	const double exp = 0.00001;
-	for (int j = 1; j < size_y - 1; ++j) {
-		v1 = false;
-		v2 = false;
-		for (int i = 1; i < size_x - 1; ++i) {
-			if (!v1 && abs(eta[j][i]) > exp) {
-				inking[inking_count++] = i;
-				inking[inking_count++] = j;
-				v1 = true;
-			}
-		}
-		for (int i = size_x - 1; i > 0; i--) {
-			if (!v2 && abs(eta[j][i]) > exp) {
-				inking[inking_count++] = i;
-				inking[inking_count++] = j;
-				v2 = true;
-			}
-		}
-	}
-	for (int i = 1; i < size_x - 1; ++i) {
-		v3 = false;
-		v4 = false;
-		for (int j = 1; j < size_y - 1; ++j) {
-			if (!v3 && abs(eta[j][i]) > exp) {
-				inking[inking_count++] = i;
-				inking[inking_count++] = j;
-				v3 = true;
-			}
-		}
-		for (int j = size_y - 1; j > 0; j--) {
-			if (!v4 && abs(eta[j][i]) > exp) {
-				inking[inking_count++] = i;
-				inking[inking_count++] = j;
-				v4 = true;
-			}
-		}
-	}
-}
 /*vector <vector <coord>> v_c_c; //= new vector <coord>[MAXN];// [MAXN];
 vector <vector <coord>> f_c_c;
 vector<coord> buf;
@@ -831,9 +714,9 @@ vector <int> **fp;*/
 void run_calc()
 {
 
-
+	
 	calculation_main_value();
-
+	
 
 	/*int h, m, s;
 	gettime(delta_t[0] * t, h, m, s); //tak bilo
@@ -848,18 +731,18 @@ void run_calc()
 void convert_to_dat(const nana::string& path_file)
 {
 	//string name;
+	string a;
 	char b[201];
 	//cout << "file name: ";
 	//cin >> name;
 	const wchar_t *path = path_file.c_str();
-	FILE* in = _wfopen(path, L"r");
-	if (!in)
-		abort();
+	FILE * in;
+	in = _wfopen(path, L"r");
+	FILE * out;
+	
 	//name += "dat";
 	//const char *path2 = name.c_str();
-	FILE* out = fopen("out.dat", "w");
-	if (!out)
-		abort();
+	out = fopen("out.dat", "w");
 
 	while (fgets(b, sizeof(b), in))
 	{
@@ -873,54 +756,282 @@ void convert_to_dat(const nana::string& path_file)
 	fclose(out);
 }
 
-void read_data_mareographs(const std::string& file_path){
-	fstream file;
-	const char * path = file_path.c_str();;
-	file.open(path, std::fstream::in);
-
-	int count;
-	file >> count;
-	for (int i = 0; i < count; i++){
-		string location;
-		double x, y;
-		file >> location >> x >> y;
-		Mareograph m(y, x, 25, location);
-		coord point = get_coord(x, y);
-		m.setIndexX(point.x);
-		m.setIndexY(point.y);
-		mareographs.push_back(m);
-	}
+void checking_mareographs()
+{
+	if (arMareographs.size() == 0) return;
+	for (int i = 0; i < arMareographs.size(); i++)
+		arMareographs[i].pushHeight(eta[arMareographs[i].getIndexY()][arMareographs[i].getIndexX()]);
+}
+void saveMareographs()
+{
+	for (int i = 0; i < arMareographs.size(); i++)
+		arMareographs[i].writeToFileMareograph(settings.wsPathToSave + L"mareograms/mareogram" + std::to_wstring(i));
 }
 
-void checking_mareographs(){
-	for (auto& mareograph : mareographs)
+std::vector<real_point> GetCoordsMareographs()
+{
+	std::vector<real_point> arCoords(arMareographs.size());
+
+	for (unsigned int i = 0; i < arMareographs.size(); ++i)
+		arCoords[i] = { arMareographs[i].getLongitude(), arMareographs[i].getLatitude() };
+
+	return arCoords;
+}
+
+double convertToDouble(const std::wstring& sValue) 
+{
+	double dResult;
+	std::wistringstream iss(sValue);
+
+	if (!(iss >> dResult))
+		return 0;
+	
+	return dResult;
+}
+
+unsigned convertToUnsigned(const std::wstring& sValue)
+{
+	unsigned uResult;
+
+	std::wistringstream iss(sValue);
+
+	if (!(iss >> uResult))
+		return 0;
+
+	return uResult;
+}
+
+Settings::Settings()
+	: wsPathToSave(DEFAULT_PATH_TO_SAVE),
+	  wsFontName(DEFAULT_FONT_NAME),
+	  dFontSize(DEFAULT_FONT_SIZE),
+	  bFrontPepcentage(false),
+	  bUseSteps(false),
+	  dStepX(DEFAULT_STEP_X),
+	  dStepFontX(DEFAULT_STEP_FONT_X),
+	  dStepY(DEFAULT_STEP_Y),
+	  dStepFontY(DEFAULT_STEP_FONT_Y),
+	  uMaxSize(DEFAULT_MAX_SIZE),
+	  bSaveMaregrams(true),
+	  bSaveMaxHeight(true),
+	  bDrawDirectionWave(false),
+	  bDrawGrid(false)
+{
+	// Land
+	height.mMap.insert({ 6000, { 214, 214, 214 } });
+	height.mMap.insert({ 1500, { 121, 83,  83  } });
+	height.mMap.insert({ 800,  { 160, 55,  0   } });
+	height.mMap.insert({ 400,  { 201, 180, 102 } });
+	height.mMap.insert({ 0,    { 0,   91,  65  } });
+
+	// Bottom
+	height.mMap.insert({ -1,    { 0, 255, 255 } });
+	height.mMap.insert({ -1000, { 0, 204, 255 } });
+	height.mMap.insert({ -2000, { 0, 153, 255 } });
+	height.mMap.insert({ -3000, { 0, 102, 255 } });
+	height.mMap.insert({ -4000, { 0, 50,  255 } });
+	height.mMap.insert({ -5000, { 0, 0,   255 } });
+	height.mMap.insert({ -6000, { 0, 0,   204 } });
+	height.mMap.insert({ -7000, { 0, 0,   153 } });
+	height.mMap.insert({ -8000, { 0, 0,   102 } });
+
+	// Front
+	front.mMap.insert({ -10, { 0,   0,   102 } });
+	front.mMap.insert({ -0,  { 100, 160, 250 } });
+	front.mMap.insert({ 0.01,{ 254, 201, 0   } });
+	front.mMap.insert({ 3,   { 255, 146, 1   } });
+	front.mMap.insert({ 6,   { 254, 36,  0   } });
+	front.mMap.insert({ 9,   { 233, 1,   1   } });
+	front.mMap.insert({ 12,  { 166, 0,   0   } });
+	front.mMap.insert({ 15,  { 100, 1,   1   } });
+
+	// MaxHeight
+	maxHeight.mMap.insert({ 0,   { 255, 255, 255 } });
+	maxHeight.mMap.insert({ 0.1, { 0,   0,   255 } });
+	maxHeight.mMap.insert({ 0.2, { 153, 255, 255 } });
+	maxHeight.mMap.insert({ 0.4, { 100, 255, 0   } });
+	maxHeight.mMap.insert({ 0.5, { 255, 255, 0   } });
+	maxHeight.mMap.insert({ 0.6, { 255, 100, 50  } });
+	maxHeight.mMap.insert({ 0.8, { 255, 30,  15  } });
+	maxHeight.mMap.insert({ 0.9, { 250, 50,  0   } });
+	maxHeight.mMap.insert({ 1,   { 200, 100, 200 } });
+	maxHeight.mMap.insert({ 3.5, { 165, 70,  190 } });
+	maxHeight.mMap.insert({ 6,   { 130, 40,  180 } });
+	maxHeight.mMap.insert({ 11,  { 100, 25,  150 } });
+	maxHeight.mMap.insert({ 16,  { 75,  10,  125 } });
+	maxHeight.mMap.insert({ 21,  { 50,  0,   100 } });
+}
+
+void Settings::ParseFromFile(const nana::string& sFiePath)
+{
+	FILE* file = _wfopen(sFiePath.c_str(), L"r");
+
+	if (!file)
+		return;
+
+	constexpr size_t KEY_SIZE = 32;
+	constexpr size_t VALUE_SIZE = 512;
+	constexpr size_t STRING_SIZE = (KEY_SIZE + VALUE_SIZE);
+
+	wchar_t key[KEY_SIZE];
+	wchar_t value[VALUE_SIZE];
+	wchar_t fullString[STRING_SIZE];
+
+	while (fgetws(fullString, STRING_SIZE, file))
 	{
-		mareograph.pushHeight(eta[mareograph.getIndexY()][mareograph.getIndexX()]);
+		const std::wstring wsFormat = L"%" + std::to_wstring(KEY_SIZE) + L"[^=]=\"%" + std::to_wstring(VALUE_SIZE) + L"[^\"]\"";
+		if (2 == swscanf(fullString, wsFormat.c_str(), key, value))
+		{
+			if (0 == std::wcscmp(L"path_to_save", key))
+				wsPathToSave = value;
+			else if (0 == std::wcscmp(L"font_name", key))
+				wsFontName = value;
+			else if (0 == std::wcscmp(L"font_size", key))
+			{
+				double dTempFontSize = convertToDouble(value);
+				bFrontPepcentage = std::find(value, value + VALUE_SIZE - 1, L'%');
+				if (bFrontPepcentage)
+					dFontSize = dTempFontSize / 100;
+				else if (dTempFontSize > 1.)
+					dFontSize = dTempFontSize;
+			}
+			else if (0 == std::wcscmp(L"save_step_x", key))
+			{
+				double dTempStepX = convertToDouble(value);
+				if (dTempStepX > DBL_EPSILON)
+				{
+					dStepX = dTempStepX;
+					bUseSteps = true;
+				}
+			}
+			else if (0 == std::wcscmp(L"save_step_font_x", key))
+			{
+				double dTempStepFontX = convertToDouble(value);
+				if (dTempStepFontX > DBL_EPSILON)
+				{
+					dStepFontX = dTempStepFontX;
+					bUseSteps = true;
+				}
+			}
+			else if (0 == std::wcscmp(L"save_step_y", key))
+			{
+				double dTempStepY = convertToDouble(value);
+				if (dTempStepY > DBL_EPSILON)
+				{
+					dStepY = dTempStepY;
+					bUseSteps = true;
+				}
+			}
+			else if (0 == std::wcscmp(L"save_step_font_y", key))
+			{
+				double dTempStepFontY = convertToDouble(value);
+				if (dTempStepFontY > DBL_EPSILON)
+				{
+					dStepFontY = dTempStepFontY;
+					bUseSteps = true;
+				}
+			}
+			else if (0 == std::wcscmp(L"max_size", key))
+			{
+				unsigned uTempMaxSize = convertToUnsigned(value);
+				if (0 < uTempMaxSize)
+					uMaxSize = uTempMaxSize;
+			}
+			else if (0 == std::wcscmp(L"colorbar", key))
+			{
+				wchar_t colorbarType[16];
+				wchar_t colorbarValues[512];
+				if (2 == swscanf(value, L"%16s %512[^\n]", colorbarType, colorbarValues))
+				{
+					colorBar* pSrcColorBar = NULL;
+
+					if (0 == std::wcscmp(L"height", colorbarType))
+						pSrcColorBar = &height;
+					else if (0 == std::wcscmp(L"front", colorbarType))
+						pSrcColorBar = &front;
+					else if (0 == std::wcscmp(L"maxheight", colorbarType))
+						pSrcColorBar = &maxHeight;
+					else
+						continue;
+
+					pSrcColorBar->Clear();
+
+					if (0 == std::wcscmp(L"height", colorbarValues))
+					{
+						*pSrcColorBar = height;
+						continue;
+					}
+					else if (0 == std::wcscmp(L"front", colorbarValues))
+					{
+						*pSrcColorBar = front;
+						continue;
+					}
+					else if (0 == std::wcscmp(L"maxheight", colorbarValues))
+					{
+						*pSrcColorBar = height;
+						continue;
+					}
+
+					wchar_t* str = colorbarValues;
+					int offset = 0;
+
+					if (1 == swscanf(str, L"tick %lf%n", &(pSrcColorBar->dTick), &offset))
+						str += offset + 1;
+
+					double dValue;
+					unsigned char chR, chG, chB;
+					while (4 == swscanf(str, L"%lf (%hhu,%hhu,%hhu)%n", &dValue, &chR, &chG, &chB, &offset))
+					{
+						pSrcColorBar->mMap.insert({ dValue, { chR , chG, chB } });
+						str += offset;
+					}
+				}
+			}
+			else if (0 == std::wcscmp(L"save_maxheight", key))
+			{
+				if (0 == std::wcscmp(L"true", value))
+					bSaveMaxHeight = true;
+				else if (0 == std::wcscmp(L"false", value))
+					bSaveMaxHeight = false;
+			}
+			else if (0 == std::wcscmp(L"save_mareograms", key))
+			{
+				if (0 == std::wcscmp(L"true", value))
+					bSaveMaregrams = true;
+				else if (0 == std::wcscmp(L"false", value))
+					bSaveMaregrams = false;
+			}
+			else if (0 == std::wcscmp(L"draw_direction_wave", key))
+			{
+				if (0 == std::wcscmp(L"true", value))
+					bDrawDirectionWave = true;
+				else if (0 == std::wcscmp(L"false", value))
+					bDrawDirectionWave = false;
+			}
+			else if (0 == std::wcscmp(L"draw_grid", key))
+			{
+				if (0 == std::wcscmp(L"true", value))
+					bDrawGrid = true;
+				else if (0 == std::wcscmp(L"false", value))
+					bDrawGrid = false;
+			}
+			else if (0 == std::wcscmp(L"language", key))
+			{
+				if (0 == std::wcscmp(L"RU", value))
+					eLanguage = LANGUAGE_RU;
+				else if (0 == std::wcscmp(L"EN", value))
+					eLanguage = LANGUAGE_EN;
+			}	
+		}
 	}
-}
-void saveMareographs(){
-	for (size_t i = 0; i < mareographs.size(); i++){
-		if (i < 10)
-			mareographs[i].writeToFileMareograph(PATH "data\\0" + std::to_string(i));
-		else 
-			mareographs[i].writeToFileMareograph(PATH "data\\" + std::to_string(i));
-	}
-	Mareograph mareograph;
-	mareograph.writeToParametersMareograph(PATH "Parameters\\parameters.txt", mareographs);
 }
 
-double getDistantionOfCenterMareographs(const double x, const double y, const double maxDist) {
-	double out = maxDist + 0.00000000000001;
-	for (auto& mareograph : mareographs)
-	{
-		const double x1 = mareograph.getLongitude(), y1 = mareograph.getLatitude();
-		//coord a = get_coord(yCoord, xCoord);
-		//int dist = abs(c.x - a.x) + abs(c.y - a.y);
-		const double dist = sqrt((x - x1) * (x - x1) + (y - y1) * (y - y1));
-		if (dist <= maxDist && dist <= out)
-			out = dist;
-	}
-	return out;
+double Settings::GetFontSize(double dHeight) const
+{
+	if (bFrontPepcentage && dHeight > DBL_EPSILON)
+		return dHeight * dFontSize;
+
+	return dFontSize;
 }
 
 /*	for (int i = 0; i < maregraphs.size(); i++){

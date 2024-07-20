@@ -119,16 +119,19 @@ void GLFT_Font::open(const std::string& filename, unsigned int size)
     // Set the font size
     FT_Set_Pixel_Sizes(face, size, 0);
 
-    constexpr size_t imageWidth = 256;
+    // Step 2: Find maxAscent/Descent to calculate imageHeight //
+    size_t imageHeight = 0;
+    size_t imageWidth = 256;
     int maxDescent = 0;
     int maxAscent = 0;
     size_t lineSpace = imageWidth - MARGIN;
     size_t lines = 1;
+    size_t charIndex;
 
     for(unsigned int ch = 0; ch < NUM_CHARS; ++ch)
     {
         // Look up the character in the font file.
-        const size_t charIndex = FT_Get_Char_Index(face, ch + SPACE);
+        charIndex = FT_Get_Char_Index(face, ch+SPACE);
 
         // Render the current glyph.
         if (FT_Load_Glyph(face, charIndex, FT_LOAD_RENDER)) break;
@@ -150,9 +153,9 @@ void GLFT_Font::open(const std::string& filename, unsigned int size)
     height_ = maxAscent + maxDescent;   // calculate height_ for text
 
     // Compute how high the texture has to be.
-    const size_t neededHeight = (maxAscent + maxDescent + MARGIN) * lines + MARGIN;
+    size_t neededHeight = (maxAscent + maxDescent + MARGIN) * lines + MARGIN;
     // Get the first power of two in which it will fit
-    size_t imageHeight = 16;
+    imageHeight = 16;
     while(imageHeight < neededHeight)
     {
         imageHeight <<= 1;
@@ -167,13 +170,14 @@ void GLFT_Font::open(const std::string& filename, unsigned int size)
     // These are the position at which to draw the next glyph
     size_t x = MARGIN;
     size_t y = MARGIN + maxAscent;
+    float texX1, texX2, texY1, texY2;   // used for display list
 
     listBase_ = glGenLists(NUM_CHARS);  // generate the lists for filling
 
     // Drawing loop
     for(unsigned int ch = 0; ch < NUM_CHARS; ++ch)
     {
-	    const size_t charIndex = FT_Get_Char_Index(face, ch+SPACE);
+        size_t charIndex = FT_Get_Char_Index(face, ch+SPACE);
 
         // Render the glyph
         FT_Load_Glyph(face, charIndex, FT_LOAD_DEFAULT);
@@ -187,10 +191,10 @@ void GLFT_Font::open(const std::string& filename, unsigned int size)
         }
 
         // calculate texture coordinates of the character
-	    const float texX1 = static_cast<float>(x) / imageWidth;
-	    const float texX2 = static_cast<float>(x + widths_[ch]) / imageWidth;
-	    const float texY1 = static_cast<float>(y - maxAscent) / static_cast<float>(imageHeight);
-	    const float texY2 = texY1 + static_cast<float>(height_) / static_cast<float>(imageHeight);
+        texX1 = static_cast<float>(x) / imageWidth;
+        texX2 = static_cast<float>(x+widths_[ch]) / imageWidth;
+        texY1 = static_cast<float>(y - maxAscent) / imageHeight;
+        texY2 = texY1 + static_cast<float>(height_) / imageHeight;
 
         // generate the character's display list
         glNewList(listBase_ + ch, GL_COMPILE);
@@ -272,9 +276,7 @@ void GLFT_Font::drawText(float x, float y, const char *str, ...) const
     glBindTexture(GL_TEXTURE_2D, texID_);
     glPushMatrix();
     glTranslated(x,y,0);
-
-    const size_t buf_len = strlen(buf);
-    for(unsigned int i=0; i < buf_len; ++i)
+    for(unsigned int i=0; i < strlen(buf); ++i)
     {
         unsigned char ch( buf[i] - SPACE );     // ch-SPACE = DisplayList offset
         // replace characters outside the valid range with undrawable

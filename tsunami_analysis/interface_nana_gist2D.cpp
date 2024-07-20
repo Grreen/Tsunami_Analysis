@@ -28,7 +28,8 @@ using namespace std;
 
 struct gist2d_gl{
 	std::wstring looking_at;
-	int check, h;
+	int check;
+	double h;
 	double step_x, step_y, step_font_x, step_font_y;
 	bool save;
 	int str_save;
@@ -36,7 +37,7 @@ struct gist2d_gl{
 	//double aver, max_h;
 };
 
-gist2d_gl gist2d_d = {L"NORTH", 0, 20, 0.5, 2, 0.5, 2,false, 0, L"RED"};
+gist2d_gl gist2d_d = {L"NORTH", 0, 1, 2, 0.1, 1, 0.1, true, 0, L"RED"};
 
 struct gist_info{
 	int n;
@@ -63,23 +64,20 @@ nana::listbox::iresolver& operator >> (nana::listbox::iresolver& or, gist_info& 
 	return or;
 }
 
-void print(const listbox & l)
+void print(listbox & l)
 {
-	for (auto &x : l.at(0)){
-		printf("pos: %zu ", x.pos().item);
+	for (auto x : l.at(0)){
+		printf("pos: %d ", x.pos().item);
 		wcout << "'" << x.text(0) << "' ";
-		const auto y = x.value_ptr<gist_info>();
-		if (y == nullptr) 
-			printf("nullptr\n");
+		auto y = x.value_ptr<gist_info>();
+		if (y == nullptr) printf("nullptr\n");
 		else printf("num: %d\n", y->n);
 	}
 }
 vector <vector <double>> vct_gist_d;
 
-void gist2d_file_new(const std::wstring& path){
-	int size = 0;
-	const size_t amount = vct_gist_d.size();
-	char c;
+void gist2d_file_new(std::wstring path){
+	int size = 0, amount = vct_gist_d.size();  char c;
 	if (gist2d_d.looking_at == L"NORTH") { c = 'N'; size = gist_d.size_x; }
 	if (gist2d_d.looking_at == L"SOUTH") { c = 'S'; size = gist_d.size_x; }
 	if (gist2d_d.looking_at == L"WEST") { c = 'W'; size = gist_d.size_y; }
@@ -90,7 +88,7 @@ void gist2d_file_new(const std::wstring& path){
 	file.open(path.c_str(), std::wfstream::out);
 	//fprintf(file, "%d %d %c\n", amount, size, c);
 	file << amount << " " << size << " " << c << endl;
-	for (size_t i = 0; i < amount; i++){
+	for (int i = 0; i < amount; i++){
 		for (int j = 0; j < size; j++){
 			file << vct_gist_d[i][j]; 
 			if(j < size - 1) file << " ";
@@ -110,7 +108,7 @@ void gist2d_file_new(const std::wstring& path){
 
 }
 
-void gist2d_file(const std::wstring& path, bool add){
+void gist2d_file(std::wstring path, bool add){
 	
 	
 	if (!add) vct_gist_d.clear();
@@ -146,7 +144,7 @@ void gist2d_file(const std::wstring& path, bool add){
 double max_h(int s){
 	if (!v_c_c.empty()){
 		double m = CComp[v_c_c[s][0].y][v_c_c[s][0].x];
-		for (size_t i = 1; i < v_c_c[s].size(); i++){
+		for (int i = 1; i < v_c_c[s].size(); i++){
 			if (m < CComp[v_c_c[s][i].y][v_c_c[s][i].x]) m = CComp[v_c_c[s][i].y][v_c_c[s][i].x];
 		}
 		return m;
@@ -162,81 +160,80 @@ void h_array(){
 	unsigned int l;
 	if (gist2d_d.looking_at == L"NORTH" || gist2d_d.looking_at == L"SOUTH") l = gist_d.size_x; 
 	else l = gist_d.size_y;
-	auto* arr = new double[l];
+	double *arr = new double[l];
 	
 	if (gist2d_d.looking_at == L"NORTH"){
 		//arr = new double[gist_d.size_x];
 		memset(arr, 0, gist_d.size_x * sizeof(double));
 		int* buf = new int[v_c_c[gist2d_d.check].size()];
 		memset(buf, 0, v_c_c[gist2d_d.check].size()*sizeof(int));
-		for (const auto& a : v_c_c[gist2d_d.check])
-		{
-			if ( buf[a.x] < a.y ) {
+		for (int i = 0; i < v_c_c[gist2d_d.check].size(); i++){
+			coord a = v_c_c[gist2d_d.check][i];
+			if ( (buf[a.x] < a.y) ) {
 				buf[a.x] = a.y;
 				arr[a.x] = CComp[a.y][a.x];
 			}
 		}
-		delete[] buf;
 	}
-	else if (gist2d_d.looking_at == L"SOUTH"){
+	if (gist2d_d.looking_at == L"SOUTH"){
 
 		//arr = new double[gist_d.size_x];
 		memset(arr, 0, gist_d.size_x * sizeof(double));
 		int* buf = new int[v_c_c[gist2d_d.check].size()];
-		memset(buf, 300, v_c_c[gist2d_d.check].size() * sizeof(int));
-		for (const auto &a : v_c_c[gist2d_d.check])
-		{
-			if (buf[a.x] > a.y) {
+		memset(buf, 0, v_c_c[gist2d_d.check].size() * sizeof(int));
+		for (int i = 0; i < v_c_c[gist2d_d.check].size(); i++){
+			coord a = v_c_c[gist2d_d.check][i];
+			if ((buf[a.x] > a.y)) {
 				buf[a.x] = a.y;
 				arr[a.x] = CComp[a.y][a.x];
 			}
 		}
-		delete[] buf;
 	}
-	else if (gist2d_d.looking_at == L"EAST"){
-
-		//arr = new double[gist_d.size_x];
-		memset(arr, 0, gist_d.size_y * sizeof(double));
-		int* buf = new int[v_c_c[gist2d_d.check].size()];
-		memset(buf, 300, v_c_c[gist2d_d.check].size() * sizeof(int));
-		for (const auto a : v_c_c[gist2d_d.check])
-		{
-			if (buf[a.y] > a.x) {
-				buf[a.y] = a.x;
-				arr[gist_d.size_y - a.y] = CComp[a.y][a.x];
-			}
-		}
-		delete[] buf;
-	}
-	else if (gist2d_d.looking_at == L"WEST"){
+	if (gist2d_d.looking_at == L"EAST"){
 
 		//arr = new double[gist_d.size_x];
 		memset(arr, 0, gist_d.size_y * sizeof(double));
 		int* buf = new int[v_c_c[gist2d_d.check].size()];
 		memset(buf, 0, v_c_c[gist2d_d.check].size() * sizeof(int));
-		for (const auto &a : v_c_c[gist2d_d.check])
-		{
-			if (buf[a.y] < a.x) {
+		for (int i = 0; i < v_c_c[gist2d_d.check].size(); i++){
+			coord a = v_c_c[gist2d_d.check][i];
+			if ((buf[a.y] > a.x)) {
 				buf[a.y] = a.x;
 				arr[gist_d.size_y - a.y] = CComp[a.y][a.x];
 			}
 		}
-		delete[] buf;
+
+	}
+
+	if (gist2d_d.looking_at == L"WEST"){
+
+		//arr = new double[gist_d.size_x];
+		memset(arr, 0, gist_d.size_y * sizeof(double));
+		int* buf = new int[v_c_c[gist2d_d.check].size()];
+		memset(buf, 0, v_c_c[gist2d_d.check].size() * sizeof(int));
+		for (int i = 0; i < v_c_c[gist2d_d.check].size(); i++){
+			coord a = v_c_c[gist2d_d.check][i];
+			if ((buf[a.y] < a.x)) {
+				buf[a.y] = a.x;
+				arr[gist_d.size_y - a.y] = CComp[a.y][a.x];
+			}
+		}
 	}
 	vector <double> buf;
 	// разрядка
-	for (unsigned i = 0; i < l; i++) 
+	for (int i = 0; i < l; i++) 
 	{
-		if (i % 2 == 0)
+		if (i % 2 == 0 && false){
 			buf.push_back(0);
-		else
-			buf.push_back(arr[i]);
+		}
+		else buf.push_back(arr[i]);
 	}
 	
-	//for (int i = 0; i < l; i++) buf.push_back(arr[i]);
+	printf("\n");
 
-	vct_gist_d.emplace_back(buf);
-	delete[] arr;
+	//for (int i = 0; i < l; i++) buf.push_back(arr[i]);
+	vct_gist_d.push_back(buf);
+	
 	//return arr;
 }
 coord get_coord_gist_2d(double x, double y){
@@ -247,7 +244,7 @@ coord get_coord_gist_2d(double x, double y){
 
 
 void fm_param_nana(){
-	gist2d_d.h = static_cast<int>(max_h(gist2d_d.check)) + static_cast<int>(max_h(gist2d_d.check)) / 10;
+	gist2d_d.h = max_h(gist2d_d.check) + max_h(gist2d_d.check) / 10;
 	std::string path_pic;
 	//----------------------------------------------------------------------//
 	//---------------------------------FORM---------------------------------//
@@ -379,15 +376,15 @@ void fm_param_nana(){
 		}
 	});
 	tb_height.append(to_wstring(gist2d_d.h), true);
-	tb_height.events().text_changed([&tb_height](){
-		if (tb_height.to_int() > 1 && !tb_height.empty()){
-			gist2d_d.h = tb_height.to_int();
-			if (gist2d_d.h < 2) gist2d_d.h = 4;
-			
+	tb_height.events().text_changed([&tb_height]() {
+		if (!tb_height.empty()){
+			gist2d_d.h = tb_height.to_double();
+			if (gist2d_d.h <= 0)
+				gist2d_d.h = 1.;
 		}
 	});
 	tb_height.events().dbl_click([&tb_height](){
-		gist2d_d.h = int(max_h(gist2d_d.check) + max_h(gist2d_d.check) / 10);
+		gist2d_d.h = max_h(gist2d_d.check) + max_h(gist2d_d.check) / 10;
 		tb_height.select(true);	tb_height.del();
 		tb_height.append(to_wstring(gist2d_d.h), true);
 	});
@@ -456,11 +453,14 @@ double adapt_double(double start, double step, bool x){
 }
 double max_h_x(int a){
 	double max = 0;
-	for (auto& i : vct_gist_d)
-	{
-		if (i[a] > max) max = i[a];
+	for (int i = 0; i < vct_gist_d.size(); i++){
+		if (vct_gist_d[i][a] > max) max = vct_gist_d[i][a];
 	}
 	return max;
+}
+
+bool approximatelyEqual(double a, double b, double epsilon) {
+	return std::abs(a - b) <= epsilon;
 }
 
 void fm_gist()
@@ -497,9 +497,8 @@ void fm_gist()
 		
 		auto cr = lb_gist.at(0);
 		if (cr.at(gist2d_d.check).checked()) cr.at(gist2d_d.check).check(false);
-		for (size_t i = 0; i < cr.size(); i++){
-			if (cr.at(i).checked() == true) 
-				gist2d_d.check = i;
+		for (int i = 0; i < cr.size(); i++){
+			if (cr.at(i).checked() == true) gist2d_d.check = i;
 		}
 	});
 	
@@ -512,52 +511,58 @@ void fm_gist()
 	nana::drawing dw1(pic);
 	nana::paint::graphics gr;
 
-	dw1.draw([&dw1, &pic](nana::paint::graphics& graph){
+	dw1.draw([&dw1, &pic](nana::paint::graphics& graph)
+	{
 		//if (vct_gist_d[])
-		nana::string x_lbl;
+		nana::string x_lbl_start, x_lbl_end;
 		double s_x, s_y, e_x, e_y;
 		s_y = 0;
-		e_y = gist2d_d.h + 0.9;//max_h(gist2d_d.check) + max_h(gist2d_d.check) / 10;
-		if (e_y <= 1) e_y = 2;
+		e_y = gist2d_d.h;//max_h(gist2d_d.check) + max_h(gist2d_d.check) / 10;
+		//if (e_y <= 1) e_y = 2;
 		if (gist2d_d.looking_at == L"NORTH" || gist2d_d.looking_at == L"SOUTH"){
-			x_lbl = L"E";
+			x_lbl_start = L"W";
+			x_lbl_end   = L"E";
 			if (gist_d.start_x > start_x - 0.0001 && gist_d.start_x < start_x + 0.0001) { s_x = gist_d.start_x + 2 * delta_x; }
 			else s_x = gist_d.start_x + delta_x; 
 			if (gist_d.end_x > end_x - 0.0001 && gist_d.end_x < end_x + 0.0001) { e_x = gist_d.end_x - 2 * delta_x; }
 			else e_x = gist_d.end_x;// -delta_x;
-			
 		}
 		else {
-			x_lbl = L"N";
+			x_lbl_start = L"N";
+			x_lbl_end   = L"S";
 			if (gist_d.start_y > start_y - 0.0001 && gist_d.start_y < start_y + 0.0001) { s_x = gist_d.start_y + 2 * delta_y; }
 			else s_x = gist_d.start_y + delta_y;
 			if (gist_d.end_y > end_y - 0.0001 && gist_d.end_y < end_y + 0.0001) { e_x = gist_d.end_y - 2 * delta_y; }
 			else e_x = gist_d.end_y;
 		}
 		nana::paint::graphics gr;
+		nana::paint::font fontSave(settings.wsFontName.c_str(), settings.GetFontSize(graph.size().height), true);
+		gr.typeface(fontSave);
+
 		plot2d pl(&gr);
 		pl.colorbar(false);
+
 		//pl.window({ 0, 0, graph.size().width, graph.size().height });
 		//pl.region(real_rectangle{ { 0, 0 }, { v_c_c[set_check].size(), max_h(set_check) + max_h(set_check) / 10 } });
 		pl.region(real_rectangle{ { s_x, s_y },	{ e_x, e_y} });
 		//pl.region( { s_x, s_y }, { e_x, e_y } );
 		pl.window({ 0, 0, graph.size().width, graph.size().height });
-		
-		
-		
+
 		//set_step({ gist2d_d.step_x, gist2d_d.step_y }, { s_x, s_y }, {e_x, e_y});
 		
 		pl.axis_x(true);
 		pl.axis_y(true);
-		pl.axis_x_label(x_lbl);
-		pl.axis_y_label(L"h(m)");
+		pl.axis_x_label(x_lbl_start, x_lbl_end);
+		//pl.axis_y_label(L"h(m)");
 		auto step = pl.get_step();
+
+		printf("vct_gist_d::size : %d\n", vct_gist_d.size());
 
 		if (vct_gist_d.size() <= 1) h_array();
 
 		double st_x = adapt_double(s_x, gist2d_d.step_x, true), st_y = adapt_double(e_y, gist2d_d.step_y, false);//adapt_double(s_y);
 
-		color g_col[5];
+		nana::color* g_col = new color[5];
 		g_col[0] = { 220, 0, 0 };//красный
 		g_col[1] = { 0, 220, 0 };//зеленый
 		g_col[2] = { 0, 0, 220 };//синий
@@ -569,8 +574,9 @@ void fm_gist()
 		if (gist2d_d.color == L"GREEN") g_col[0] = g_col[1];
 		if (gist2d_d.color == L"YELLOW") g_col[0] = g_col[3];
 		//real_point *dr_step = adapt_step(real_point step);
-		pl.draw_grid(true, true, 20u, gist2d_d.step_x, gist2d_d.step_y, gist2d_d.step_font_x, gist2d_d.step_font_y);
+		pl.draw_grid(true, true, gist2d_d.step_x, gist2d_d.step_y, gist2d_d.step_font_x, gist2d_d.step_font_y, gist2d_d.h);
 		//int schet = 0, schet1 = 6, schet2 = 9, propusk = 6; double pred_x = 0;, &schet, &schet1, &schet2, &propusk, &pred_x
+		
 		color_func2d f = [&g_col, &step, &st_x, &st_y, &e_y](double x, double y)->color{
 			
 				color c = { 255, 255, 255 };
@@ -578,19 +584,20 @@ void fm_gist()
 				//bool pict;
 				//if ((pred_x < x - 0.00001))
 				//if (schet >= schet1 && schet < schet2){
-				int a = 0; double val = 300;
+				int a = 0; double val = 100;
 				if (gist2d_d.looking_at == L"NORTH" || gist2d_d.looking_at == L"SOUTH")  a = get_coord_gist_2d(x, y).x;
 				else  a = get_coord_gist_2d(y, x).y;
 
-				for (size_t i = 0; i < vct_gist_d.size(); i++)
+				for (int i = 0; i < vct_gist_d.size(); i++)
 				{
-					if (y <= vct_gist_d[i][a] && vct_gist_d[i][a] < val){
+					if (y <= vct_gist_d[i][a] && vct_gist_d[i][a] < val)
+					{
 						val = vct_gist_d[i][a];
 						c = g_col[i];
-
 					}
-
+					
 				}
+
 				bool fl = false;
 				if (c.argb().element.red == 255 && c.argb().element.green == 255 && c.argb().element.blue == 255) fl = true;
 				if (fl && x - step.x <= st_x && x + step.x >= st_x && gist2d_d.step_x != 0){
@@ -626,6 +633,13 @@ void fm_gist()
 		//pl.axis_x_label(L"N");
 		//pl.axis_y_label(L"Height");
 		graph = gr;
+
+		if (gist2d_d.save)
+		{
+			std::string name = "./gistograms/2D/" + to_string(0) + to_string(gist2d_d.str_save) + ".bmp";
+			graph.save_as_file(name.c_str());
+		}
+
 		if (gist2d_d.save){
 			nana::paint::graphics gr1;
 			plot2d save(&gr1);
@@ -636,15 +650,14 @@ void fm_gist()
 			save.window({ 0, 0, 1000, 600});
 			save.axis_x(true);
 			save.axis_y(true);
-			save.axis_x_label(x_lbl);
-			save.axis_y_label(L"h(m)");
+			save.axis_x_label(x_lbl_start, x_lbl_end);
+			//save.axis_y_label(L"h(m)");
 			//gr1.rectangle(true, { 255, 255, 255 });
-			save.draw_grid(true, true, 20u, gist2d_d.step_x, gist2d_d.step_y, gist2d_d.step_font_x, gist2d_d.step_font_y);
+			save.draw_grid(true, true, gist2d_d.step_x, gist2d_d.step_y, gist2d_d.step_font_x, gist2d_d.step_font_y, gist2d_d.h);
 			st_x = adapt_double(s_x, gist2d_d.step_x, true), st_y = adapt_double(e_y, gist2d_d.step_y, false);
 			save.plot_2d_color_function(f);
 			save.draw_axis(true, false);
-			std::string name = "gistograms\\2D\\" + to_string(0) + to_string(gist2d_d.str_save) + ".bmp";
-			gr1.save_as_file(name.c_str());
+
 		}
 		
 

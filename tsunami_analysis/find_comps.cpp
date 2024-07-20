@@ -18,7 +18,7 @@ vector <double*> gist2d_value;
 
 
 void find_aqua();
-void save_cut_max(const std::string& path);
+void save_cut_max(std::string path);
 
 struct gist2d_data{
 	int count, NC;
@@ -69,6 +69,9 @@ void read_array(const nana::string& file_path)
 		{
 			if ((i >= gist_d.t_r.y && i <= gist_d.l_l.y) && (j >= gist_d.l_l.x && j <= gist_d.t_r.x)){
 				file >> CComp[i1][j1]; cn++;
+		//		if (CComp[i1][j1] >= 3.8) CComp[i1][j1] /= 1.4;
+			//	else CComp[i1][j1] /= 1.5;
+				
 				j1++;
 				fl = true;
 			}
@@ -101,8 +104,8 @@ void read_array(const nana::string& file_path)
 
 vector <double> average;
 vector <double> max_from_components;
-vector <vector <coord>> v_c_c{}; //= new vector <coord>[MAXN];// [MAXN];
-vector <vector <coord>> f_c_c{};
+vector <vector <coord>> v_c_c; //= new vector <coord>[MAXN];// [MAXN];
+vector <vector <coord>> f_c_c;
 vector<coord> buf;//(20000);// (5000);
 vector <int> **fp;
 bool point_own(int y, int x, int n){
@@ -137,7 +140,7 @@ void dfs(int x, int y, int n){
 				!bool_CComp[y + dy[i]][x + dx[i]]){
 				dfs(x + dx[i], y + dy[i], n);
 				buf.push_back(a);
-				cout << CComp[a.y][a.x] << endl;
+				//cout << CComp[a.y][a.] << endl;
 			}
 		}
 	}
@@ -174,16 +177,15 @@ void bfs(coord start)
 void save_all_components(){
 	fstream file;
 	
-	for (size_t i = 0; i < v_c_c.size(); i++){
+	for (int i = 0; i < v_c_c.size(); i++){
 		std::string path = "data_components\\" + std::to_string(i) + ".dat";
 		file.open(path.c_str(), std::fstream::out);
 		double sum = 0;
 		double max = 0;
-		for (const auto& j : v_c_c[i])
-		{
-			if (max < CComp[j.y][j.x]) max = CComp[j.y][j.x];
-			sum += CComp[j.y][j.x];
-			file << CComp[j.y][j.x] << " ";
+		for (int j = 0; j < v_c_c[i].size(); j++){
+			if (max < CComp[v_c_c[i][j].y][v_c_c[i][j].x]) max = CComp[v_c_c[i][j].y][v_c_c[i][j].x];
+			sum += CComp[v_c_c[i][j].y][v_c_c[i][j].x];
+			file << CComp[v_c_c[i][j].y][v_c_c[i][j].x] << " ";
 		}
 		file.close();
 		max_from_components.push_back(max);
@@ -194,12 +196,10 @@ void save_all_components(){
 
 void find_comps()
 {
-	std::wcout << L"find_comps CALL" << std::endl;
+	coord bu;
 	for (int i = 1; i < gist_d.size_y + 2 - 1; i++){
 		for (int j = 1; j < gist_d.size_x + 2 - 1; j++){
-			if (CComp[i][j] < -1 && bool_CComp[i][j] == false) {
-				const coord bu{j, i};
-				bfs(bu); }
+			if (CComp[i][j] < -1 && bool_CComp[i][j] == false) { bu.y = i; bu.x = j; bfs(bu); }
 		}
 	}
 	find_aqua();
@@ -216,7 +216,6 @@ void find_comps()
 		}
 		if (!v_c_c[n].empty()) dfs(v_c_c[n][0].x, v_c_c[n][0].y, n);
 		f_c_c.push_back(buf);
-		std::wcout << L"f_c_c added" << std::endl;;
 		buf.clear();
 	}
 	//save_cut_max("MAX_PROLIV1.dat");
@@ -259,7 +258,7 @@ void find_aqua()
 	}
 
 }
-void save_cut_max(const std::string& path) {
+void save_cut_max(std::string path) {
 	fstream file;
 	double** tmp = create_array((gist_d.size_y + 2), (gist_d.size_x + 2));
 	file.open(path.c_str(), std::fstream::out);
