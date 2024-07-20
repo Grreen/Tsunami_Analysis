@@ -73,183 +73,6 @@ nana::string get_time(){
 	return clock_time;
 }
 
-/* // ligth fm_calc
-void fm_calc()
-{
-	nana::threads::pool pool_calc;
-	set_delta(variant_delta_t);
-	using namespace nana;
-
-	nana::form fm{ API::make_center(800, 400) };
-	combox out_type(fm);
-	out_type.push_back(L"eta");
-	out_type.push_back(L"MaxVis");
-	out_type.push_back(L"MinVis");
-	nana::string out_s_type = L"eta";
-	out_type.events().selected([&out_s_type](const arg_combox& ar_cbx) { out_s_type = ar_cbx.widget.caption(); });
-
-	nana::colormap heightColorMap(settings.height.mMap);
-	nana::colormap frontColorMap(settings.front.mMap);
-	nana::colormap maxHeightColorMap(settings.maxHeight.mMap);
-
-	nana::picture pic(fm);
-	nana::drawing dw1(pic);
-
-	pMainPicture = &dw1;
-
-	pic.move({ 10, 60 });
-	pic.size(nana::size{ (unsigned int)size_y + 200, (unsigned int)size_x });
-
-	dw1.draw([&dw1, &pic, &out_s_type, &heightColorMap, &frontColorMap, &maxHeightColorMap](nana::paint::graphics& graph)
-	{
-		nana::paint::font oFont(settings.wsFontName.c_str(), settings.GetFontSize(pic.size().height), true);
-		nana::string sTime = get_time();
-
-		int w = WIDTH_MARGIN; int h = HEIGHT_MARGIN;
-		
-		graph.typeface(oFont);
-		graph.make(nana::size(graph.width(), graph.height()));
-		graph.rectangle(true, { 255, 255, 255 });
-
-		plot2d pl(&graph);
-		pl.colorbar(true);
-		pl.region(real_rectangle{ { start_x + delta_x / 2., start_y + delta_y / 2. }, { end_x - delta_x / 2., end_y - delta_y / 2. } });
-
-		pl.window({ 0, 0, (unsigned int)graph.width(), (unsigned int)graph.height()});
-		pl.axis_x(true);
-		pl.axis_y(true);
-
-		pl.axis_x_label(L"W", L"E");
-		pl.axis_y_label(L"N", L"S");
-
-		color_func2d f = [&out_s_type, &heightColorMap, &frontColorMap, &maxHeightColorMap](double x, double y)->color
-		{
-			nana::color c;
-			coord p = get_coord(x, y);
-
-			if (bottom[p.y][p.x] >= 0.0) 
-			{
-				c = heightColorMap.get_color(bottom[p.y][p.x]);
-			}
-			else 
-			{
-				switch (out_s_type[0])
-				{
-				case L'e':
-					if (0 != t)
-						c = frontColorMap.get_color(eta[p.y][p.x]);
-					else
-						c = heightColorMap.get_color(bottom[p.y][p.x]);
-					break;
-				case L'M':
-				{
-					if (out_s_type[1] == L'a')
-					{
-						c = maxHeightColorMap.get_color(maxVis[p.y][p.x]);
-					}
-					else
-					{
-						c = maxHeightColorMap.get_color(minVis[p.y][p.x]);
-					}
-					break;
-				}
-				}
-			}
-	
-			return c;
-		};
-
-		pl.plot_2d_color_function(f);
-
-		if (t != 0 && t < time_moments)
-		{
-			pl.colorbar(frontColorMap, settings.front.wsUnitMeasure, settings.front.GetTick());
-			pl.draw_time(sTime);
-		}
-		else if (t == 0)
-		{
-			pl.colorbar(heightColorMap, L"km", settings.height.GetTick());
-			if (!brick_calc.empty())
-			{
-				srand(time(0));
-				color oColor;
-				vector<real_point> arPoints;
-				for (const brick_data& oBrick : brick_calc)
-				{
-					oColor.from_rgb(rand() % 256, rand() % 256, rand() % 150);
-
-					for (const brick_point& oPoint : oBrick.points)
-						arPoints.push_back({ oPoint.x, oPoint.y });
-
-					arPoints.push_back({ oBrick.points.front().x, oBrick.points.front().y });
-
-					pl.fill(arPoints, oColor);
-					arPoints.clear();
-				}
-			}
-		}
-		else
-			pl.colorbar(maxHeightColorMap, settings.maxHeight.wsUnitMeasure, settings.maxHeight.GetTick());
-		
-		const std::vector<real_point> arCoordsMareograms = GetCoordsMareographs();
-
-		pl.draw_mareograms(arCoordsMareograms, true);
-		pl.draw_grid(true, true);
-		pl.draw_axis(true, false);
-
-		std::string namePath = std::string(settings.wsPathToSave.begin(), settings.wsPathToSave.end()) + "fronts/";
-		std::string name;
-		if (t < time_moments)
-		{
-			int timeInt = 1000000 + t;
-			std::string timeString = to_string(timeInt);
-			timeString[0] = '0';
-			name = namePath + timeString + ".bmp";
-		}
-		else
-		{
-			name = namePath + "MAX.bmp";
-		}
-
-		graph.save_as_file(name.c_str());
-	});
-	
-
-	nana::button bu(fm);
-	//bu.move({10, 10, 100, 20});
-	bu.caption("Do this!");
-	//bu.umake_event<nana::events::click>(nana::threads::pool_push(pool_calc, *this, &example::_m_start));
-	//bu.events().click(pool_push(pool_calc, run_calc));
-	bu.events().click(pool_push(pool_calc, [&dw1, &out_s_type, &pool_calc]
-	{
-		for (; t <= time_moments; t++) {
-			clock_t be = clock();
-			run_calc();
-			clock_t en = clock();
-			if (!(t % 100)) cout << t << endl;//<< ' ' << en - be << endl;
-			if (t % output_time == 0) { dw1.update();}
-			if (t % 25 == 0) { 
-				checking_mareographs();
-			}
-			if (t % time_moments == 0 && t != 0) 
-				saveMareographs();
-		}
-		out_s_type = L"MaxVis";
-		t--;
-		dw1.update();
-		output_array_max_vis(settings.wsPathToSave + L"maxHeight/MaxHeight.mtx", maxVis);
-	}));
-
-	place pl(fm);
-	pl.div("< vert <weight=25 <bu> > <weight = 5> < weight=20 <cmbx><><><><><> > <pic>>");
-	pl.field("bu") << bu;
-	pl.field("cmbx") << out_type;
-	pl.field("pic") << pic;
-	pl.collocate();
-	fm.show();
-	nana::exec();
-}*/
-
 void fm_calc()
 {
 	nana::threads::pool pool_calc;
@@ -287,6 +110,7 @@ void fm_calc()
 			gr.make(nana::size(graph.width(), graph.height()));
 			gr.rectangle(true, { 255, 255, 255 });
 
+			// Создаем plot для отрисовки в окне
 			plot2d pl(&gr);
 			pl.colorbar(true);
 			pl.region(real_rectangle{ { start_x + delta_x / 2., start_y + delta_y / 2. }, { end_x - delta_x / 2., end_y - delta_y / 2. } });
@@ -298,6 +122,7 @@ void fm_calc()
 			pl.axis_x_label(L"W", L"E");
 			pl.axis_y_label(L"N", L"S");
 
+			// Лямбда-выражение, которое задает то, как мы будем рисовать нашу акваторию
 			color_func2d f = [&out_s_type, &heightColorMap, &frontColorMap, &maxHeightColorMap](double x, double y)->color
 			{
 				nana::color c;
@@ -380,6 +205,7 @@ void fm_calc()
 			gr1.make(oImageSize);
 			gr1.rectangle(true, { 255, 255, 255 });
 
+			// Создаем новый plot для сохранения в файл
 			plot2d save(&gr1);
 			save.colorbar(true);
 

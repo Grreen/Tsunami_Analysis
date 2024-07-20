@@ -84,9 +84,7 @@ void gist2d_file_new(std::wstring path){
 	if (gist2d_d.looking_at == L"EAST") { c = 'E'; size = gist_d.size_y; }
 	
 	wfstream file;
-	//const char * path = name.c_str();;
 	file.open(path.c_str(), std::wfstream::out);
-	//fprintf(file, "%d %d %c\n", amount, size, c);
 	file << amount << " " << size << " " << c << endl;
 	for (int i = 0; i < amount; i++){
 		for (int j = 0; j < size; j++){
@@ -96,16 +94,6 @@ void gist2d_file_new(std::wstring path){
 		file << endl;
 	}
 	file << gist2d_d.step_font_x << " " << gist2d_d.step_font_y << " " << gist2d_d.step_x << " " << gist2d_d.step_y << endl;
-	/*FILE* file = _wfopen(path.c_str(), L"w");
-
-	fprintf(file, "%d %d %c\n", amount, size, c);
-	for (int i = 0; i < amount; i++){
-		for (int j = 0; j < size; j++){
-			fprintf(file, "%lf ", vct_gist_d[i][j]);
-		}
-		fprintf(file, "\n");
-	} */
-
 }
 
 void gist2d_file(std::wstring path, bool add){
@@ -123,16 +111,14 @@ void gist2d_file(std::wstring path, bool add){
 	if (a == L'W') gist2d_d.looking_at = L"WEST";
 	if (a == L'E') gist2d_d.looking_at = L"EAST";
 
-	for (int i = 0; i < amount; i++){
-		//double* buf = new double[size];
+	for (int i = 0; i < amount; i++)
+	{
 		vector <double> buf;
 		for (int j = 0; j < size; j++){
 			double val = 0;
 			file >> val;
 			buf.push_back(val);
 		}
-		//double a; file >> a;
-		
 		vct_gist_d.push_back(buf);
 	}
 	file >> gist2d_d.step_font_x >> gist2d_d.step_font_y >> gist2d_d.step_x >> gist2d_d.step_y;
@@ -162,8 +148,8 @@ void h_array(){
 	else l = gist_d.size_y;
 	double *arr = new double[l];
 	
-	if (gist2d_d.looking_at == L"NORTH"){
-		//arr = new double[gist_d.size_x];
+	if (gist2d_d.looking_at == L"NORTH")
+	{
 		memset(arr, 0, gist_d.size_x * sizeof(double));
 		int* buf = new int[v_c_c[gist2d_d.check].size()];
 		memset(buf, 0, v_c_c[gist2d_d.check].size()*sizeof(int));
@@ -175,9 +161,8 @@ void h_array(){
 			}
 		}
 	}
-	if (gist2d_d.looking_at == L"SOUTH"){
-
-		//arr = new double[gist_d.size_x];
+	else if (gist2d_d.looking_at == L"SOUTH")
+	{
 		memset(arr, 0, gist_d.size_x * sizeof(double));
 		int* buf = new int[v_c_c[gist2d_d.check].size()];
 		memset(buf, 0, v_c_c[gist2d_d.check].size() * sizeof(int));
@@ -189,9 +174,8 @@ void h_array(){
 			}
 		}
 	}
-	if (gist2d_d.looking_at == L"EAST"){
-
-		//arr = new double[gist_d.size_x];
+	else if (gist2d_d.looking_at == L"EAST")
+	{
 		memset(arr, 0, gist_d.size_y * sizeof(double));
 		int* buf = new int[v_c_c[gist2d_d.check].size()];
 		memset(buf, 0, v_c_c[gist2d_d.check].size() * sizeof(int));
@@ -204,10 +188,8 @@ void h_array(){
 		}
 
 	}
-
-	if (gist2d_d.looking_at == L"WEST"){
-
-		//arr = new double[gist_d.size_x];
+	else if (gist2d_d.looking_at == L"WEST")
+	{
 		memset(arr, 0, gist_d.size_y * sizeof(double));
 		int* buf = new int[v_c_c[gist2d_d.check].size()];
 		memset(buf, 0, v_c_c[gist2d_d.check].size() * sizeof(int));
@@ -220,7 +202,6 @@ void h_array(){
 		}
 	}
 	vector <double> buf;
-	// разрядка
 	for (int i = 0; i < l; i++) 
 	{
 		if (i % 2 == 0 && false){
@@ -228,13 +209,8 @@ void h_array(){
 		}
 		else buf.push_back(arr[i]);
 	}
-	
 	printf("\n");
-
-	//for (int i = 0; i < l; i++) buf.push_back(arr[i]);
 	vct_gist_d.push_back(buf);
-	
-	//return arr;
 }
 coord get_coord_gist_2d(double x, double y){
 	return{ (int)((x - gist_d.start_x) / (gist_d.end_x - gist_d.start_x)*(gist_d.size_x)),
@@ -303,16 +279,6 @@ void fm_param_nana(){
 	//************************************************************************//
 	//**********************************LABEL*********************************//
 	//************************************************************************//
-
-	//label lbl1_1(fm);
-	//lbl.caption(L"     Step font X:");
-
-	//label lbl2_1(fm);
-	//lbl2_1.caption(L"     Step font Y:");
-
-	
-	//label lbl3_2(fm);
-	//lbl3_2.caption(L"     Color:");
 
 	label lbl_step_x(fm);
 	lbl_step_x.caption(L"     Step axis X:");
@@ -466,9 +432,6 @@ bool approximatelyEqual(double a, double b, double epsilon) {
 void fm_gist()
 {
 	gist2d_d.check = s_param.NC;
-	/*for (int i = 0; i < v_c_c.size();){
-		if (v_c_c[i].size() < 2) v_c_c[i].push_back({})
-	}*/
 	/****************************************************************/
 	/*******************************FORM*****************************/
 	/****************************************************************/
@@ -478,19 +441,18 @@ void fm_gist()
 	/****************************COMBOX*****************************/
 	/***************************************************************/
 	listbox lb_gist(fm);
-	lb_gist.append_header(L"  №", 55);
+	lb_gist.append_header(L"  пїЅ", 55);
 	lb_gist.append_header(L"Name", 110);	
 	lb_gist.checkable(true); 
 	auto cat = lb_gist.at(0);
 	gist_info *info_2d = new gist_info[f_c_c.size()];
-	//gist2d_d.check = 0;
 	gist2d_d.looking_at = L"NORTH";
-	for (int i = 0; i < int(f_c_c.size()); i++){
+	for (int i = 0; i < int(f_c_c.size()); i++)
+	{
 		
 		info_2d[i].n = i;
 		info_2d[i].name = L"NoName";
 		cat.append(info_2d[i]);
-		//info_2d[i].north = true;
 	}
 	lb_gist.at(0).at(0).check(true);
 	lb_gist.events().checked([&lb_gist](const arg_listbox& a){
@@ -517,15 +479,14 @@ void fm_gist()
 		nana::string x_lbl_start, x_lbl_end;
 		double s_x, s_y, e_x, e_y;
 		s_y = 0;
-		e_y = gist2d_d.h;//max_h(gist2d_d.check) + max_h(gist2d_d.check) / 10;
-		//if (e_y <= 1) e_y = 2;
+		e_y = gist2d_d.h;
 		if (gist2d_d.looking_at == L"NORTH" || gist2d_d.looking_at == L"SOUTH"){
 			x_lbl_start = L"W";
 			x_lbl_end   = L"E";
 			if (gist_d.start_x > start_x - 0.0001 && gist_d.start_x < start_x + 0.0001) { s_x = gist_d.start_x + 2 * delta_x; }
 			else s_x = gist_d.start_x + delta_x; 
 			if (gist_d.end_x > end_x - 0.0001 && gist_d.end_x < end_x + 0.0001) { e_x = gist_d.end_x - 2 * delta_x; }
-			else e_x = gist_d.end_x;// -delta_x;
+			else e_x = gist_d.end_x;
 		}
 		else {
 			x_lbl_start = L"N";
@@ -542,18 +503,12 @@ void fm_gist()
 		plot2d pl(&gr);
 		pl.colorbar(false);
 
-		//pl.window({ 0, 0, graph.size().width, graph.size().height });
-		//pl.region(real_rectangle{ { 0, 0 }, { v_c_c[set_check].size(), max_h(set_check) + max_h(set_check) / 10 } });
 		pl.region(real_rectangle{ { s_x, s_y },	{ e_x, e_y} });
-		//pl.region( { s_x, s_y }, { e_x, e_y } );
 		pl.window({ 0, 0, graph.size().width, graph.size().height });
 
-		//set_step({ gist2d_d.step_x, gist2d_d.step_y }, { s_x, s_y }, {e_x, e_y});
-		
 		pl.axis_x(true);
 		pl.axis_y(true);
 		pl.axis_x_label(x_lbl_start, x_lbl_end);
-		//pl.axis_y_label(L"h(m)");
 		auto step = pl.get_step();
 
 		printf("vct_gist_d::size : %d\n", vct_gist_d.size());
@@ -563,27 +518,20 @@ void fm_gist()
 		double st_x = adapt_double(s_x, gist2d_d.step_x, true), st_y = adapt_double(e_y, gist2d_d.step_y, false);//adapt_double(s_y);
 
 		nana::color* g_col = new color[5];
-		g_col[0] = { 220, 0, 0 };//красный
-		g_col[1] = { 0, 220, 0 };//зеленый
-		g_col[2] = { 0, 0, 220 };//синий
+		g_col[0] = { 220, 0, 0 };//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		g_col[1] = { 0, 220, 0 };//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		g_col[2] = { 0, 0, 220 };//пїЅпїЅпїЅпїЅпїЅ
 		g_col[3] = { 220, 220, 0 };
 		g_col[4] = { 0, 220, 220 };
-		//g_col[5] = { 64, 64, 0 };
 		if (gist2d_d.color == L"RED") g_col[0] = { 220, 0, 0 };
 		if (gist2d_d.color == L"BLUE") g_col[0] = g_col[2];
 		if (gist2d_d.color == L"GREEN") g_col[0] = g_col[1];
 		if (gist2d_d.color == L"YELLOW") g_col[0] = g_col[3];
-		//real_point *dr_step = adapt_step(real_point step);
 		pl.draw_grid(true, true, gist2d_d.step_x, gist2d_d.step_y, gist2d_d.step_font_x, gist2d_d.step_font_y, gist2d_d.h);
-		//int schet = 0, schet1 = 6, schet2 = 9, propusk = 6; double pred_x = 0;, &schet, &schet1, &schet2, &propusk, &pred_x
 		
 		color_func2d f = [&g_col, &step, &st_x, &st_y, &e_y](double x, double y)->color{
 			
 				color c = { 255, 255, 255 };
-				//if(pred_x == 0) pred_x = x;
-				//bool pict;
-				//if ((pred_x < x - 0.00001))
-				//if (schet >= schet1 && schet < schet2){
 				int a = 0; double val = 100;
 				if (gist2d_d.looking_at == L"NORTH" || gist2d_d.looking_at == L"SOUTH")  a = get_coord_gist_2d(x, y).x;
 				else  a = get_coord_gist_2d(y, x).y;
@@ -611,27 +559,13 @@ void fm_gist()
 				}
 				if (y + step.y <= max_h_x(a) || y + step.y <= 0.0001) st_y = adapt_double(e_y, gist2d_d.step_y, false);
 
-				//	}
-				//if (schet >= (schet2 + propusk)) 
-				//	schet = 0;
-				//if (pred_x < x - 0.00001)	{ 
-				//	schet++; 
-				//		pred_x = x; 
-				//}
-				//else if ()
-
 				return c;
 			
 		};
 
 
 		pl.plot_2d_color_function(f);
-		//schet = 0; schet1 = 6; schet2 = 9; propusk = 6; pred_x = 0;
 		pl.draw_axis(true, false);
-		//pl.axis_x(true);
-		//pl.axis_y(true);
-		//pl.axis_x_label(L"N");
-		//pl.axis_y_label(L"Height");
 		graph = gr;
 
 		if (gist2d_d.save)
@@ -643,16 +577,12 @@ void fm_gist()
 		if (gist2d_d.save){
 			nana::paint::graphics gr1;
 			plot2d save(&gr1);
-			//gr1.make(size(1000, 500));
 			save.colorbar(false);
 			save.region(real_rectangle{ { s_x, s_y }, { e_x, e_y } });
-			//save.window({ 0, 0, graph.size().width, graph.size().height });
 			save.window({ 0, 0, 1000, 600});
 			save.axis_x(true);
 			save.axis_y(true);
 			save.axis_x_label(x_lbl_start, x_lbl_end);
-			//save.axis_y_label(L"h(m)");
-			//gr1.rectangle(true, { 255, 255, 255 });
 			save.draw_grid(true, true, gist2d_d.step_x, gist2d_d.step_y, gist2d_d.step_font_x, gist2d_d.step_font_y, gist2d_d.h);
 			st_x = adapt_double(s_x, gist2d_d.step_x, true), st_y = adapt_double(e_y, gist2d_d.step_y, false);
 			save.plot_2d_color_function(f);
@@ -674,5 +604,4 @@ void fm_gist()
 	pl.collocate();
 	fm.show();
 	fm_param_nana();
-	//nana::exec();
 }

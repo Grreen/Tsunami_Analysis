@@ -67,11 +67,9 @@ void read_array(const nana::string& file_path)
 		bool fl = false;
 		for (int j = 0; j < size_x; j++)
 		{
-			if ((i >= gist_d.t_r.y && i <= gist_d.l_l.y) && (j >= gist_d.l_l.x && j <= gist_d.t_r.x)){
+			if ((i >= gist_d.t_r.y && i <= gist_d.l_l.y) && (j >= gist_d.l_l.x && j <= gist_d.t_r.x))
+			{
 				file >> CComp[i1][j1]; cn++;
-		//		if (CComp[i1][j1] >= 3.8) CComp[i1][j1] /= 1.4;
-			//	else CComp[i1][j1] /= 1.5;
-				
 				j1++;
 				fl = true;
 			}
@@ -104,13 +102,12 @@ void read_array(const nana::string& file_path)
 
 vector <double> average;
 vector <double> max_from_components;
-vector <vector <coord>> v_c_c; //= new vector <coord>[MAXN];// [MAXN];
+vector <vector <coord>> v_c_c;
 vector <vector <coord>> f_c_c;
-vector<coord> buf;//(20000);// (5000);
+vector<coord> buf;
 vector <int> **fp;
-bool point_own(int y, int x, int n){
-	//	cout << "1 ";
-
+bool point_own(int y, int x, int n)
+{
 	for (int i = 0; i < int(fp[y][x].size()); i++){
 
 		if (fp[y][x][i] == n) return true;
@@ -131,16 +128,11 @@ void dfs(int x, int y, int n){
 		if (y + dy[i] == buf[0].y && x + dx[i] == buf[0].x) {
 			coord b;  b.x = x + dx[i];  b.y = y + dy[i]; buf.push_back(b); buf.push_back(a);
 		}
-		//cout << "size: " << buf.size() << "  | " << y + dy[i] << "  | " << x + dx[i] << endl;
-		//point_own(y + dy[i], x + dx[i], n);
-		//cout << " 2"<<endl;
 		if (a.y + dy[i] < gist_d.size_y + 2 && a.x + dx[i] < gist_d.size_x + 2 && a.y + dy[i] >= 0 && a.x + dx[i] >= 0){
-			if (/*CComp[y + dy[i]][x + dx[i]] > 0 &&*/
-				point_own(y + dy[i], x + dx[i], n) &&
+			if (point_own(y + dy[i], x + dx[i], n) &&
 				!bool_CComp[y + dy[i]][x + dx[i]]){
 				dfs(x + dx[i], y + dy[i], n);
 				buf.push_back(a);
-				//cout << CComp[a.y][a.] << endl;
 			}
 		}
 	}
@@ -191,7 +183,6 @@ void save_all_components(){
 		max_from_components.push_back(max);
 		average.push_back( sum / v_c_c[i].size() );
 	}
-	//v_c_c[][]
 }	
 
 void find_comps()
@@ -204,7 +195,6 @@ void find_comps()
 	}
 	find_aqua();
 	save_all_components();
-	//calc_average();
 
 	for (int n = 0; n < int(v_c_c.size()); n++){
 		for (int i = 0; i < gist_d.size_y + 2; i++)
@@ -218,15 +208,12 @@ void find_comps()
 		f_c_c.push_back(buf);
 		buf.clear();
 	}
-	//save_cut_max("MAX_PROLIV1.dat");
 }
 const double eps = 1e-6;
 
 void find_aqua()
 {
 	vector <coord> tmp;
-	/*int begin = find_begin(v_c_c[i]);
-	v_c_c[i][begin];*/
 	fp = create_array_vector(gist_d.size_y + 2, gist_d.size_x + 2);
 	for (int i = 0; i < int(v_c_c.size()); i++){
 		coord a;
@@ -238,7 +225,6 @@ void find_aqua()
 				for (int yt = -1; yt < 2; yt++){
 					bool b = false;
 					if (xt == 0 && yt == 0) continue;
-					//if (v_c_c[i][j].y + yt == size_y || v_c_c[i][j].x + xt == size_x) continue;
 					for (int it = 0; it < int(fp[v_c_c[i][j].y + yt][v_c_c[i][j].x + xt].size()); it++){
 						if (fp[v_c_c[i][j].y + yt][v_c_c[i][j].x + xt][it] == i) b = true;
 					}
@@ -280,17 +266,3 @@ void save_cut_max(std::string path) {
 		file << "\n";
 	}
 }
-/*void gist2d_set_value(vector <std::wstring> ){
-	for (int i = 0; i < g2d_dat.count;){
-
-		}
-	
-	}
-}*/
-/*double *buf;
-if (g2d_dat.looking_at == L"NORTH"){
-buf = new double[gist_d.size_x];
-memset(buf, 0., gist_d.size_x * sizeof(int));
-for (int j = 0; j < f_c_c[g2d_dat.NC].size(); j++){
-if (f_c_c[g2d_dat.NC][j].x > a[])
-}*/

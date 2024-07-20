@@ -41,6 +41,8 @@ void mn_enabled_check(nana::menubar mn, bool enbl){
 
 nana::drawing* pMainPicture = NULL;
 
+// Главный метод, который отвечает за создание main-menu окна
+// Также тут создаются все сопутсвующие компоненты меню и кнопок
 void fm_main()
 {
 	
@@ -48,21 +50,6 @@ void fm_main()
 	nana::threads::pool pool_bar_chart;
 	form fm_main_menu(API::make_center(450, 300), appear::decorate<>());
 	fm_main_menu.caption(L"Tsunami analysis: Main menu");
-	//scale_c_h();
-	//color_ind(size_y);
-	//button btn_run_culc(fm_main_menu);
-	//btn_run_culc.caption(L"Run calculation");
-	//API::eat_tabstop(btn_run_culc, false);
-	/*btn_run_culc.events().click([]{
-		read_dat(p_dat);
-		fm_calc();
-	});*/
-	/*button btn_bar_chart(fm_main_menu);
-	btn_bar_chart.caption(L"Bar chart");
-	API::eat_tabstop(btn_bar_chart, false);
-	btn_bar_chart.events().click(pool_push(pool_bar_chart, []{
-		bar_chart_gl();
-	}));*/
 	//---------------LABEL's---------------//
 	label lbl_time(fm_main_menu);
 	lbl_time.caption(L"Time:");
@@ -298,195 +285,7 @@ void fm_main()
 	pl_menu.field("lb") << lbl_izobata << lbl_time << lbl_output_time;
 	pl_menu.field("tb") << tb_izobata << tb_time_moments << tb_output_time;
 
-	//pl_menu.field("btn") << btn_run_culc;// << btn_bar_chart;
-	//mn_enabled_check(mn, false);
 	pl_menu.collocate();
 	fm_main_menu.show();
 	nana::exec();
 }
-/*nana::color get_color(double t, bool a){
-int h = int(t);
-//cout << h << endl;
-
-if (a)
-{
-if (t <= number_one[1].scale_h){
-return{ 255, 255, 255 };
-
-}
-if (t <= number_one[2]
-
-&& t > number_one[1].scale_h){
-return{
-unsigned int(number_one[1].scale_c.r + (double(t - number_one[1].scale_h) / double(number_one[1]
-
-- number_one[0].scale_h))*(number_one[2].scale_c.r - number_one[1].scale_c.r)),
-unsigned int(number_one[1].scale_c.g + (double(t - number_one[1].scale_h) / double(number_one[1].scale_h - number_one[0].scale_h))*(number_one[2].scale_c.g - number_one[1].scale_c.g)),
-unsigned int(number_one[1].scale_c.b + (double(t - number_one[1].scale_h) / double(number_one[1].scale_h - number_one[0].scale_h))*(number_one[2].scale_c.b - number_one[1].scale_c.b))
-};
-}
-if (t <= number_one[3].scale_h && t > number_one[2].scale_h){
-
-return{
-unsigned int(number_one[2].scale_c.r + (double(t - number_one[2].scale_h) / double(number_one[3].scale_h - number_one[2].scale_h))*(number_one[3].scale_c.r - number_one[2].scale_c.r)),
-unsigned int(number_one[2].scale_c.g + (double(t - number_one[2].scale_h) / double(number_one[3].scale_h - number_one[2].scale_h))*(number_one[3].scale_c.g - number_one[2].scale_c.g)),
-unsigned int(number_one[2].scale_c.b + (double(t - number_one[2].scale_h) / double(number_one[3].scale_h - number_one[2].scale_h))*(number_one[3].scale_c.b - number_one[2].scale_c.b))
-};
-}
-if (t <= number_one[4].scale_h && t > number_one[3].scale_h){
-
-return{
-unsigned int(number_one[3].scale_c.r + (double(t - number_one[3].scale_h) / double(number_one[4].scale_h - number_one[3].scale_h))*(number_one[4].scale_c.r - number_one[3].scale_c.r)),
-unsigned int(number_one[3].scale_c.g + (double(t - number_one[3].scale_h) / double(number_one[4].scale_h - number_one[3].scale_h))*(number_one[4].scale_c.g - number_one[3].scale_c.g)),
-unsigned int(number_one[3].scale_c.b + (double(t - number_one[3].scale_h) / double(number_one[4].scale_h - number_one[3].scale_h))*(number_one[4].scale_c.b - number_one[3].scale_c.b))
-};
-}
-if ((t <= number_one[5].scale_h && t > number_one[4].scale_h)){
-
-return{
-unsigned int(number_one[4].scale_c.r + (double(t - number_one[4].scale_h) / double(number_one[5].scale_h - number_one[4].scale_h))*(number_one[5].scale_c.r - number_one[4].scale_c.r)),
-unsigned int(number_one[4].scale_c.g + (double(t - number_one[4].scale_h) / double(number_one[5].scale_h - number_one[4].scale_h))*(number_one[5].scale_c.g - number_one[4].scale_c.g)),
-unsigned int(number_one[4].scale_c.b + (double(t - number_one[4].scale_h) / double(number_one[5].scale_h - number_one[4].scale_h))*(number_one[5].scale_c.b - number_one[4].scale_c.b))
-};
-}
-
-
-}
-if (!a){
-if (h <= z[0]){
-return{ 255, 255, 255 };
-
-}
-if (h <= z[1] && h > z[0]){
-
-
-return{
-unsigned int(number_one[1].scale_c.r + (double(h - z[0]) / double(z[1] - z[0])) * (number_one[2].scale_c.r - number_one[1].scale_c.r)),
-unsigned int(number_one[1].scale_c.g + (double(h - z[0]) / double(z[1] - z[0])) * (number_one[2].scale_c.g - number_one[1].scale_c.g)),
-unsigned int(number_one[1].scale_c.b + (double(h - z[0]) / double(z[1] - z[0])) * (number_one[2].scale_c.b - number_one[1].scale_c.b)) };
-
-}
-if (h <= z[2] && h > z[1]){
-
-
-return{
-unsigned int(number_one[2].scale_c.r + (double(h - z[1]) / double(z[2] - z[1])) * (number_one[3].scale_c.r - number_one[2].scale_c.r)),
-unsigned int(number_one[2].scale_c.g + (double(h - z[1]) / double(z[2] - z[1])) * (number_one[3].scale_c.g - number_one[2].scale_c.g)),
-unsigned int(number_one[2].scale_c.b + (double(h - z[1]) / double(z[2] - z[1])) * (number_one[3].scale_c.b - number_one[2].scale_c.b)) };
-
-}
-if (h <= z[3] && h > z[2]){
-
-
-return{
-unsigned int(number_one[3].scale_c.r + (double(h - z[2]) / double(z[3] - z[2])) * (number_one[4].scale_c.r - number_one[3].scale_c.r)),
-unsigned int(number_one[3].scale_c.g + (double(h - z[2]) / double(z[3] - z[2])) * (number_one[4].scale_c.g - number_one[3].scale_c.g)),
-unsigned int(number_one[3].scale_c.b + (double(h - z[2]) / double(z[3] - z[2])) * (number_one[4].scale_c.b - number_one[3].scale_c.b)) };
-
-}
-if (h <= z[4] && h > z[3]){
-
-return{
-unsigned int(number_one[4].scale_c.r + (double(h - z[3]) / double(z[4] - z[3])) * (number_one[5].scale_c.r - number_one[4].scale_c.r)),
-unsigned int(number_one[4].scale_c.g + (double(h - z[3]) / double(z[4] - z[3])) * (number_one[5].scale_c.g - number_one[4].scale_c.g)),
-unsigned int(number_one[4].scale_c.b + (double(h - z[3]) / double(z[4] - z[3])) * (number_one[5].scale_c.b - number_one[4].scale_c.b)) };
-}
-}
-return{ 0, 0, 0 };
-}*/
-/*if (bottom[y][x] >= 0. && bottom[y][x] < 100) c = { 0, 255, 0 };
-if (bottom[y][x] >= 100 && bottom[y][x] < 150) c = { 0, 235, 0 };
-if (bottom[y][x] >= 150 && bottom[y][x] < 200) c = { 0, 220, 0 };
-if (bottom[y][x] >= 200 && bottom[y][x] < 250) c = { 0, 200, 0 };
-if (bottom[y][x] >= 250 && bottom[y][x] < 300) c = { 0, 180, 0 };
-if (bottom[y][x] >= 300 && bottom[y][x] < 400) c = { 0, 160, 0 };
-if (bottom[y][x] >= 400 && bottom[y][x] < 500) c = { 0, 140, 0 };
-if (bottom[y][x] >= 500 && bottom[y][x] < 750) c = { 0, 120, 0 };
-if (bottom[y][x] >= 750 && bottom[y][x] < 1000) c = { 0, 100, 0 };
-if (bottom[y][x] >= 1000 && bottom[y][x] < 1250) c = { 0, 80, 0 };
-if (bottom[y][x] >= 1250 && bottom[y][x] < 1500) c = { 0, 60, 0 };
-if (bottom[y][x] >= 1500 && bottom[y][x] < 1750) c = { 0, 40, 0 };
-if (bottom[y][x] >= 1750 && bottom[y][x] < 2200) c = { 0, 20, 0 };
-if (bottom[y][x] >= 2200) c = { 0, 0, 0 };
-*/
-/*paint::pixel_buffer pbuffer;
-rectangle r;
-r.x = 0;
-r.y = 0;
-r.width = pic.size().width;
-r.height = pic.size().height;
-pbuffer.attach(gr.handle(), r);
-for (int y = 0; y <size_y; y++) {
-for (int x = 0; x < size_x; x++) {
-nana::color c;
-if (bottom[y][x] >= 0.0 ){
-c = cmap2.get_color(bottom[y][x]);
-if (bottom[y][x] < 0) c = { 38, 226, 255 };
-}
-else {
-
-if (out_s_type == L"eta") c = cmap.get_color(eta[y][x]);
-if (out_s_type == L"MaxVis") c = cmap.get_color(maxVis[y][x]);
-if (out_s_type == L"MinVis")  c = {255, 255, 255};
-}
-pixel_color_t* cur_color = pbuffer[y] + x;
-cur_color->value = c.argb().value;
-//gr.set_pixel(x, y, c);
-}
-}
-pbuffer.close();
-gr.stretch(graph, rectangle(10, 30, pic.size().width - 100, pic.size().height - 50));*/
-/*int h = 0;
-auto sz = graph.size();
-
-int a = 50, b = sz.height - 50;
-double step = -((number_one[5].scale_h - number_one[0].scale_h) * (double)(1) / (-b + a) + number_one[0].scale_h) + (number_one[0].scale_h);
-for (int y = b; y >= a; y--) {
-double val = (number_one[5].scale_h - number_one[0].scale_h) * (double)(y - b) / (-b + a) + number_one[0].scale_h;
-int sx = pic.size().width - 30;
-for (int j = 0; j < 6; j++)
-{
-//nana ::
-if (val == number_one[j].scale_h) {
-nana::string a = to_wstring(val);
-a = to_wstring_short(a, 1);
-graph.string({ sx - 5, y  }, a);
-//if(j==0) graph.string({ sx - 5, y - 20  }, to_wstring(int(val)));
-//if (j == 5) graph.string({ sx - 5, y + 10 }, to_wstring(int(val)));
-}
-else if (val >number_one[j].scale_h && val - step < number_one[j].scale_h)	{
-nana::string a = to_wstring(val);
-a = to_wstring_short(a, 1);
-graph.string({ sx - 5, y }, a);
-}
-}
-nana::color c = cmap.get_color(val);
-//printf("%lf %lf %lf\n", c.r(), c.g(), c.b());
-for (int x = pic.size().width - 50; x < pic.size().width - 20; x++) {
-graph.set_pixel(x, y, c);
-}
-}*/
-/*nana::string to_wstring_short(nana::string a, int len){
-bool flag = false;
-int i;
-for (i = 0; a[i]!=L'.'; i++){
-//if (a[i] == '.') i++;
-}
-for (int j = i + len + 1; j < int(a.size()); j++)
-a[j] = L'\0';
-return a;
-}*/
-/*void fm_select_area(){
-scale_c_h();
-nana::form fm{ API::make_center(800, 400) };
-nana::colormap cmap({ { number_one[0].scale_h, number_one[0].scale_c }, { number_one[1].scale_h, number_one[1].scale_c }, { number_one[2].scale_h, number_one[2].scale_c }, { number_one[3].scale_h, number_one[3].scale_c }, { number_one[4].scale_h, number_one[4].scale_c }, { number_one[5].scale_h, number_one[5].scale_c }, { number_one[6].scale_h, number_one[6].scale_c }, { number_one[7].scale_h, number_one[7].scale_c } });
-nana::colormap cmap2({ { bath_earth[0].scale_h, bath_earth[0].scale_c }, { bath_earth[1].scale_h, bath_earth[1].scale_c }, { bath_earth[2].scale_h, bath_earth[2].scale_c }, { bath_earth[3].scale_h, bath_earth[3].scale_c }, { bath_earth[4].scale_h, bath_earth[4].scale_c } });
-nana::picture pic(fm);
-nana::drawing dw1(pic);
-}*/
-/*const wchar_t * n_dat;
-const wchar_t * n_brick;
-const wchar_t * n_barchart;*/
-/*struct my_color{
-int r; int g; int b;
-};*/

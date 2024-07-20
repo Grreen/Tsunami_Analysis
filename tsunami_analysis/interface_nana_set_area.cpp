@@ -103,7 +103,6 @@ void fm_select_area(){
 	});
 	nana::paint::graphics gr;
 	dw1.draw([&dw1, &pic, &tb_x1, &tb_x2, &tb_y1, &tb_y2, &c1, &c2, &gr, &status_map](nana::paint::graphics& graph){
-		//gr.(graph.size());
 		gr.make(nana::size(size_x, size_y));
 		nana::color col = { 0, 0, 0 };
 		
@@ -151,8 +150,6 @@ void fm_select_area(){
 			for (int y = 0; y < size_y; y++) {
 				for (int x = 0; x < size_x; x++) {
 					nana::color c;
-					//nana::color c;
-					//		coord p = get_coord(x, y);
 					if (bottom[y][x] >= 0.0) {
 						c = { 0, 255, 0 };
 					}
@@ -186,7 +183,6 @@ void fm_select_area(){
 	pl.collocate();
 	//----------------------------------------------------//
 	pic.events().mouse_down([&fm, &tb_x1, &tb_x2, &tb_y1, &tb_y2, &dw1](const nana::arg_mouse & arg){
-		//	cout << arg.pos.x << endl; 
 		crd2 = crd1;
 		crd1 = get_coord_double(arg.pos.x, arg.pos.y, fm.size().width, fm.size().height);
 		cout << crd1.x << "  |  " << crd1.y << endl;
@@ -205,8 +201,6 @@ void fm_select_area(){
 	select_all.caption(L"All area");
 	select_all.events().click([&fm, &fm1]{
 		gist_d.l_l = {0 , size_y - 1};
-		//gist_d.l_r = { size_x - 1, size_y -1};
-		//gist_d.t_l = { 0, 0 };
 		gist_d.t_r = { size_x - 1, 0};
 		gist_d.start_x = start_x;
 		gist_d.start_y = start_y;
@@ -244,8 +238,6 @@ void fm_select_area(){
 		gist_d.start_x = min(crd1.x, crd2.x);
 		gist_d.start_y = min(crd1.y, crd2.y);
 		gist_d.l_l = get_coord(gist_d.start_x, gist_d.start_y);
-		//gist_d.l_r = get_coord(gist_d.end_x, gist_d.start_y);
-		//gist_d.t_l = get_coord(gist_d.start_x, gist_d.end_y);
 		gist_d.t_r = get_coord(gist_d.end_x, gist_d.end_y);
 		gist_d.size_x = gist_d.t_r.x - gist_d.l_l.x + 1;
 		gist_d.size_y = (gist_d.l_l.y - gist_d.t_r.y + 1);
@@ -264,7 +256,6 @@ void fm_select_area(){
 	pl1.collocate();
 	fm.show();
 	fm1.show();
-	//fm_param_gist();
 	nana::exec();
 	
 }

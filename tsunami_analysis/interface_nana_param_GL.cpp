@@ -32,12 +32,10 @@ using namespace std;
 unsigned char* WindowDump()
 {
 	int width = size_window_w, height = size_window_h;
-///	int i, j;
 	FILE *fptr;
 	static int counter = 0; // This supports animation sequences 
 	char fname[32];
 	unsigned char *image;
-	//image = new unsigned char[]
 	// Allocate our buffer for the image 
 	if ((image = (unsigned char*)malloc(3 * width * height * sizeof(char))) == NULL) {
 		fprintf(stderr, "Failed to allocate memory for image\n");
@@ -76,25 +74,6 @@ void save_position(nana::string name){
 	file.close();
 }
 
-/*std::string narrow_string(std::wstring const &s, std::locale const &loc, char default_char = '?')
-{
-	if (s.empty())
-		return std::string();
-	std::ctype<wchar_t> const &facet = std::use_facet<std::ctype<wchar_t> >(loc);
-	wchar_t const *first = s.c_str();
-	wchar_t const *last = first + s.size();
-	std::vector<char> result(s.size());
-
-	facet.narrow(first, last, default_char, &result[0]);
-
-	return std::string(result.begin(), result.end());
-}*/
-/*std::string narrow(const std::wstring& wide, const std::locale& loc)
-{
-	if (wide.empty())
-		return std::string();
-
-}*/
 std::string wchar2char(const std::wstring & p_in, const std::locale & p_loc) 
 {
 	typedef std::wstring::traits_type::state_type       TsType;
@@ -179,12 +158,7 @@ void fm_param_gl(){
 		}
 		cout << "44444444444\n";
 		std::string name = "gistograms\\3D\\" + to_string(schet) + ".bmp";
-		//setlocale(LC_ALL, "Russian");
 		gr.save_as_file(name.c_str());
-		//path_pic = "c:\\tmp\\���\\1.bmp";
-		//gr.save_as_file(path_pic.c_str());
-		
-
 	});
 
 	place pl1(fm1);
@@ -202,9 +176,6 @@ void fm_param_gl(){
 		schet++;
 		fm1.show();
 		dw1.update();
-			//fm1.close();
-			//			dw1.update();
-		//}
 	});
 	
 	btn_load.events().click([](){
@@ -352,62 +323,9 @@ void fm_param_gl(){
 	pl.field("lbl_s1") << lbl1_1 << lbl1_2;
 	pl.field("lbl_s2") << lbl2_1 << lbl2_2;
 	pl.field("lbl_s3") << lbl3_1 << lbl3_2;
-	//pl.field("lbl") << lbl1 << lbl2 << lbl3;
 	cout << "55555\n";
 	pl.collocate();
 	fm.show();
 	bar_chart_gl();
 	exec();
 }
-
-/*
-button north(fm,L"N"), south(fm, L"S"), east(fm, L"E"), west(fm, L"W");
-place pl(fm);
-//pl.div(	"<weight = 5>"
-//"<weight = 50 >"
-//"<weight = 90% vert"
-//"<weight=10 vert>"
-//"< weight=30 vert < weight = 30 <   weight = 30 vert <north>   > > >"
-//"<west vert>"
-//">"
-//"<weight = 40 vert <weight= 10 vert>  <weight = 30 < weight = 30 < weight = 30 vert <north>  > > > >"
-//"<weight = 40 vert <weight= 10 vert>  <weight = 30 < weight = 30 < weight = 30 vert <north>  > > > >"
-//"<weight = 5>");
-pl.div(	"<weight = 5>"
-"<weight = 125 vert"
-"<weight=25 vert>"
-"<weight=35 vert <weight=35 < <weight = 60> <weight = 35 north> > > >"
-"<weight= 35 vert < weight = 35 <weight = 22 > <weight=35 west> <weight=42> <weight=35 east> > >"
-"<weight=35 vert <weight=35 < <weight = 60> <weight = 35 south> > > >"
-" >"
-"<weight = 5>");
-pl.field("north") << north;
-pl.field("west") << west;
-pl.field("east") << east;
-pl.field("south") << south;
-pl.collocate();*/
-//filebox fb(0, false);
-//fb.add_filter(L"Save position", L"*.jpg;");
-//if (fb()){
-//setlocale(LC_ALL, "Russian");
-//std::wstring path_file = fb.file();
-
-//std::locale loc(russian_locale_designator);
-//std::wstring const ws = path_file;
-//std::string  str = wchar2char(ws, loc);
-//path_pic = str;
-////const std::wstring ws = L"Hello";
-//const std::string s(path_file.begin(), path_file.end());
-//path_pic = s;
-//std::locale::global(loc);
-//cout << path_pic << endl;
-//wcout << path_file << endl;
-/*filebox fb(0, false);
-fb.add_filter(L"Save position", L"*.jpg;");
-if (fb()){
-std::wstring path_file = fb.file();
-//path_pic = std::wstring_convert<std::codecvt_utf8 <wchar_t>>().
-path_pic = std::wstring_convert< std::codecvt_utf8 <wchar_t> >().to_bytes(path_file);
-setlocale(LC_ALL, "Russian");
-cout << path_pic << endl;
-}*/
