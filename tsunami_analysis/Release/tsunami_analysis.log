@@ -1,0 +1,237 @@
+﻿  calculation.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2541,23): warning C4244: аргумент: преобразование "wchar_t" в "const _Elem", возможна потеря данных
+          with
+          [
+              _Elem=char
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2552): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)"
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2552): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)"
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2532): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)"
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2532): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)"
+          with
+          [
+              _Iter=wchar_t *
+          ]
+F:\Code\Tsunami\tsunami_analysis2\tsunami_analysis\Mareograph.h(29): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)"
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+F:\Code\Tsunami\tsunami_analysis2\tsunami_analysis\Mareograph.h(29): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)"
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2541,23): warning C4244: аргумент: преобразование "const wchar_t" в "const _Elem", возможна потеря данных
+          with
+          [
+              _Elem=char
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2552): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<const wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)"
+          with
+          [
+              _Iter=const wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2552): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<const wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)"
+          with
+          [
+              _Iter=const wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2532): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<const wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)"
+          with
+          [
+              _Iter=const wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2532): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<const wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)"
+          with
+          [
+              _Iter=const wchar_t *
+          ]
+F:\Code\Tsunami\tsunami_analysis2\tsunami_analysis\Mareograph.h(80): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_const_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)"
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+F:\Code\Tsunami\tsunami_analysis2\tsunami_analysis\Mareograph.h(80): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_const_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)"
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+  displaying.cpp
+  draw_axis.cpp
+  find_comps.cpp
+  geometry.cpp
+  GLFT_Font.cpp
+  interface_GL.cpp
+  interface_mareograms.cpp
+  interface_nana_calc.cpp
+  interface_nana_gist2D.cpp
+  interface_nana_main.cpp
+  interface_nana_param_GL.cpp
+  interface_nana_set_area.cpp
+  main.cpp
+  Mareograph.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2541,23): warning C4244: аргумент: преобразование "wchar_t" в "const _Elem", возможна потеря данных
+          with
+          [
+              _Elem=char
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2552): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)"
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2552): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)"
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2532): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)"
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2532): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)"
+          with
+          [
+              _Iter=wchar_t *
+          ]
+F:\Code\Tsunami\tsunami_analysis2\tsunami_analysis\Mareograph.h(29): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)"
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+F:\Code\Tsunami\tsunami_analysis2\tsunami_analysis\Mareograph.h(29): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)"
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2541,23): warning C4244: аргумент: преобразование "const wchar_t" в "const _Elem", возможна потеря данных
+          with
+          [
+              _Elem=char
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2552): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<const wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)"
+          with
+          [
+              _Iter=const wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2552): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<const wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)"
+          with
+          [
+              _Iter=const wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2532): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<const wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)"
+          with
+          [
+              _Iter=const wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2532): message : выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<const wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)"
+          with
+          [
+              _Iter=const wchar_t *
+          ]
+F:\Code\Tsunami\tsunami_analysis2\tsunami_analysis\Mareograph.h(80): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_const_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)"
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+F:\Code\Tsunami\tsunami_analysis2\tsunami_analysis\Mareograph.h(80): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_const_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)"
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+  plot.cpp
+  Создание кода
+  Previous IPDB not found, fall back to full compilation.
+  All 18745 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Создание кода завершено
+nana_Release_x86.lib(basis.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(basis.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(button.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(button.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(basic_types.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(basic_types.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(programming_interface.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(programming_interface.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(drawer.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(drawer.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(graphics.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(graphics.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(pixel_buffer.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(pixel_buffer.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(widget.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(widget.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(combox.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(combox.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(bedrock_pi.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(bedrock_pi.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(wvl.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(wvl.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(place.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(place.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(drawing.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(drawing.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(picture.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(picture.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(form.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(form.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(pool.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(pool.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(label.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(label.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(listbox.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(listbox.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(filebox.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(filebox.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(textbox.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(textbox.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(any.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(any.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(menubar.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(menubar.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(menu.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(menu.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(screen.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(screen.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(effects.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(effects.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(image.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(image.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(text_renderer.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(text_renderer.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(traits.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(traits.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(color_schemes.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(color_schemes.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(bedrock.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(bedrock.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(element.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(element.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(charset.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(charset.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(platform.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(platform.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(events_operation.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(events_operation.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(native_window_interface.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(native_window_interface.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(window_manager.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(window_manager.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(basic_window.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(basic_window.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(layout_utility.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(layout_utility.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(window_layout.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(window_layout.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(native_paint_interface.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(native_paint_interface.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(deploy.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(deploy.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(unicode_bidi.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(unicode_bidi.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(platform_spec.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(platform_spec.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(image_process_provider.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(image_process_provider.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(internationalization.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(internationalization.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(tooltip.obj) : warning LNK4099: "" PDB не найден с "nana_Release_x86.lib(tooltip.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(exceptions.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(exceptions.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(float_listbox.obj) : warning LNK4099: "" PDB не найден с "nana_Release_x86.lib(float_listbox.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(text_editor.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(text_editor.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(dragger.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(dragger.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(timer.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(timer.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(dataexch.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(dataexch.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(scroll.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(scroll.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(fs_utility.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(fs_utility.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(msgbox.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(msgbox.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(notifier.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(notifier.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(element_store.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(element_store.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(datetime.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(datetime.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(file_iterator.obj) : warning LNK4099: "" PDB не найден с "nana_Release_x86.lib(file_iterator.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+nana_Release_x86.lib(spinbox.obj) : warning LNK4099: "nana.pdb" PDB не найден с "nana_Release_x86.lib(spinbox.obj)" или на "F:\Code\Tsunami\tsunami_analysis2\Release\nana.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+  tsunami_analysis.vcxproj -> F:\Code\Tsunami\tsunami_analysis2\Release\tsunami_analysis.exe

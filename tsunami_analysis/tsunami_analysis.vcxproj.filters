@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\OpenGL Files">
+      <UniqueIdentifier>{31cc7559-803b-4c34-a540-4fa7c1801a99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plot nana">
+      <UniqueIdentifier>{440912b1-75d1-4641-a282-bd8e3bea0038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Nana_Files">
+      <UniqueIdentifier>{072f6ac6-293b-4c0e-9881-74f8c1251bba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Calculation">
+      <UniqueIdentifier>{6fdc5948-e2cb-432d-a7f8-349768d76b5d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interface_nana_calc.cpp">
+      <Filter>Source Files\Nana_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interface_nana_gist2D.cpp">
+      <Filter>Source Files\Nana_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interface_nana_main.cpp">
+      <Filter>Source Files\Nana_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interface_nana_param_GL.cpp">
+      <Filter>Source Files\Nana_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interface_nana_set_area.cpp">
+      <Filter>Source Files\Nana_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="plot.cpp">
+      <Filter>Plot nana</Filter>
+    </ClCompile>
+    <ClCompile Include="displaying.cpp">
+      <Filter>Source Files\OpenGL Files</Filter>
+    </ClCompile>
+    <ClCompile Include="geometry.cpp">
+      <Filter>Source Files\OpenGL Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interface_GL.cpp">
+      <Filter>Source Files\OpenGL Files</Filter>
+    </ClCompile>
+    <ClCompile Include="draw_axis.cpp">
+      <Filter>Source Files\OpenGL Files</Filter>
+    </ClCompile>
+    <ClCompile Include="calculation.cpp">
+      <Filter>Source Files\Calculation</Filter>
+    </ClCompile>
+    <ClCompile Include="find_comps.cpp">
+      <Filter>Source Files\Calculation</Filter>
+    </ClCompile>
+    <ClCompile Include="interface_mareograms.cpp">
+      <Filter>Source Files\Nana_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mareograph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLFT_Font.cpp">
+      <Filter>Source Files\OpenGL Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="tmp.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="calculation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="declaration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="displaying.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\libs\glftfont-master\GLFT_Font.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interface_GL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interface_nana.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plot.h">
+      <Filter>Plot nana</Filter>
+    </ClInclude>
+    <ClInclude Include="CImg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mareograph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,452 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31321.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tsunami_analysis", "tsunami_analysis\tsunami_analysis.vcxproj", "{1E3A9FE6-1349-4469-9583-BABFFBFA996B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{08ADBAD4-9FC2-4CED-9C8E-A14CCA6063CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "include", "include", "{2E5E9615-8CF3-4262-87E9-D77CB9D16997}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{E8401D16-7DEA-4900-8375-C5FC28F93E7D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x86", "x86", "{98678FFB-F5B6-4674-8AAF-FFFEBDF7C6B9}"
+	ProjectSection(SolutionItems) = preProject
+		api\lib\x86\freetype255.lib = api\lib\x86\freetype255.lib
+		api\lib\x86\glew32.lib = api\lib\x86\glew32.lib
+		api\lib\x86\glew32s.lib = api\lib\x86\glew32s.lib
+		api\lib\x86\glfw3.lib = api\lib\x86\glfw3.lib
+		api\lib\x86\nana_Release_x86.lib = api\lib\x86\nana_Release_x86.lib
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x64", "x64", "{F5D3C38C-7173-4D91-8FAD-8FFB3B24FD19}"
+	ProjectSection(SolutionItems) = preProject
+		api\lib\x64\glew32.lib = api\lib\x64\glew32.lib
+		api\lib\x64\glew32mx.lib = api\lib\x64\glew32mx.lib
+		api\lib\x64\glew32mxs.lib = api\lib\x64\glew32mxs.lib
+		api\lib\x64\glew32s.lib = api\lib\x64\glew32s.lib
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nana", "nana", "{CD25920F-D751-4B9D-B7E8-4520A431D067}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\any.hpp = api\include\nana\any.hpp
+		api\include\nana\basic_types.hpp = api\include\nana\basic_types.hpp
+		api\include\nana\charset.hpp = api\include\nana\charset.hpp
+		api\include\nana\concepts.hpp = api\include\nana\concepts.hpp
+		api\include\nana\config.hpp = api\include\nana\config.hpp
+		api\include\nana\datetime.hpp = api\include\nana\datetime.hpp
+		api\include\nana\deploy.hpp = api\include\nana\deploy.hpp
+		api\include\nana\exceptions.hpp = api\include\nana\exceptions.hpp
+		api\include\nana\fwd.hpp = api\include\nana\fwd.hpp
+		api\include\nana\geometry.cpp = api\include\nana\geometry.cpp
+		api\include\nana\geometry.h = api\include\nana\geometry.h
+		api\include\nana\gui.hpp = api\include\nana\gui.hpp
+		api\include\nana\internationalization.hpp = api\include\nana\internationalization.hpp
+		api\include\nana\key_type.hpp = api\include\nana\key_type.hpp
+		api\include\nana\plot.cpp = api\include\nana\plot.cpp
+		api\include\nana\plot.h = api\include\nana\plot.h
+		api\include\nana\std_condition_variable.hpp = api\include\nana\std_condition_variable.hpp
+		api\include\nana\std_mutex.hpp = api\include\nana\std_mutex.hpp
+		api\include\nana\std_thread.hpp = api\include\nana\std_thread.hpp
+		api\include\nana\traits.hpp = api\include\nana\traits.hpp
+		api\include\nana\unicode_bidi.hpp = api\include\nana\unicode_bidi.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "audio", "audio", "{A6FFDC73-BF78-4B03-847A-8026A1748764}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\audio\player.hpp = api\include\nana\audio\player.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{0E08BB92-E8FA-45A4-B580-6DE5C69388F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extrlib", "extrlib", "{050319B0-F2C5-4059-86E4-044E43FDFC23}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\extrlib\png.h = api\include\nana\extrlib\png.h
+		api\include\nana\extrlib\pngconf.h = api\include\nana\extrlib\pngconf.h
+		api\include\nana\extrlib\pnglibconf.h = api\include\nana\extrlib\pnglibconf.h
+		api\include\nana\extrlib\zlib.h = api\include\nana\extrlib\zlib.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "filesystem", "filesystem", "{D21C4D51-C710-400F-9823-70D7962B799B}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\filesystem\file_iterator.hpp = api\include\nana\filesystem\file_iterator.hpp
+		api\include\nana\filesystem\filesystem.hpp = api\include\nana\filesystem\filesystem.hpp
+		api\include\nana\filesystem\fs_utility.hpp = api\include\nana\filesystem\fs_utility.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gui", "gui", "{28E34090-EC3C-4DE6-88BC-9993E7E9F6E9}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\gui\animation.hpp = api\include\nana\gui\animation.hpp
+		api\include\nana\gui\basis.hpp = api\include\nana\gui\basis.hpp
+		api\include\nana\gui\dragger.hpp = api\include\nana\gui\dragger.hpp
+		api\include\nana\gui\drawing.hpp = api\include\nana\gui\drawing.hpp
+		api\include\nana\gui\effects.hpp = api\include\nana\gui\effects.hpp
+		api\include\nana\gui\element.hpp = api\include\nana\gui\element.hpp
+		api\include\nana\gui\filebox.hpp = api\include\nana\gui\filebox.hpp
+		api\include\nana\gui\layout_utility.hpp = api\include\nana\gui\layout_utility.hpp
+		api\include\nana\gui\msgbox.hpp = api\include\nana\gui\msgbox.hpp
+		api\include\nana\gui\notifier.hpp = api\include\nana\gui\notifier.hpp
+		api\include\nana\gui\place.hpp = api\include\nana\gui\place.hpp
+		api\include\nana\gui\programming_interface.hpp = api\include\nana\gui\programming_interface.hpp
+		api\include\nana\gui\screen.hpp = api\include\nana\gui\screen.hpp
+		api\include\nana\gui\state_cursor.hpp = api\include\nana\gui\state_cursor.hpp
+		api\include\nana\gui\timer.hpp = api\include\nana\gui\timer.hpp
+		api\include\nana\gui\tooltip.hpp = api\include\nana\gui\tooltip.hpp
+		api\include\nana\gui\wvl.hpp = api\include\nana\gui\wvl.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "paint", "paint", "{57DDD74B-3367-42D0-A0FF-85B14501D4FF}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\paint\gadget.hpp = api\include\nana\paint\gadget.hpp
+		api\include\nana\paint\graphics.hpp = api\include\nana\paint\graphics.hpp
+		api\include\nana\paint\image.hpp = api\include\nana\paint\image.hpp
+		api\include\nana\paint\image_process_interface.hpp = api\include\nana\paint\image_process_interface.hpp
+		api\include\nana\paint\image_process_selector.hpp = api\include\nana\paint\image_process_selector.hpp
+		api\include\nana\paint\pixel_buffer.hpp = api\include\nana\paint\pixel_buffer.hpp
+		api\include\nana\paint\text_renderer.hpp = api\include\nana\paint\text_renderer.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pat", "pat", "{714AF1F4-C223-411B-BAB8-0BAF8079BC3F}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\pat\abstract_factory.hpp = api\include\nana\pat\abstract_factory.hpp
+		api\include\nana\pat\cloneable.hpp = api\include\nana\pat\cloneable.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "system", "system", "{59FE0837-5070-431F-82E4-7A60ABE97C1A}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\system\dataexch.hpp = api\include\nana\system\dataexch.hpp
+		api\include\nana\system\platform.hpp = api\include\nana\system\platform.hpp
+		api\include\nana\system\shared_wrapper.hpp = api\include\nana\system\shared_wrapper.hpp
+		api\include\nana\system\timepiece.hpp = api\include\nana\system\timepiece.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "thread", "thread", "{8AE41B8B-CBF5-4F58-8D96-512D90AB9DB0}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\threads\pool.hpp = api\include\nana\threads\pool.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{9BC8F49B-DB32-4006-A532-EDFEC7E46974}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\audio\detail\audio_device.hpp = api\include\nana\audio\detail\audio_device.hpp
+		api\include\nana\audio\detail\audio_stream.hpp = api\include\nana\audio\detail\audio_stream.hpp
+		api\include\nana\audio\detail\buffer_preparation.hpp = api\include\nana\audio\detail\buffer_preparation.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "linux_X11", "linux_X11", "{19082719-2CAA-4310-8885-AEE30001AC22}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\detail\linux_X11\msg_packet.hpp = api\include\nana\detail\linux_X11\msg_packet.hpp
+		api\include\nana\detail\linux_X11\platform_spec.hpp = api\include\nana\detail\linux_X11\platform_spec.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "win32", "win32", "{9904F58D-29E9-435D-938B-AD077BB7B687}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\detail\win32\platform_spec.hpp = api\include\nana\detail\win32\platform_spec.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{F066241A-BB4A-4C11-93FD-C957E2DCDFB4}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\gui\detail\basic_window.hpp = api\include\nana\gui\detail\basic_window.hpp
+		api\include\nana\gui\detail\bedrock.hpp = api\include\nana\gui\detail\bedrock.hpp
+		api\include\nana\gui\detail\bedrock_pi_data.hpp = api\include\nana\gui\detail\bedrock_pi_data.hpp
+		api\include\nana\gui\detail\color_schemes.hpp = api\include\nana\gui\detail\color_schemes.hpp
+		api\include\nana\gui\detail\drawer.hpp = api\include\nana\gui\detail\drawer.hpp
+		api\include\nana\gui\detail\dynamic_drawing_object.hpp = api\include\nana\gui\detail\dynamic_drawing_object.hpp
+		api\include\nana\gui\detail\effects_renderer.hpp = api\include\nana\gui\detail\effects_renderer.hpp
+		api\include\nana\gui\detail\element_store.hpp = api\include\nana\gui\detail\element_store.hpp
+		api\include\nana\gui\detail\event_code.hpp = api\include\nana\gui\detail\event_code.hpp
+		api\include\nana\gui\detail\events_holder.hpp = api\include\nana\gui\detail\events_holder.hpp
+		api\include\nana\gui\detail\events_operation.hpp = api\include\nana\gui\detail\events_operation.hpp
+		api\include\nana\gui\detail\general_events.hpp = api\include\nana\gui\detail\general_events.hpp
+		api\include\nana\gui\detail\handle_manager.hpp = api\include\nana\gui\detail\handle_manager.hpp
+		api\include\nana\gui\detail\inner_fwd.hpp = api\include\nana\gui\detail\inner_fwd.hpp
+		api\include\nana\gui\detail\inner_fwd_implement.hpp = api\include\nana\gui\detail\inner_fwd_implement.hpp
+		api\include\nana\gui\detail\internal_scope_guard.hpp = api\include\nana\gui\detail\internal_scope_guard.hpp
+		api\include\nana\gui\detail\native_window_interface.hpp = api\include\nana\gui\detail\native_window_interface.hpp
+		api\include\nana\gui\detail\runtime_manager.hpp = api\include\nana\gui\detail\runtime_manager.hpp
+		api\include\nana\gui\detail\widget_colors.hpp = api\include\nana\gui\detail\widget_colors.hpp
+		api\include\nana\gui\detail\widget_notifier_interface.hpp = api\include\nana\gui\detail\widget_notifier_interface.hpp
+		api\include\nana\gui\detail\window_layout.hpp = api\include\nana\gui\detail\window_layout.hpp
+		api\include\nana\gui\detail\window_manager.hpp = api\include\nana\gui\detail\window_manager.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "widgets", "widgets", "{28D67ED2-ED1B-445C-9852-87DC8E2F5441}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\gui\widgets\button.hpp = api\include\nana\gui\widgets\button.hpp
+		api\include\nana\gui\widgets\categorize.hpp = api\include\nana\gui\widgets\categorize.hpp
+		api\include\nana\gui\widgets\checkbox.hpp = api\include\nana\gui\widgets\checkbox.hpp
+		api\include\nana\gui\widgets\combox.hpp = api\include\nana\gui\widgets\combox.hpp
+		api\include\nana\gui\widgets\date_chooser.hpp = api\include\nana\gui\widgets\date_chooser.hpp
+		api\include\nana\gui\widgets\float_listbox.hpp = api\include\nana\gui\widgets\float_listbox.hpp
+		api\include\nana\gui\widgets\form.hpp = api\include\nana\gui\widgets\form.hpp
+		api\include\nana\gui\widgets\frame.hpp = api\include\nana\gui\widgets\frame.hpp
+		api\include\nana\gui\widgets\group.hpp = api\include\nana\gui\widgets\group.hpp
+		api\include\nana\gui\widgets\label.hpp = api\include\nana\gui\widgets\label.hpp
+		api\include\nana\gui\widgets\listbox.hpp = api\include\nana\gui\widgets\listbox.hpp
+		api\include\nana\gui\widgets\menu.hpp = api\include\nana\gui\widgets\menu.hpp
+		api\include\nana\gui\widgets\menubar.hpp = api\include\nana\gui\widgets\menubar.hpp
+		api\include\nana\gui\widgets\panel.hpp = api\include\nana\gui\widgets\panel.hpp
+		api\include\nana\gui\widgets\picture.hpp = api\include\nana\gui\widgets\picture.hpp
+		api\include\nana\gui\widgets\progress.hpp = api\include\nana\gui\widgets\progress.hpp
+		api\include\nana\gui\widgets\scroll.hpp = api\include\nana\gui\widgets\scroll.hpp
+		api\include\nana\gui\widgets\slider.hpp = api\include\nana\gui\widgets\slider.hpp
+		api\include\nana\gui\widgets\spinbox.hpp = api\include\nana\gui\widgets\spinbox.hpp
+		api\include\nana\gui\widgets\tabbar.hpp = api\include\nana\gui\widgets\tabbar.hpp
+		api\include\nana\gui\widgets\textbox.hpp = api\include\nana\gui\widgets\textbox.hpp
+		api\include\nana\gui\widgets\toolbar.hpp = api\include\nana\gui\widgets\toolbar.hpp
+		api\include\nana\gui\widgets\treebox.hpp = api\include\nana\gui\widgets\treebox.hpp
+		api\include\nana\gui\widgets\widget.hpp = api\include\nana\gui\widgets\widget.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{C71C9766-BE1D-4DFC-A010-32BA735CC696}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\gui\widgets\detail\compset.hpp = api\include\nana\gui\widgets\detail\compset.hpp
+		api\include\nana\gui\widgets\detail\inline_widget.hpp = api\include\nana\gui\widgets\detail\inline_widget.hpp
+		api\include\nana\gui\widgets\detail\inline_widget_manager.hpp = api\include\nana\gui\widgets\detail\inline_widget_manager.hpp
+		api\include\nana\gui\widgets\detail\tree_cont.hpp = api\include\nana\gui\widgets\detail\tree_cont.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "skeletons", "skeletons", "{D4601A29-CEB0-4789-827A-7D378BB78434}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\gui\widgets\skeletons\text_editor.hpp = api\include\nana\gui\widgets\skeletons\text_editor.hpp
+		api\include\nana\gui\widgets\skeletons\text_editor_scheme.hpp = api\include\nana\gui\widgets\skeletons\text_editor_scheme.hpp
+		api\include\nana\gui\widgets\skeletons\text_token_stream.hpp = api\include\nana\gui\widgets\skeletons\text_token_stream.hpp
+		api\include\nana\gui\widgets\skeletons\textbase.hpp = api\include\nana\gui\widgets\skeletons\textbase.hpp
+		api\include\nana\gui\widgets\skeletons\textbase_export_interface.hpp = api\include\nana\gui\widgets\skeletons\textbase_export_interface.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{00600CB6-0CE0-4778-8409-655E9F16814D}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\nana\paint\detail\image_impl_interface.hpp = api\include\nana\paint\detail\image_impl_interface.hpp
+		api\include\nana\paint\detail\image_process_provider.hpp = api\include\nana\paint\detail\image_process_provider.hpp
+		api\include\nana\paint\detail\image_processor.hpp = api\include\nana\paint\detail\image_processor.hpp
+		api\include\nana\paint\detail\native_paint_interface.hpp = api\include\nana\paint\detail\native_paint_interface.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "freetype-2.5.5", "freetype-2.5.5", "{4C6D7A9C-2542-44D1-ABFD-5E6B5302566B}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\freetype-2.5.5\freetype.h = api\include\freetype-2.5.5\freetype.h
+		api\include\freetype-2.5.5\ft2build.h = api\include\freetype-2.5.5\ft2build.h
+		api\include\freetype-2.5.5\ftadvanc.h = api\include\freetype-2.5.5\ftadvanc.h
+		api\include\freetype-2.5.5\ftautoh.h = api\include\freetype-2.5.5\ftautoh.h
+		api\include\freetype-2.5.5\ftbbox.h = api\include\freetype-2.5.5\ftbbox.h
+		api\include\freetype-2.5.5\ftbdf.h = api\include\freetype-2.5.5\ftbdf.h
+		api\include\freetype-2.5.5\ftbitmap.h = api\include\freetype-2.5.5\ftbitmap.h
+		api\include\freetype-2.5.5\ftbzip2.h = api\include\freetype-2.5.5\ftbzip2.h
+		api\include\freetype-2.5.5\ftcache.h = api\include\freetype-2.5.5\ftcache.h
+		api\include\freetype-2.5.5\ftcffdrv.h = api\include\freetype-2.5.5\ftcffdrv.h
+		api\include\freetype-2.5.5\ftchapters.h = api\include\freetype-2.5.5\ftchapters.h
+		api\include\freetype-2.5.5\ftcid.h = api\include\freetype-2.5.5\ftcid.h
+		api\include\freetype-2.5.5\fterrdef.h = api\include\freetype-2.5.5\fterrdef.h
+		api\include\freetype-2.5.5\fterrors.h = api\include\freetype-2.5.5\fterrors.h
+		api\include\freetype-2.5.5\ftgasp.h = api\include\freetype-2.5.5\ftgasp.h
+		api\include\freetype-2.5.5\ftglyph.h = api\include\freetype-2.5.5\ftglyph.h
+		api\include\freetype-2.5.5\ftgxval.h = api\include\freetype-2.5.5\ftgxval.h
+		api\include\freetype-2.5.5\ftgzip.h = api\include\freetype-2.5.5\ftgzip.h
+		api\include\freetype-2.5.5\ftimage.h = api\include\freetype-2.5.5\ftimage.h
+		api\include\freetype-2.5.5\ftincrem.h = api\include\freetype-2.5.5\ftincrem.h
+		api\include\freetype-2.5.5\ftlcdfil.h = api\include\freetype-2.5.5\ftlcdfil.h
+		api\include\freetype-2.5.5\ftlist.h = api\include\freetype-2.5.5\ftlist.h
+		api\include\freetype-2.5.5\ftlzw.h = api\include\freetype-2.5.5\ftlzw.h
+		api\include\freetype-2.5.5\ftmac.h = api\include\freetype-2.5.5\ftmac.h
+		api\include\freetype-2.5.5\ftmm.h = api\include\freetype-2.5.5\ftmm.h
+		api\include\freetype-2.5.5\ftmodapi.h = api\include\freetype-2.5.5\ftmodapi.h
+		api\include\freetype-2.5.5\ftmoderr.h = api\include\freetype-2.5.5\ftmoderr.h
+		api\include\freetype-2.5.5\ftotval.h = api\include\freetype-2.5.5\ftotval.h
+		api\include\freetype-2.5.5\ftoutln.h = api\include\freetype-2.5.5\ftoutln.h
+		api\include\freetype-2.5.5\ftpfr.h = api\include\freetype-2.5.5\ftpfr.h
+		api\include\freetype-2.5.5\ftrender.h = api\include\freetype-2.5.5\ftrender.h
+		api\include\freetype-2.5.5\ftsizes.h = api\include\freetype-2.5.5\ftsizes.h
+		api\include\freetype-2.5.5\ftsnames.h = api\include\freetype-2.5.5\ftsnames.h
+		api\include\freetype-2.5.5\ftstroke.h = api\include\freetype-2.5.5\ftstroke.h
+		api\include\freetype-2.5.5\ftsynth.h = api\include\freetype-2.5.5\ftsynth.h
+		api\include\freetype-2.5.5\ftsystem.h = api\include\freetype-2.5.5\ftsystem.h
+		api\include\freetype-2.5.5\fttrigon.h = api\include\freetype-2.5.5\fttrigon.h
+		api\include\freetype-2.5.5\ftttdrv.h = api\include\freetype-2.5.5\ftttdrv.h
+		api\include\freetype-2.5.5\fttypes.h = api\include\freetype-2.5.5\fttypes.h
+		api\include\freetype-2.5.5\ftwinfnt.h = api\include\freetype-2.5.5\ftwinfnt.h
+		api\include\freetype-2.5.5\ftxf86.h = api\include\freetype-2.5.5\ftxf86.h
+		api\include\freetype-2.5.5\t1tables.h = api\include\freetype-2.5.5\t1tables.h
+		api\include\freetype-2.5.5\ttnameid.h = api\include\freetype-2.5.5\ttnameid.h
+		api\include\freetype-2.5.5\tttables.h = api\include\freetype-2.5.5\tttables.h
+		api\include\freetype-2.5.5\tttags.h = api\include\freetype-2.5.5\tttags.h
+		api\include\freetype-2.5.5\ttunpat.h = api\include\freetype-2.5.5\ttunpat.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{859997DD-2F00-45AC-A270-2EF22DCB12AF}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\freetype-2.5.5\config\ftconfig.h = api\include\freetype-2.5.5\config\ftconfig.h
+		api\include\freetype-2.5.5\config\ftheader.h = api\include\freetype-2.5.5\config\ftheader.h
+		api\include\freetype-2.5.5\config\ftmodule.h = api\include\freetype-2.5.5\config\ftmodule.h
+		api\include\freetype-2.5.5\config\ftoption.h = api\include\freetype-2.5.5\config\ftoption.h
+		api\include\freetype-2.5.5\config\ftstdlib.h = api\include\freetype-2.5.5\config\ftstdlib.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "internal", "internal", "{9E7ECCB3-9A85-446F-B906-06AE6509A0A4}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\freetype-2.5.5\internal\autohint.h = api\include\freetype-2.5.5\internal\autohint.h
+		api\include\freetype-2.5.5\internal\ftcalc.h = api\include\freetype-2.5.5\internal\ftcalc.h
+		api\include\freetype-2.5.5\internal\ftdebug.h = api\include\freetype-2.5.5\internal\ftdebug.h
+		api\include\freetype-2.5.5\internal\ftdriver.h = api\include\freetype-2.5.5\internal\ftdriver.h
+		api\include\freetype-2.5.5\internal\ftgloadr.h = api\include\freetype-2.5.5\internal\ftgloadr.h
+		api\include\freetype-2.5.5\internal\ftmemory.h = api\include\freetype-2.5.5\internal\ftmemory.h
+		api\include\freetype-2.5.5\internal\ftobjs.h = api\include\freetype-2.5.5\internal\ftobjs.h
+		api\include\freetype-2.5.5\internal\ftpic.h = api\include\freetype-2.5.5\internal\ftpic.h
+		api\include\freetype-2.5.5\internal\ftrfork.h = api\include\freetype-2.5.5\internal\ftrfork.h
+		api\include\freetype-2.5.5\internal\ftserv.h = api\include\freetype-2.5.5\internal\ftserv.h
+		api\include\freetype-2.5.5\internal\ftstream.h = api\include\freetype-2.5.5\internal\ftstream.h
+		api\include\freetype-2.5.5\internal\fttrace.h = api\include\freetype-2.5.5\internal\fttrace.h
+		api\include\freetype-2.5.5\internal\ftvalid.h = api\include\freetype-2.5.5\internal\ftvalid.h
+		api\include\freetype-2.5.5\internal\internal.h = api\include\freetype-2.5.5\internal\internal.h
+		api\include\freetype-2.5.5\internal\psaux.h = api\include\freetype-2.5.5\internal\psaux.h
+		api\include\freetype-2.5.5\internal\pshints.h = api\include\freetype-2.5.5\internal\pshints.h
+		api\include\freetype-2.5.5\internal\sfnt.h = api\include\freetype-2.5.5\internal\sfnt.h
+		api\include\freetype-2.5.5\internal\t1types.h = api\include\freetype-2.5.5\internal\t1types.h
+		api\include\freetype-2.5.5\internal\tttypes.h = api\include\freetype-2.5.5\internal\tttypes.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{92906BDC-4D39-4EAA-8656-243D02BE1205}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\freetype-2.5.5\internal\services\svbdf.h = api\include\freetype-2.5.5\internal\services\svbdf.h
+		api\include\freetype-2.5.5\internal\services\svcid.h = api\include\freetype-2.5.5\internal\services\svcid.h
+		api\include\freetype-2.5.5\internal\services\svgldict.h = api\include\freetype-2.5.5\internal\services\svgldict.h
+		api\include\freetype-2.5.5\internal\services\svgxval.h = api\include\freetype-2.5.5\internal\services\svgxval.h
+		api\include\freetype-2.5.5\internal\services\svkern.h = api\include\freetype-2.5.5\internal\services\svkern.h
+		api\include\freetype-2.5.5\internal\services\svmm.h = api\include\freetype-2.5.5\internal\services\svmm.h
+		api\include\freetype-2.5.5\internal\services\svotval.h = api\include\freetype-2.5.5\internal\services\svotval.h
+		api\include\freetype-2.5.5\internal\services\svpfr.h = api\include\freetype-2.5.5\internal\services\svpfr.h
+		api\include\freetype-2.5.5\internal\services\svpostnm.h = api\include\freetype-2.5.5\internal\services\svpostnm.h
+		api\include\freetype-2.5.5\internal\services\svprop.h = api\include\freetype-2.5.5\internal\services\svprop.h
+		api\include\freetype-2.5.5\internal\services\svpscmap.h = api\include\freetype-2.5.5\internal\services\svpscmap.h
+		api\include\freetype-2.5.5\internal\services\svpsinfo.h = api\include\freetype-2.5.5\internal\services\svpsinfo.h
+		api\include\freetype-2.5.5\internal\services\svsfnt.h = api\include\freetype-2.5.5\internal\services\svsfnt.h
+		api\include\freetype-2.5.5\internal\services\svttcmap.h = api\include\freetype-2.5.5\internal\services\svttcmap.h
+		api\include\freetype-2.5.5\internal\services\svtteng.h = api\include\freetype-2.5.5\internal\services\svtteng.h
+		api\include\freetype-2.5.5\internal\services\svttglyf.h = api\include\freetype-2.5.5\internal\services\svttglyf.h
+		api\include\freetype-2.5.5\internal\services\svwinfnt.h = api\include\freetype-2.5.5\internal\services\svwinfnt.h
+		api\include\freetype-2.5.5\internal\services\svxf86nm.h = api\include\freetype-2.5.5\internal\services\svxf86nm.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "glftfont-master", "glftfont-master", "{44EE42D5-5B27-412C-8720-1F506BB36634}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\glftfont-master\GLFT_Font.hpp = api\include\glftfont-master\GLFT_Font.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "glew-1.13.0", "glew-1.13.0", "{B9614F90-FB00-4C1D-9BBA-43204A350422}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GL", "GL", "{058536D7-1E97-4B41-8F7C-15589A6AEB23}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\glew-1.13.0\GL\glew.h = api\include\glew-1.13.0\GL\glew.h
+		api\include\glew-1.13.0\GL\glxew.h = api\include\glew-1.13.0\GL\glxew.h
+		api\include\glew-1.13.0\GL\wglew.h = api\include\glew-1.13.0\GL\wglew.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CImg-1.7.0", "CImg-1.7.0", "{4922BA8C-9E58-4EB2-A894-E6D987594B0A}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\CImg-1.7.0\CImg.h = api\include\CImg-1.7.0\CImg.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugins", "plugins", "{7773CAAC-963D-4D0E-86FB-7A940172E2AD}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\CImg-1.7.0\plugins\add_fileformat.h = api\include\CImg-1.7.0\plugins\add_fileformat.h
+		api\include\CImg-1.7.0\plugins\bayer.h = api\include\CImg-1.7.0\plugins\bayer.h
+		api\include\CImg-1.7.0\plugins\chlpca.h = api\include\CImg-1.7.0\plugins\chlpca.h
+		api\include\CImg-1.7.0\plugins\cvMat.h = api\include\CImg-1.7.0\plugins\cvMat.h
+		api\include\CImg-1.7.0\plugins\draw_gradient.h = api\include\CImg-1.7.0\plugins\draw_gradient.h
+		api\include\CImg-1.7.0\plugins\inpaint.h = api\include\CImg-1.7.0\plugins\inpaint.h
+		api\include\CImg-1.7.0\plugins\ipl.h = api\include\CImg-1.7.0\plugins\ipl.h
+		api\include\CImg-1.7.0\plugins\ipl_alt.h = api\include\CImg-1.7.0\plugins\ipl_alt.h
+		api\include\CImg-1.7.0\plugins\jpeg_buffer.h = api\include\CImg-1.7.0\plugins\jpeg_buffer.h
+		api\include\CImg-1.7.0\plugins\loop_macros.h = api\include\CImg-1.7.0\plugins\loop_macros.h
+		api\include\CImg-1.7.0\plugins\matlab.h = api\include\CImg-1.7.0\plugins\matlab.h
+		api\include\CImg-1.7.0\plugins\nlmeans.h = api\include\CImg-1.7.0\plugins\nlmeans.h
+		api\include\CImg-1.7.0\plugins\patchmatch.h = api\include\CImg-1.7.0\plugins\patchmatch.h
+		api\include\CImg-1.7.0\plugins\skeleton.h = api\include\CImg-1.7.0\plugins\skeleton.h
+		api\include\CImg-1.7.0\plugins\tiff_stream.h = api\include\CImg-1.7.0\plugins\tiff_stream.h
+		api\include\CImg-1.7.0\plugins\tinymatwriter.h = api\include\CImg-1.7.0\plugins\tinymatwriter.h
+		api\include\CImg-1.7.0\plugins\vrml.h = api\include\CImg-1.7.0\plugins\vrml.h
+		api\include\CImg-1.7.0\plugins\vtk.h = api\include\CImg-1.7.0\plugins\vtk.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "glfw-3.1.1", "glfw-3.1.1", "{6D83DD51-B285-4C40-ABA9-3D35EC64D9B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GLFW", "GLFW", "{740066AB-7A1E-4056-BF79-61144E046725}"
+	ProjectSection(SolutionItems) = preProject
+		api\include\glfw-3.1.1\GLFW\glfw3.h = api\include\glfw-3.1.1\GLFW\glfw3.h
+		api\include\glfw-3.1.1\GLFW\glfw3native.h = api\include\glfw-3.1.1\GLFW\glfw3native.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dll", "dll", "{6764A1B4-B4CA-4A7E-8545-03195B509A7C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x86", "x86", "{1E1018EF-C94E-44F5-9E37-C07C73566833}"
+	ProjectSection(SolutionItems) = preProject
+		api\dll\x86\glew32.dll = api\dll\x86\glew32.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x64", "x64", "{61CD104B-4B89-4555-8BEC-8E4EC782A1CA}"
+	ProjectSection(SolutionItems) = preProject
+		api\dll\x64\glew32.dll = api\dll\x64\glew32.dll
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E3A9FE6-1349-4469-9583-BABFFBFA996B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1E3A9FE6-1349-4469-9583-BABFFBFA996B}.Debug|Win32.Build.0 = Debug|Win32
+		{1E3A9FE6-1349-4469-9583-BABFFBFA996B}.Debug|x64.ActiveCfg = Debug|x64
+		{1E3A9FE6-1349-4469-9583-BABFFBFA996B}.Debug|x64.Build.0 = Debug|x64
+		{1E3A9FE6-1349-4469-9583-BABFFBFA996B}.Release|Win32.ActiveCfg = Release|Win32
+		{1E3A9FE6-1349-4469-9583-BABFFBFA996B}.Release|Win32.Build.0 = Release|Win32
+		{1E3A9FE6-1349-4469-9583-BABFFBFA996B}.Release|x64.ActiveCfg = Release|x64
+		{1E3A9FE6-1349-4469-9583-BABFFBFA996B}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2E5E9615-8CF3-4262-87E9-D77CB9D16997} = {08ADBAD4-9FC2-4CED-9C8E-A14CCA6063CC}
+		{E8401D16-7DEA-4900-8375-C5FC28F93E7D} = {08ADBAD4-9FC2-4CED-9C8E-A14CCA6063CC}
+		{98678FFB-F5B6-4674-8AAF-FFFEBDF7C6B9} = {E8401D16-7DEA-4900-8375-C5FC28F93E7D}
+		{F5D3C38C-7173-4D91-8FAD-8FFB3B24FD19} = {E8401D16-7DEA-4900-8375-C5FC28F93E7D}
+		{CD25920F-D751-4B9D-B7E8-4520A431D067} = {2E5E9615-8CF3-4262-87E9-D77CB9D16997}
+		{A6FFDC73-BF78-4B03-847A-8026A1748764} = {CD25920F-D751-4B9D-B7E8-4520A431D067}
+		{0E08BB92-E8FA-45A4-B580-6DE5C69388F6} = {CD25920F-D751-4B9D-B7E8-4520A431D067}
+		{050319B0-F2C5-4059-86E4-044E43FDFC23} = {CD25920F-D751-4B9D-B7E8-4520A431D067}
+		{D21C4D51-C710-400F-9823-70D7962B799B} = {CD25920F-D751-4B9D-B7E8-4520A431D067}
+		{28E34090-EC3C-4DE6-88BC-9993E7E9F6E9} = {CD25920F-D751-4B9D-B7E8-4520A431D067}
+		{57DDD74B-3367-42D0-A0FF-85B14501D4FF} = {CD25920F-D751-4B9D-B7E8-4520A431D067}
+		{714AF1F4-C223-411B-BAB8-0BAF8079BC3F} = {CD25920F-D751-4B9D-B7E8-4520A431D067}
+		{59FE0837-5070-431F-82E4-7A60ABE97C1A} = {CD25920F-D751-4B9D-B7E8-4520A431D067}
+		{8AE41B8B-CBF5-4F58-8D96-512D90AB9DB0} = {CD25920F-D751-4B9D-B7E8-4520A431D067}
+		{9BC8F49B-DB32-4006-A532-EDFEC7E46974} = {A6FFDC73-BF78-4B03-847A-8026A1748764}
+		{19082719-2CAA-4310-8885-AEE30001AC22} = {0E08BB92-E8FA-45A4-B580-6DE5C69388F6}
+		{9904F58D-29E9-435D-938B-AD077BB7B687} = {0E08BB92-E8FA-45A4-B580-6DE5C69388F6}
+		{F066241A-BB4A-4C11-93FD-C957E2DCDFB4} = {28E34090-EC3C-4DE6-88BC-9993E7E9F6E9}
+		{28D67ED2-ED1B-445C-9852-87DC8E2F5441} = {28E34090-EC3C-4DE6-88BC-9993E7E9F6E9}
+		{C71C9766-BE1D-4DFC-A010-32BA735CC696} = {28D67ED2-ED1B-445C-9852-87DC8E2F5441}
+		{D4601A29-CEB0-4789-827A-7D378BB78434} = {28D67ED2-ED1B-445C-9852-87DC8E2F5441}
+		{00600CB6-0CE0-4778-8409-655E9F16814D} = {57DDD74B-3367-42D0-A0FF-85B14501D4FF}
+		{4C6D7A9C-2542-44D1-ABFD-5E6B5302566B} = {2E5E9615-8CF3-4262-87E9-D77CB9D16997}
+		{859997DD-2F00-45AC-A270-2EF22DCB12AF} = {4C6D7A9C-2542-44D1-ABFD-5E6B5302566B}
+		{9E7ECCB3-9A85-446F-B906-06AE6509A0A4} = {4C6D7A9C-2542-44D1-ABFD-5E6B5302566B}
+		{92906BDC-4D39-4EAA-8656-243D02BE1205} = {9E7ECCB3-9A85-446F-B906-06AE6509A0A4}
+		{44EE42D5-5B27-412C-8720-1F506BB36634} = {2E5E9615-8CF3-4262-87E9-D77CB9D16997}
+		{B9614F90-FB00-4C1D-9BBA-43204A350422} = {2E5E9615-8CF3-4262-87E9-D77CB9D16997}
+		{058536D7-1E97-4B41-8F7C-15589A6AEB23} = {B9614F90-FB00-4C1D-9BBA-43204A350422}
+		{4922BA8C-9E58-4EB2-A894-E6D987594B0A} = {2E5E9615-8CF3-4262-87E9-D77CB9D16997}
+		{7773CAAC-963D-4D0E-86FB-7A940172E2AD} = {4922BA8C-9E58-4EB2-A894-E6D987594B0A}
+		{6D83DD51-B285-4C40-ABA9-3D35EC64D9B5} = {2E5E9615-8CF3-4262-87E9-D77CB9D16997}
+		{740066AB-7A1E-4056-BF79-61144E046725} = {6D83DD51-B285-4C40-ABA9-3D35EC64D9B5}
+		{6764A1B4-B4CA-4A7E-8545-03195B509A7C} = {08ADBAD4-9FC2-4CED-9C8E-A14CCA6063CC}
+		{1E1018EF-C94E-44F5-9E37-C07C73566833} = {6764A1B4-B4CA-4A7E-8545-03195B509A7C}
+		{61CD104B-4B89-4555-8BEC-8E4EC782A1CA} = {6764A1B4-B4CA-4A7E-8545-03195B509A7C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AC3502F5-7C9F-4DDD-8100-4A8A01D5C09B}
+	EndGlobalSection
+EndGlobal
